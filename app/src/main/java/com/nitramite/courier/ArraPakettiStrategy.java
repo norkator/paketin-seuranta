@@ -1,0 +1,158 @@
+package com.nitramite.courier;
+
+import android.annotation.SuppressLint;
+import android.util.Log;
+import com.nitramite.paketinseuranta.EventObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+public class ArraPakettiStrategy implements CourierStrategy, HostnameVerifier {
+
+    // Logging
+    private static final String TAG = "ArraPakettiStrategy";
+
+    // Host name verifier
+    public boolean verify(String hostname, SSLSession session) {
+        return true;
+    }
+
+
+    @Override
+    public ParcelObject execute(String parcelCode) {
+        ParcelObject parcelObject = new ParcelObject(parcelCode);
+        ArrayList<EventObject> eventObjects = new ArrayList<>();
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+                    @SuppressLint("TrustAllX509TrustManager")
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                    @SuppressLint("TrustAllX509TrustManager")
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
+            URL obj = new URL(url);
+            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+            con.setConnectTimeout(5000);    // Timeout for connecting
+            con.setReadTimeout(5000);       // Timeout for reading content
+            con.setSSLSocketFactory(sc.getSocketFactory());
+            con.setHostnameVerifier(this);
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Host", "www.r-kioski.fi");
+            con.setRequestProperty("Referer", "https://www.r-kioski.fi/lahetystenseuranta/");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36");
+            con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+            // Output stream
+            OutputStream outputStream = con.getOutputStream();
+            final String postBody = "action=parcel_tracking&parcel_id=" + parcelCode;
+            outputStream.write(postBody.getBytes());
+            // Input stream
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            String jsonResult = response.toString();
+            Log.i(TAG, jsonResult);
+
+            // Parsing got json content
+            JSONObject jsonResponse = new JSONObject(jsonResult); // Json content
+            JSONArray jsonEvents = jsonResponse.optJSONArray("Seurantatiedot"); // Get tracking details
+
+            if (jsonEvents.length() > 0) { // Has content
+
+                @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                for (int i = 0; i < jsonEvents.length(); i++) {
+                    JSONObject event = jsonEvents.getJSONObject(i);
+
+                    if (!event.isNull("Kellonaika")) {
+
+                        Long timeStamp = (event.optLong("Kellonaika") * 1000);
+                        Date parseTimeDate = new Date(timeStamp);
+
+                        final String parsedDate = showingDateFormat.format(parseTimeDate);
+                        final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
+
+
+                        // Get event description
+                        String eventDescription = event.optString("Tapahtuma");
+
+                        if (!eventDescription.contains("ei löydy vielä tietoja.")) {
+
+                            String location = "";
+                            if (!event.isNull("Paikka")) {
+                                location = event.optString("Paikka");
+                            }
+
+                            // Pass to object
+                            EventObject eventObject = new EventObject(
+                                    eventDescription,
+                                    parsedDate,
+                                    parsedDateSQLiteFormat,
+                                    "",
+                                    location
+                            );
+                            // Add object
+                            eventObjects.add(eventObject);
+                            Log.i(TAG, "arra add event obj");
+
+                        }
+                    }
+                }
+                parcelObject.setEventObjects(eventObjects); // Set event object into parcel object for later fetching
+
+                if (eventObjects.size() > 0) {
+                    parcelObject.setIsFound(true); // Parcel is found
+                    parcelObject.setPhase("TRANSIT");
+                }
+
+            } else {
+                Log.i(TAG, "ArraPaketti shipment not found");
+                parcelObject.setIsFound(false); // Parcel not found
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.i(TAG, e.toString());
+        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
+            Log.i(TAG, e.toString());
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return parcelObject;
+    }
+
+
+} // End of class

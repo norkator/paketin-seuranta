@@ -1,0 +1,92 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="first_level"
+    android:title="@string/preferences_settings_title">
+
+
+    <PreferenceCategory android:title="@string/preferences_default_title">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="parcels_automatic_update"
+            android:summary="@string/preferences_timed_update_summary"
+            android:title="@string/preferences_timed_update_title" />
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="1"
+            android:dependency="parcels_automatic_update"
+            android:inputType="number"
+            android:key="parcels_update_rate"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/preferences_update_rate_summary"
+            android:title="@string/preferences_update_rate_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="parcels_notifications"
+            android:summary="@string/preferences_notifications_summary"
+            android:title="@string/preferences_notifications_title" />
+
+        <ListPreference
+            android:entries="@array/pref_long_tap_values"
+            android:entryValues="@array/pref_long_tap_values"
+            android:key="SP_MAIN_MENU_LIST_LONG_TAP_ACTION"
+            android:summary="@string/preferences_long_click_item_summary"
+            android:title="@string/preferences_long_click_item_title" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/pref_theme_entries"
+            android:entryValues="@array/pref_theme_values"
+            android:key="SP_THEME_SELECTION"
+            android:summary="@string/preferences_theme_summary"
+            android:title="@string/preferences_theme_title" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/settings_tweaks">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="SP_UPDATE_FAILED_FIRST"
+            android:summary="@string/preferences_update_failed_first_summary"
+            android:title="@string/preferences_update_failed_first_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SP_PACKAGE_UPDATE_NOTIFY_SNACKBAR"
+            android:summary="@string/preferences_individual_update_notes_summary"
+            android:title="@string/preferences_individual_update_notes_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SP_UPDATE_PARCELS_ON_STARTUP"
+            android:summary="@string/preferences_update_on_startup_summary"
+            android:title="@string/preferences_update_on_startup_title" />
+
+        <ListPreference
+            android:entries="@array/pref_application_language_entries"
+            android:entryValues="@array/pref_application_language_values"
+            android:key="SP_APPLICATION_LANGUAGE"
+            android:summary="@string/preferences_override_language_summary"
+            android:title="@string/preferences_override_language_title" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="SP_PORTRAIT_ORIENTATION_ONLY"
+            android:summary="Pakottaa sovelluksen pysymään vain pystyasennossa. Tulee voimaan kun käynnistät sovelluksen uudelleen."
+            android:title="Älä käännä näyttöä" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="SP_PARCEL_SWIPE_CHANGE"
+            android:summary="@string/preferences_parcel_swipe_change_description"
+            android:title="@string/preferences_parcel_wipe_change_title" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

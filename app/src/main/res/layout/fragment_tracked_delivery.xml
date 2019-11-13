@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="false"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="start"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/package_edit_dialog_name_package_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/packageNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_name_package_hint"
+                android:nextFocusForward="@+id/trackingCodeET"
+                android:singleLine="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_change_tracking_code_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/trackingCodeET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_tracking_code_hint"
+                android:nextFocusForward="@+id/lockerCodeET"
+                android:singleLine="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/pasteTrackingNumberBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/paste"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/scanTrackingNumberBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_code"
+                    android:textColor="@color/bootStrapPrimary"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_change_courier_company_title"
+                android:textSize="18sp" />
+
+
+            <Spinner
+                android:id="@+id/selectCarrierSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_locker_code_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/lockerCodeET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_locker_code_hint"
+                android:nextFocusForward="@+id/senderET"
+                android:singleLine="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_sender_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/senderET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_sender_hint"
+                android:nextFocusForward="@+id/deliveryMethodET"
+                android:singleLine="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_delivery_method_title"
+                android:textSize="18sp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/deliveryMethodET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_delivery_method_hint"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/productPageET"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_product_page"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/productPageET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_insert_product_page"
+                android:importantForAutofill="no"
+                android:nextFocusForward="@+id/additionalNoteET"
+                android:singleLine="true"
+                tools:ignore="TextFields,UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_additional_notes_hint"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/additionalNoteET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_additional_notes"
+                android:importantForAutofill="no"
+                android:nextFocusForward="@+id/positiveBtn"
+                android:singleLine="true"
+                tools:ignore="TextFields,UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_order_date"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/orderDateTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="xxxx-xx-xx xx:xx"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/selectOrderDateBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/package_edit_dialog_select_order_date_btn"
+                    android:textColor="@color/bootStrapPrimary"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_delivery_date"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/manualDeliveryDateTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="xxxx-xx-xx xx:xx"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/selectManualDeliveryDateBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/package_edit_dialog_select_order_date_btn"
+                    android:textColor="@color/bootStrapPrimary"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/negativeBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/package_edit_dialog_button_close"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/positiveBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/package_edit_dialog_button_save"
+                    android:textColor="@color/bootStrapPrimary"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>
+

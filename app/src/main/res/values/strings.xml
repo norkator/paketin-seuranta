@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Not translatable -->
+    <string name="app_name">Paketin Seuranta</string>
+    <string name="delivered" translatable="false">DELIVERED</string>
+
+    <!-- Application strings -->
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_parcel">Parcel</string>
+    <string name="title_activity_maps">Location</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="last_updated_beginning_part">Data updated:</string>
+    <string name="last_updated_beginning_part_not_found">Data update failed:</string>
+    <string name="package_not_found">Parcel not found!</string>
+    <string name="delivered_in">DELIVERED IN</string>
+    <string name="delivered_only">DELIVERED</string>
+    <string name="menu_menu_update_tracking_details">Update tracking data</string>
+    <string name="menu_menu_rate_application">Rate app</string>
+    <string name="menu_menu_barcode_list">Barcode list</string>
+    <string name="menu_menu_archive">Archived</string>
+    <string name="menu_menu_user_manual">User manual</string>
+    <string name="menu_menu_settings">Settings</string>
+    <string name="menu_menu_destroy_process">Destroy process</string>
+    <string name="menu_menu_watch_ad">Watch ad</string>
+    <string name="menu_menu_contact">Contact</string>
+    <string name="menu_menu_about">About</string>
+    <string name="menu_menu_backup">Backup</string>
+    <string name="menu_archive_update_list">Update list</string>
+    <string name="menu_archive_hints">Hints</string>
+    <string name="menu_parcel_edit_information">Edit details</string>
+    <string name="menu_parcel_copy_to_clipboard">Code to clipboard</string>
+    <string name="menu_parcel_take_package_image">Take package image</string>
+    <string name="menu_parcel_hints">Hints</string>
+    <string name="activity_barcode_list_list_only_ready_for_pickup">List only ready for pickup ones</string>
+    <string name="activity_barcode_lists_spaces_minus_button">Spaces -</string>
+    <string name="activity_barcode_list_spaces_plus_button">Spaces +</string>
+    <string name="activity_main_menu_add_without_tracking_code_button">Add new tracked delivery</string>
+    <string name="activity_main_menu_archive_button">Archive</string>
+    <string name="activity_main_menu_scan_code_button">Scan parcel code</string>
+    <string name="activity_main_menu_add_tracking_codes_button">Add multiple parcel codes</string>
+    <string name="add_code_dialog_add_tracking_codes">Add parcel codes</string>
+    <string name="add_code_dialog_add_tracking_codes_here">Paste tracking codes here. One for each line!</string>
+    <string name="add_code_dialog_add_tracking_codes_hint">Note that tracking codes should not have spaces at the end</string>
+    <string name="add_code_dialog_paste_button">Paste</string>
+    <string name="add_code_dialog_add_button">ADD</string>
+    <string name="content_parcel_tracking_code_title">Tracking code</string>
+    <string name="content_parcel_locker_code_title">Locker code</string>
+    <string name="content_parcel_parcel_events_title">Parcel events</string>
+    <string name="content_parcel_no_parcel_events_title">No parcel events</string>
+    <string name="content_parcel_other_information_title">Other details</string>
+    <string name="package_edit_dialog_name_package_title">Package name</string>
+    <string name="package_edit_dialog_name_package_hint">Give name, example Electronics</string>
+    <string name="package_edit_dialog_locker_code_title">Locker code</string>
+    <string name="package_edit_dialog_locker_code_hint">Locker code, example L1234</string>
+    <string name="package_edit_dialog_change_courier_company_title">Courier service</string>
+    <string name="package_edit_dialog_change_tracking_code_title">Tracking number</string>
+    <string name="package_edit_dialog_tracking_code_hint">Tracking code</string>
+    <string name="package_edit_dialog_sender_title">Sender</string>
+    <string name="package_edit_dialog_sender_hint">Sender information</string>
+    <string name="package_edit_dialog_delivery_method_title">Shipping method</string>
+    <string name="package_edit_dialog_delivery_method_hint">Input delivery method</string>
+    <string name="package_edit_dialog_button_close">Cancel</string>
+    <string name="package_edit_dialog_button_save">Save</string>
+    <string name="swipe_left_delete_delete_text">REMOVE</string>
+    <string name="swipe_right_archive_archive_text">Archive</string>
+    <string name="swipe_right_delete_delete_text">REMOVE</string>
+    <string name="swipe_right_return_return_button">Restore</string>
+    <string name="widget_status_title">Status</string>
+    <string name="main_menu_snackbar_message_updated">updated</string>
+    <string name="main_menu_add_tracking_codes_title">Add codes</string>
+    <string name="main_menu_add_tracking_codes_your_clipboard_is_empty">Your clipboard is empty!</string>
+    <string name="main_menu_scanned_text">Scanned:</string>
+    <string name="main_menu_update_in_progress_try_again_later">Update in progress, try again later!</string>
+    <string name="main_menu_code_copied_to_your_clipboard">Code copied to your clipboard!</string>
+    <string name="main_menu_long_click_function_selection_not_made_on_settings">Long click action is not selected. Change selection behaviour at settings.</string>
+    <string name="main_menu_did_not_get_event_statuses_try_again_later">Did not get event information. Try again!</string>
+    <string name="main_menu_field_is_empty">Field is empty!</string>
+    <string name="main_menu_item_not_added_because_it_already_existed_on_list">was not added because it\'s already on the list</string>
+    <string name="main_menu_item_not_updated_because_it_already_existed_on_list">tracking code already exists</string>
+    <string name="main_menu_cannot_delete_updating_packages_data">Updating events data, cannot delete at the moment!</string>
+    <string name="main_menu_deletion_title">Delete</string>
+    <string name="main_menu_you_are_about_to_delete_following_package_from_list">You are about to delete tracked item from list. Do you want to continue?\n\nNote: You can also archive package via swiping from left to right.</string>
+    <string name="main_menu_you_are_about_to_delete_following_package_from_list_shorter">You are about to delete tracked item from list. Do you want to continue?</string>
+    <string name="main_menu_give_package_name_dialog">Give package name</string>
+    <string name="main_menu_accept">Accept</string>
+    <string name="main_menu_error">Error</string>
+    <string name="main_menu_you_did_not_input_anything">You did not imput anything</string>
+    <string name="main_menu_return">Return</string>
+    <string name="main_menu_list_is_empty_nothing_to_update">Your list is empty, nothing to update</string>
+    <string name="main_menu_updating">Updating…</string>
+    <string name="main_menu_your_list_is_empty">List is empty.</string>
+    <string name="main_menu_close">Close</string>
+    <string name="main_menu_cancel">Cancel</string>
+    <string name="main_menu_restore_from_backup">Restore from backup</string>
+    <string name="main_menu_restore_successfull">Restore successful. App must be restarted!</string>
+    <string name="main_menu_restore_un_successfull">Restoring from backup failed</string>
+    <string name="main_menu_take_backup_with_this_tool_text">With this tool you can take backup from internal database or restore taken backup. Feature requires access to your phones internal storage, where app can save backup file. After giving permission run this feature again.</string>
+    <string name="main_menu_take_backup">Take backup</string>
+    <string name="main_menu_result">Result</string>
+    <string name="main_menu_taking_backup_was_successfull_for_following_directory">Taking backup was successful. File is saved on location:</string>
+    <string name="main_menu_taking_backup_failed">Taking backup failed. This happens sometimes when app was creating required folders but it took too long time. Run this feature again.</string>
+    <string name="archive_title">Archive</string>
+    <string name="archive_delete_title">Delete</string>
+    <string name="archive_delete_description">You are about to delete archived item. Do you want to continue?</string>
+    <string name="archive_delivered_status_set_title">Delivered state</string>
+    <string name="archive_delivered_status_set_description">You are about to set package as delivered state. Do you want to continue?</string>
+    <string name="archive_close_button">Close</string>
+    <string name="archive_hints">Hints</string>
+    <string name="main_menu_about_title">About</string>
+    <string name="main_menu_about_sub_title">Paketin Seuranta</string>
+    <string name="main_menu_about_body">Simple Finnish package tracking application which you can use to track couriers easily.</string>
+    <string name="main_menu_body_part_two">Application is meant for Finland\'s internal and incoming package traffic.</string>
+    <string name="main_menu_user_manual_title">User manual</string>
+    <string name="main_menu_kill_process_message_part_one">This feature destroy\'s apps processes completely and closes user interface.</string>
+    <string name="main_menu_kill_process_message_part_two">"This feature is meant for situation where user wants to close all app sevices. "</string>
+    <string name="main_menu_kill_process_button">DESTROY</string>
+    <string name="arhive_hint_message_part_one">• Swipe from left to right to restore package to tracking list.</string>
+    <string name="arhive_hint_message_part_two">• Swipe from right to left to delete package completely.</string>
+    <string name="arhive_hint_message_part_three">• Long click package to set it as delivered. Sometimes packages get delivered without status changes.</string>
+    <string name="barcode_list_space_cannot_be_made_smaller">Space cannot be made smaller</string>
+    <string name="custom_parcels_adapter_package_not_found_check_courier_company">Package not found, check your selected courier!</string>
+    <string name="my_preferences_activity_theme_change_takes_effect_after_restart">Theme change takes effect after application restart</string>
+    <string name="parcel_pick_up_destination_on_map_title">Pickup destination on map</string>
+    <string name="parcel_no_pick_up_destination_coordinates">No pickup destination coordinates!</string>
+    <string name="parcel_changing_to">Changing to</string>
+    <string name="parcel_chaging_to_next">next</string>
+    <string name="parcel_changing_to_earlier">earlier</string>
+    <string name="parcel_pick_up_address">Pickup address:</string>
+    <string name="parcel_parcel_type_unknown">Package type unknown!</string>
+    <string name="parcel_type">Type:</string>
+    <string name="parcel_sender">Sender:</string>
+    <string name="parcel_locker_code">Lockercode:</string>
+    <string name="parcel_service">Service:</string>
+    <string name="parcel_weight">Weight:</string>
+    <string name="parcel_height">Height:</string>
+    <string name="parcel_width">Width:</string>
+    <string name="parcel_depth">Depht:</string>
+    <string name="parcel_volume">Volyme:</string>
+    <string name="parcel_destination_post_code">Destination postal code:</string>
+    <string name="parcel_destination_city">Destination city:</string>
+    <string name="parcel_destination_country">Destination country:</string>
+    <string name="parcel_recipient_signature">Recipient signature:</string>
+    <string name="parcel_other">Other:</string>
+    <string name="parcel_original_tracking_code">Original tracking code:</string>
+    <string name="parcel_package_name">Package name:</string>
+    <string name="parcel_delivery_method">Delivery method:</string>
+    <string name="parcel_in_days">DAY</string>
+    <string name="parcel_code_copied_to_clip_board">Code copied to your clipboard!</string>
+    <string name="parcel_nothing_to_copy">No code to copy!</string>
+    <string name="parcel_search_running_try_again_later">Update ongoing, try again later!</string>
+    <string name="parcel_picture_saved">Picture saved</string>
+    <string name="parcel_close_button">Close</string>
+    <string name="parcel_delete_button">Remove</string>
+    <string name="parcel_do_you_want_to_delete_this_image">Do you really want to delete this image?</string>
+    <string name="parcel_picture_removed">Image deleted</string>
+    <string name="parcel_cancel">Cancel</string>
+    <string name="parcel_hints_title">Hints</string>
+    <string name="parcel_hints_part_one">• Application can in some cases detect courier automatically. Sometimes detection is impossible without excess api calls.</string>
+    <string name="parcel_hints_part_two">You can change courier from beding pen image for example in case when package is detected to be Posti package but actual courier is Matkahuolto. This way app get\'s information from right place.</string>
+    <string name="parcel_hints_part_three">• Map icon (right bottom corner) requires Google Play Services up to date to work.</string>
+    <string name="parcel_hints_part_four">• If barcode is too small, put your phone on landscape mode!</string>
+    <string name="parcel_hints_part_five">• Input lockercode behind pen image.</string>
+    <string name="parcel_hints_part_six">• Packages can also be changed in this view via swiping left or right on this view.</string>
+    <string name="preferences_default_title">Basic settings</string>
+    <string name="preferences_timed_update_title">Timed updating</string>
+    <string name="preferences_timed_update_summary">Take timed updating in use or not</string>
+    <string name="preferences_update_rate_title">Package updating time interval (hours)</string>
+    <string name="preferences_update_rate_summary">Set\'s automatic update interval, when package details are being updated</string>
+    <string name="preferences_notifications_title">Take notifications in use</string>
+    <string name="preferences_notifications_summary">When package details gets a change, give me notification about it. Requires automatic update interval settings to be on!</string>
+    <string name="preferences_update_on_startup_title">Update package details on app launch</string>
+    <string name="preferences_update_on_startup_summary">If you have lots of packages on your list, this settings may cause app hanging.</string>
+    <string name="preferences_individual_update_notes_title">Individual update notifications</string>
+    <string name="preferences_individual_update_notes_summary">Show individual update notification (snackbar) after every parcel item update event.</string>
+    <string name="preferences_long_click_item_title">Long click action</string>
+    <string name="preferences_long_click_item_summary">Choose what long click does on main screen</string>
+    <string name="preferences_update_failed_first_title">Update failed first</string>
+    <string name="preferences_update_failed_first_summary">Update first packages which failed to update on last time.</string>
+    <string name="preferences_theme_title">Theme</string>
+    <string name="preferences_theme_summary">Select theme for app</string>
+    <string name="preferences_settings_title">Settings</string>
+    <string name="preferences_override_language_title">Override language</string>
+    <string name="preferences_override_language_summary">Language changes based on phone default language. With this setting you can override default logic and set specific language</string>
+    <string name="my_preferences_application_language_override_change_takes_effect_after_restart">Language change takes effect after application restart</string>
+    <string name="parcel_parcel_added_time_stamp">Added on application:</string>
+    <string name="menu_archive_csv_export">CSV export</string>
+    <string name="csv_export_layout_export_button">Export</string>
+    <string name="csv_export_layout_csv_export_properties_title">CSV export options</string>
+    <string name="csv_export_layout_csv_export_properties_summary">Choose what fields to export on CSV export. CSV file will be exported to your phone storage PaketinSeuranta/CSV folder</string>
+    <string name="csv_export_layout_name">Name</string>
+    <string name="csv_export_layout_tracking_code">Tracking code</string>
+    <string name="csv_export_layout_sender">Sender</string>
+    <string name="csv_export_layout_delivery_method">Delivery method</string>
+    <string name="csv_export_layout_code_add_date">Code add date</string>
+    <string name="csv_export_layout_last_status">Last parcel event</string>
+    <string name="csv_export_layout_ready_for_pickup_date">Ready for pickup date</string>
+    <string name="archive_csv_export_succes_title">CSV export</string>
+    <string name="archive_csv_export_succes_description">CSV file exported with name:</string>
+    <string name="archive_csv_export_failed_description">CSV export failed</string>
+    <string name="parcel_title">Parcel</string>
+    <string name="menu_parcel_carrier_detector_tool">Carrier detector</string>
+    <string name="menu_parcel_archive_package">Archive package</string>
+    <string name="menu_parcel_delete_package">Delete package</string>
+    <string name="parcel_change_to_archived_package">(Archived)</string>
+    <string name="parcel_service_other_package_type">Other package type -</string>
+    <string name="edit_package_utils_changes_saved">Changes saved</string>
+    <string name="edit_package_utils_tracked_delivery_created">Tracked delivery created</string>
+    <string name="edit_package_utils_changing_courier_failed">Changing courier failed!</string>
+    <string name="parcel_estimate_delivery">Estimate delivery:</string>
+    <string name="parcel_last_pickup_date">Last pickup date:</string>
+    <string name="main_menu_version_details">Application version details</string>
+    <string name="main_menu_version_code">Code:</string>
+    <string name="main_menu_version_name">Name:</string>
+    <string name="package_edit_dialog_additional_notes_hint">Input additional notes</string>
+    <string name="package_edit_dialog_additional_notes">Additional notes</string>
+    <string name="parcel_parcel_type">Parcel type:</string>
+    <string name="parcel_parcel_type_unknown_word">Unknown</string>
+    <string name="parcel_additional_notes">Additional notes:</string>
+    <string name="intro_start_button">START USE</string>
+    <string name="intro_next_button">NEXT</string>
+    <string name="intro_button_skip">SKIP</string>
+    <string name="activity_intro_one_welcome_text">Welcome</string>
+    <string name="activity_intro_one_fast_introduction_text">Short tutorial to begin use</string>
+    <string name="activity_intro_one_new_tracked_delivery_tutorial">New tracked delivery can be added from this button. Behind this button you find different ways to add package to track.</string>
+    <string name="activity_intro_one_barcode_list_tutorial">Behind list button you can find barcode list. Barcode list is handy if you for example pick up packages from post office.</string>
+    <string name="activity_intro_one_archive_tutorial">Behind archive button you find your archived packages. Archive is handy feature if you want to keep track of your order history.</string>
+    <string name="activity_intro_two_archive_swipe">Added package can be archived via\nswiping left to right</string>
+    <string name="activity_intro_two_delete_swipe">Added package can be deleted via\nswiping right to left</string>
+    <string name="activity_intro_two_bottomline_text_one">Remember to check out application settings. From settings you find theme selection, notification properties, long click action for main menu list and more options to suit your needs.</string>
+    <string name="package_edit_dialog_product_page">Product page</string>
+    <string name="package_edit_dialog_insert_product_page">Insert product page</string>
+    <string name="close_btn">Close</string>
+    <string name="start_carrier_detector">Start detector</string>
+    <string name="clear_events">Clear events</string>
+    <string name="clear_current_events_for_this_parcel">Clear current events from this parcel?</string>
+    <string name="search">Search</string>
+    <string name="package_edit_dialog_order_date">Order date</string>
+    <string name="package_edit_dialog_select_order_date_btn">Select</string>
+    <string name="add_edit_dialog_order_date_not_selected">Not selected</string>
+    <string name="parcel_order_date">Order date:</string>
+    <string name="parcel_manually_set_delivered">Set as delivered:</string>
+    <string name="package_edit_dialog_delivery_date">Delivery date</string>
+    <string name="parcel_editor_tab_one">Tracked delivery</string>
+    <string name="parcel_editor_tab_two">List of numbers</string>
+    <string name="parcel_editor_tab_edit_existing">Edit tracked delivery</string>
+    <string name="note">Note</string>
+    <string name="leave_without_saving_changes">Leave without saving changes?</string>
+    <string name="paste">Paste</string>
+    <string name="scan_code">Scan code</string>
+    <string name="add">Add</string>
+    <string name="empty_clipboard">Empty clipboard</string>
+    <string name="add_tracked_delivery">Add parcel</string>
+    <string name="edit_tracked_delivery">Edit parcel</string>
+    <string name="try_detect_courier_company_btn">TRY DETECT COURIER</string>
+    <string name="preferences_parcel_wipe_change_title">Parcel swipe change</string>
+    <string name="preferences_parcel_swipe_change_description">Turn parcel swipe change on or off. Swipe works badly on some devices.</string>
+    <string name="database_backup_title">Backup</string>
+    <string name="timed_back_up_toggle">Timed backup</string>
+    <string name="timed_backup_on">on</string>
+    <string name="timed_backup_off">off</string>
+    <string name="settings_tweaks">Tweaks</string>
+    <string name="parcel_phase">Phase</string>
+
+
+    <!-- Strings related to Settings -->
+    <string-array name="pref_long_tap_values">
+        <item>Load events</item>
+        <item>Copy code to clipboard</item>
+        <item>Edit information</item>
+    </string-array>
+
+    <!-- Strings related to Settings -->
+    <string-array name="pref_theme_entries">
+        <item>Light (stock)</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="pref_theme_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!-- Strings related to Settings -->
+    <string-array name="pref_application_language_entries">
+        <item>Suomi</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="pref_application_language_values">
+        <item>fi</item>
+        <item>en</item>
+    </string-array>
+
+</resources>

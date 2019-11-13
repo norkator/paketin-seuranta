@@ -1,0 +1,43 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nitramite.paketinseuranta.MainMenu">
+
+    <item
+        android:id="@+id/action_barcode_list_icon"
+        android:icon="@drawable/ic_list"
+        android:title="@string/menu_menu_barcode_list"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_archive_icon"
+        android:icon="@drawable/ic_archive"
+        android:title="@string/menu_menu_archive"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/menu_menu_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_barcode_list"
+        android:title="@string/menu_menu_barcode_list"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_archive"
+        android:title="@string/menu_menu_archive"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/menu_menu_about"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_database_dump"
+        android:title="@string/menu_menu_backup"
+        app:showAsAction="never" />
+
+</menu>
