@@ -1,3 +1,5 @@
+### UNDER CONSTRUCTION ###
+
 # Paketin Seuranta
 
 Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
@@ -6,7 +8,7 @@ yleisesti Englanning kielellä.
 
 Paketin Seuranta is free application, no ads or paid content never!
 
-Notice the license. You can not allowed to copy or use this app code to create similar application. 
+Notice the license. You are not allowed to copy or use this app code to create similar application. 
 
 ### Help required
 
