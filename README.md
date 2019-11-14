@@ -26,8 +26,24 @@ https://developer.android.com/studio
 * Follow it's normal installation instructions.
 
 
+### Installing
+
+Steps to get development environment running
+
+1. Install latest Android studio
+2. Click `File` -> `Open` -> Select project root containing `app` folder.
+3. Download all required SDK etc files. Anrdoid Studio automatically installs all required packages.
+4. Done!
+
+
 ### Introduction to basics
 * Coming...
+
+
+## Versioning
+
+Currently I just increment build number and version number itself doesn't have any logic in it.
+Maybe in the future will use Semver or similar. Not mandatory yet.
 
 
 ## Authors
