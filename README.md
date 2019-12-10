@@ -1,5 +1,3 @@
-### UNDER CONSTRUCTION ###
-
 # Paketin Seuranta
 
 Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
