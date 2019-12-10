@@ -4,18 +4,18 @@
 
 Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
 tarkoitettu Android sovellus. Sovelluksen kohdeyleisö on Suomessa mutta pidetään repo 
-yleisesti Englanning kielellä.
+yleisesti Englannin kielellä.
 
-Paketin Seuranta is free application, no ads or paid content never!
+Paketin Seuranta is free application, no ads or paid content ever!
 
-Notice the license. You are not allowed to copy or use this app code to create similar application. 
+Notice the license. You are not allowed to copy or use this app code to create similar application but If I drop Paketin Seuranta from play store and from this repository then I allow for this application to be republished again by someone else.
 
 ### Help required
 
 I am looking for help to develop this application further. If you are interested let me know,
 contact me via email: nitramite@outlook.com
 
-Development areas are: bug fixes, user interface, more tracking methods, better cleaner code and basic maintenance.
+Development areas are: bug fixes, user interface, more tracking methods, better cleaner code and basic maintenance. Somebody with material design ui experience is especially welcome!
 
 Android app: https://play.google.com/store/apps/details?id=com.nitramite.paketinseuranta
 
@@ -36,21 +36,19 @@ Steps to get development environment running
 4. Done!
 
 
-### Introduction to basics
+### Introduction to app basics
 * Coming...
 
 
 ## Versioning
 
 Currently I just increment build number and version number itself doesn't have any logic in it.
-Maybe in the future will use Semver or similar. Not mandatory yet.
+Maybe in the future will use Semver or similar. Not mandatory yet because haven't have need for breaking changes.
 
 
 ## Authors
 
 * **Norkator** - *Initial work, code owner* - [norkator](https://github.com/norkator)
-* ...
-* ...
 
 
 ## License
