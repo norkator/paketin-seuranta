@@ -21,7 +21,7 @@ public class PhaseNumber {
             return new PhaseNumberString("1", "INTRANSPORT_NOTINFINLAND");
 
         } else if (phaseString.equals("IN_TRANSPORT") || phaseString.equals("Lähetys on saapunut kohdemaahan.") || phaseString.equals("Lähetys on lajiteltu.")
-                || phaseString.equals("TRANSIT")) {
+                || phaseString.equals("TRANSIT") || phaseString.equals("WAITING")) {
             return new PhaseNumberString("2", "IN_TRANSPORT");
 
         } else if (phaseString.equals("READY_FOR_PICKUP") || phaseString.equals("Noudettavissa") || phaseString.contains("ilmoitus tekstiviestillä")
