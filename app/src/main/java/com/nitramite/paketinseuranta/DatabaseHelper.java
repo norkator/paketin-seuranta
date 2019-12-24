@@ -776,6 +776,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = null;
         switch (autoCompleteScenario) {
+            case SENDER:
+                res = db.rawQuery("SELECT DISTINCT " + SENDER_TEXT + " FROM " + PARCELS_TABLE + " WHERE " + SENDER_TEXT + " LIKE '%" + inputWord + "%'", null);
+                break;
             case DELIVERY_METHOD:
                 res = db.rawQuery("SELECT DISTINCT " + DELIVERY_METHOD + " FROM " + PARCELS_TABLE + " WHERE " + DELIVERY_METHOD + " LIKE '%" + inputWord + "%'", null);
                 break;

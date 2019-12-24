@@ -67,7 +67,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
     private EditText lockerCodeET;
     private EditText additionalNoteET;
     private EditText productPageET;
-    private EditText senderET;
+    private AutoCompleteTextView senderET;
     private AutoCompleteTextView deliveryMethodET;
     private String orderDateSqliteFormatStr = null;
     private String manualDeliveryDateSqliteFormatStr = null;
@@ -140,11 +140,15 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         // Set carrier spinner, carrier changing adapter
         setCarrierSpinnerData(getActivity(), selectCarrierSpinner, carrierNumber, ((ParcelEditor) getActivity()).databaseHelper, ((ParcelEditor) getActivity()).parcelId);
 
+        // Construct auto complete word list for sender field
+        CustomAutoCompleteAdapter senderAutoCompleteAdapter = new CustomAutoCompleteAdapter(getActivity(), ((ParcelEditor) getActivity()).databaseHelper, AutoCompleteScenario.SENDER);
+        senderET.setThreshold(1); // Will start working from first character
+        senderET.setAdapter(senderAutoCompleteAdapter);
 
         // Construct auto complete word list for delivery method field
-        CustomAutoCompleteAdapter customAutoCompleteAdapter = new CustomAutoCompleteAdapter(getActivity(), ((ParcelEditor) getActivity()).databaseHelper, AutoCompleteScenario.DELIVERY_METHOD);
+        CustomAutoCompleteAdapter deliveryMethodAutoCompleteAdapter = new CustomAutoCompleteAdapter(getActivity(), ((ParcelEditor) getActivity()).databaseHelper, AutoCompleteScenario.DELIVERY_METHOD);
         deliveryMethodET.setThreshold(1); // Will start working from first character
-        deliveryMethodET.setAdapter(customAutoCompleteAdapter);
+        deliveryMethodET.setAdapter(deliveryMethodAutoCompleteAdapter);
 
 
         packageNameET.addTextChangedListener(new TextWatcher() {

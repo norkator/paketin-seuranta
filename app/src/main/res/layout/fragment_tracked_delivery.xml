@@ -116,11 +116,12 @@
                 android:text="@string/package_edit_dialog_sender_title"
                 android:textSize="18sp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/senderET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/package_edit_dialog_sender_hint"
+                android:imeOptions="actionNext"
                 android:nextFocusForward="@+id/deliveryMethodET"
                 android:singleLine="true" />
 

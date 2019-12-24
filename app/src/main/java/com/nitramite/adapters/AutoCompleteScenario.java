@@ -6,6 +6,7 @@ package com.nitramite.adapters;
  */
 public enum AutoCompleteScenario {
 
+    SENDER,
     DELIVERY_METHOD
 
 } // End of Enum
