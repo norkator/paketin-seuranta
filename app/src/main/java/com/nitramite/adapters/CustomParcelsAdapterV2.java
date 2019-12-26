@@ -81,7 +81,8 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
                 R.drawable.readyforpickup,
                 R.drawable.delivered,
                 R.mipmap.muu_logo,
-                R.drawable.returned
+                R.drawable.returned,
+                R.drawable.customs,
         };
 
         String phase = parcelItems.get(position).getParcelPhase();
@@ -111,6 +112,9 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         } else if (phase.length() == 8 || phase.equals("RETURNED_TO_SENDER")) {
             pos = 7;
             phaseTextFix = "Palautettu!";
+        } else if (phase.length() == 7 || phase.equals("CUSTOMS")) {
+            pos = 8;
+            phaseTextFix = "Tullaus vaaditaan!";
         }
         // Not inside Finland
         else if (phase.length() == 24 || latestEventDescription.equals("Lähetys ei ole vielä saapunut Postille, odotathan") ||

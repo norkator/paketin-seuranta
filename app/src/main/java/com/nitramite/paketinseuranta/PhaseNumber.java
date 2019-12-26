@@ -39,6 +39,9 @@ public class PhaseNumber {
 
         } else if ( phaseString.equals("RETURNED") || phaseString.equals("RETURNED_TO_SENDER") ) {
             return new PhaseNumberString("5", "RETURNED");
+
+        } else if ( phaseString.equals("CUSTOMS") || phaseString.contains("odottaa tullaustasi") || phaseString.contains("tullaus") ) {
+            return new PhaseNumberString("6", "CUSTOMS");
         }
 
 
