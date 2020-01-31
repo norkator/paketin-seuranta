@@ -262,6 +262,7 @@
     <string name="timed_backup_off">pois päältä</string>
     <string name="settings_tweaks">Säädöt</string>
     <string name="parcel_phase">Vaihe</string>
+    <string name="location_not_available">Sijainti ei ole saatavilla</string>
 
 
     <!-- Strings related to Settings -->

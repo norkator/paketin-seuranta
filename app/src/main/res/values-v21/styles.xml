@@ -19,14 +19,11 @@
         <item name="android:windowBackground">@color/view_background_color</item>
         <item name="android:itemBackground">@color/color_white</item>
         <item name="android:actionMenuTextColor">@color/black</item>
+        <item name="snackbarStyle">@style/CustomSnackbarStyle</item>
+
     </style>
 
-    <!-- PREFERENCES ACTIVITY THEME -->
-    <style name="Theme.Settings" parent="AppTheme">
-        <item name="windowNoTitle">false</item>
-        <item name="windowActionBar">true</item>
-        <item name="actionBarStyle">@style/AppTheme.actionBarStyle</item>
-    </style>
+
 
     <style name="AppTheme.actionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="background">?attr/colorPrimary</item>

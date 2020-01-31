@@ -261,6 +261,7 @@
     <string name="timed_backup_off">off</string>
     <string name="settings_tweaks">Tweaks</string>
     <string name="parcel_phase">Phase</string>
+    <string name="location_not_available">Location not available</string>
 
 
     <!-- Strings related to Settings -->

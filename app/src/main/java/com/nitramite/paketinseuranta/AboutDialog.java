@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.app.Activity;
@@ -7,13 +15,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.cardview.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +33,12 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-public class FancyAlertDialog extends DialogFragment {
-    public static final String TAG = FancyAlertDialog.class.getSimpleName();
+public class AboutDialog extends DialogFragment {
+    public static final String TAG = AboutDialog.class.getSimpleName();
     private Builder builder;
-    private static FancyAlertDialog instance = new FancyAlertDialog();
+    private static AboutDialog instance = new AboutDialog();
 
-    public static FancyAlertDialog getInstance() {
+    public static AboutDialog getInstance() {
         return instance;
     }
 
@@ -574,7 +582,7 @@ public class FancyAlertDialog extends DialogFragment {
 
 
         public Dialog show() {
-            return FancyAlertDialog.getInstance().show(activity, this);
+            return AboutDialog.getInstance().show(activity, this);
         }
 
 

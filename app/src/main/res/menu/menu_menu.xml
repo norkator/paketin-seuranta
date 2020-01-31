@@ -7,27 +7,17 @@
         android:id="@+id/action_barcode_list_icon"
         android:icon="@drawable/ic_list"
         android:title="@string/menu_menu_barcode_list"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_archive_icon"
         android:icon="@drawable/ic_archive"
         android:title="@string/menu_menu_archive"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
         android:title="@string/menu_menu_settings"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_barcode_list"
-        android:title="@string/menu_menu_barcode_list"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_archive"
-        android:title="@string/menu_menu_archive"
         app:showAsAction="never" />
 
     <item

@@ -1,4 +1,4 @@
-<resources>>
+<resources>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -19,15 +19,11 @@
         <item name="android:windowBackground">@color/background_darker</item>
         <item name="android:itemBackground">@color/background_darker</item>
         <item name="android:actionMenuTextColor">@color/color_white</item>
+        <item name="snackbarStyle">@style/CustomSnackbarStyle</item>
+
     </style>
 
-    <!-- PREFERENCES ACTIVITY THEME -->
-    <style name="Theme.Settings" parent="AppTheme">
-        <item name="windowNoTitle">false</item>
-        <item name="windowActionBar">true</item>
-        <item name="actionBarStyle">@style/AppTheme.actionBarStyle</item>
-        <item name="android:textColorSecondary">@color/colorGray</item>
-    </style>
+
 
     <style name="AppTheme.actionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="background">?attr/colorPrimary</item>

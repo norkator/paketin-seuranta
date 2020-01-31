@@ -7,9 +7,10 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -48,6 +49,8 @@ public class BarcodeList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         // STATUS BAR TINT TESTING
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
@@ -139,6 +142,16 @@ public class BarcodeList extends AppCompatActivity {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -11,6 +11,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="snackbarStyle">@style/CustomSnackbarStyle</item>
+
     </style>
 
 
@@ -24,11 +26,7 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-    <!-- PREFERENCES ACTIVITY THEME -->
-    <style name="Theme.Settings" parent="AppTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-    </style>
+
 
     <!-- Dialog styles -->
     <style name="fullScreeDialog">
