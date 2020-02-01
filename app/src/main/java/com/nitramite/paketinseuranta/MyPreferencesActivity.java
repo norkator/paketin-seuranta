@@ -2,21 +2,43 @@ package com.nitramite.paketinseuranta;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.SwitchPreference;
-import android.support.multidex.MultiDex;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.multidex.MultiDex;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
+
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.nitramite.utils.LocaleUtils;
+import com.nitramite.utils.ThemeUtils;
+
+import java.util.Locale;
 
 /**
  * Created by Martin on 28.1.2016.
  */
-public class MyPreferencesActivity extends com.fnp.materialpreferences.PreferenceActivity {
+public class MyPreferencesActivity extends AppCompatActivity {
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainMenu.class));
+    }
+
 
 
     //  Logging
@@ -33,30 +55,90 @@ public class MyPreferencesActivity extends com.fnp.materialpreferences.Preferenc
         MultiDex.install(this);
     }
 
+
+
+    protected <T extends Fragment> T initFragment(@IdRes int target,
+                                                  @NonNull T fragment)
+    {
+        return initFragment(target, fragment, null);
+    }
+
+    protected <T extends Fragment> T initFragment(@IdRes int target,
+                                                  @NonNull T fragment,
+                                                  @Nullable Locale locale)
+    {
+        return initFragment(target, fragment, locale, null);
+    }
+
+    protected <T extends Fragment> T initFragment(@IdRes int target,
+                                                  @NonNull T fragment,
+                                                  @Nullable Locale locale,
+                                                  @Nullable Bundle extras)
+    {
+        Bundle args = new Bundle();
+
+        if (extras != null) {
+            args.putAll(extras);
+        }
+
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(target, fragment)
+                .commitAllowingStateLoss();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (ThemeUtils.Theme.isDarkTheme(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.BLACK);
+            }
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+
+        setContentView(R.layout.activity_preferences);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+
+        // Do not add custom layout for lollipop devices or we lose the widgets animation
+        // (app compat bug?)
+
+
+        // Setting the toolbar again, to add the listener
+
+
         MyPreferenceFragment myPreferenceFragment = new MyPreferenceFragment();
-        setPreferenceFragment(myPreferenceFragment);
+        initFragment(R.id.content, myPreferenceFragment);
 
 
         // Change listener
         myPreferenceFragment.getFragmentManager().executePendingTransactions();
         ListPreference listPreference = (ListPreference) myPreferenceFragment.findPreference(Constants.SP_THEME_SELECTION);
         listPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            Toast.makeText(MyPreferencesActivity.this, R.string.my_preferences_activity_theme_change_takes_effect_after_restart, Toast.LENGTH_LONG).show();
+            recreate();
             return true;
         });
 
-        ListPreference listPreferenceLanguage = (ListPreference) myPreferenceFragment.findPreference(Constants.SP_APPLICATION_LANGUAGE);
+        ListPreference listPreferenceLanguage = myPreferenceFragment.findPreference(Constants.SP_APPLICATION_LANGUAGE);
         listPreferenceLanguage.setOnPreferenceChangeListener((preference, newValue) -> {
-            Toast.makeText(MyPreferencesActivity.this, R.string.my_preferences_application_language_override_change_takes_effect_after_restart, Toast.LENGTH_LONG).show();
+            recreate();
             return true;
         });
 
 
         // EditTextPreference parcels_update_rate = (EditTextPreference) myPreferenceFragment.findPreference("parcels_update_rate");
-        SwitchPreference parcelAutomaticUpdateSwitch = (SwitchPreference) myPreferenceFragment.findPreference(Constants.SP_PARCELS_AUTOMATIC_UPDATE);
+        SwitchPreference parcelAutomaticUpdateSwitch = myPreferenceFragment.findPreference(Constants.SP_PARCELS_AUTOMATIC_UPDATE);
         parcelAutomaticUpdateSwitch.setOnPreferenceChangeListener((preference, o) -> {
             if (o.toString().equals("false")) {
                 stopService(new Intent(MyPreferencesActivity.this, ParcelServiceTimer.class));
@@ -70,11 +152,29 @@ public class MyPreferencesActivity extends com.fnp.materialpreferences.Preferenc
 
     }
 
-    public static class MyPreferenceFragment extends com.fnp.materialpreferences.PreferenceFragment {
+    public static class MyPreferenceFragment extends PreferenceFragmentCompat {
+
         @Override
-        public int addPreferencesFromResource() {
-            return R.xml.preferences; // Your preference file
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(R.xml.preferences);
+
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB
+                        && getFragmentManager().getBackStackEntryCount() > 0) {
+                    getFragmentManager().popBackStack();
+                } else {
+                    MyPreferencesActivity.this.onBackPressed();
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 } // END OF CLASS

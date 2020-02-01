@@ -31,15 +31,15 @@ import android.os.StrictMode;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.multidex.MultiDex;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.multidex.MultiDex;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -266,10 +266,8 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
         fab.setOnClickListener(view -> {
             if (latitude == 0) {
-                final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), R.string.parcel_no_pick_up_destination_coordinates, Snackbar.LENGTH_SHORT);
-                View snackView = snackBar.getView();
-                TextView tv = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextColor(Color.WHITE);
+                Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), R.string.parcel_no_pick_up_destination_coordinates, Snackbar.LENGTH_SHORT);
+                ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                 snackBar.show();
             } else {
                 // ON MAP
@@ -678,7 +676,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     final LinearLayout eventLayoutRightSide = newEventLayoutRightSide(); // Get new right side
                     eventLayoutRightSide.addView(newDescriptionTextView(eventDescription));
                     eventLayoutRightSide.addView(newNormalTextView(eventTimeStamp));
-                    eventLayoutRightSide.addView(newNormalTextView((!eventLocationCode.equals("null") ? eventLocationCode + " " : "") + eventLocationName));
+                    eventLayoutRightSide.addView(newNormalTextView((!eventLocationCode.equals("null") || !eventLocationName.equals("null")) ? ((!eventLocationCode.equals("null") ? eventLocationCode + " " : "") + eventLocationName) : getString(R.string.location_not_available)));
 
 
                     // Append
@@ -1073,6 +1071,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     // Activity result
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Package photo feature
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             try {
                 String photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";

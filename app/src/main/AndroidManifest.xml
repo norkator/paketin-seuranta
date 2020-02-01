@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ps_logo_square"
@@ -79,14 +79,14 @@
         <activity
             android:name=".MyPreferencesActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.Settings" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BarcodeCaptureActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".BarcodeList" />
+        <activity android:name=".BarcodeList" android:label="@string/menu_menu_barcode_list"/>
 
         <receiver android:name=".Widget">
             <intent-filter>

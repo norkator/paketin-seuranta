@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.Manifest;
@@ -23,18 +31,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.multidex.MultiDex;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.multidex.MultiDex;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -55,6 +63,7 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.LocaleUtils;
+import com.nitramite.utils.ThemeUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
@@ -139,12 +148,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 if (sharedPreferences.getBoolean("SP_PACKAGE_UPDATE_NOTIFY_SNACKBAR", true)) {
                     if (extras.getString("TASK_PACKAGE_IDENTITY") != null) {
                         final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), extras.getString("TASK_PACKAGE_IDENTITY") + " " + getString(R.string.main_menu_snackbar_message_updated), Snackbar.LENGTH_SHORT);
-                        View view = snackBar.getView();
-                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                        params.gravity = Gravity.CENTER;
-                        view.setLayoutParams(params);
-                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                        tv.setTextColor(Color.WHITE);
+                        ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                         snackBar.show();
                     }
                 }
@@ -199,7 +203,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (sharedPreferences.getString(Constants.SP_THEME_SELECTION, "").equals("2")) {
+        if (ThemeUtils.Theme.isDarkTheme(getBaseContext())) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
@@ -331,6 +335,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         swipeRefreshLayout.setRefreshing(false);
         if (requestCode == ACTIVITY_RESULT_PARCEL || requestCode == ACTIVITY_RESULT_ARCHIVE || requestCode == ACTIVITY_RESULT_PARCEL_EDITOR) {
             readItems();
@@ -615,10 +620,14 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                         getString(R.string.main_menu_version_code) + " " + appVersionCode + "\n" +
                         getString(R.string.main_menu_version_name) + " " + appVersionName;
 
-        FancyAlertDialog.Builder aboutDialog = new FancyAlertDialog.Builder(MainMenu.this)
+
+
+        AboutDialog.Builder aboutDialog = new AboutDialog.Builder(MainMenu.this)
                 // .setImageRecourse(R.mipmap.ps_logo_round)
                 .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round))
                 .setTextTitle(R.string.main_menu_about_title)
+                .setTitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
+                .setSubtitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
                 .setTextSubTitle(R.string.main_menu_about_sub_title)
                 .setBody(getString(R.string.main_menu_about_body) + " " +
                         getString(R.string.main_menu_body_part_two) +
@@ -655,9 +664,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 swipeRefreshLayout.setRefreshing(false);
             } else {
                 final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), R.string.main_menu_updating, Snackbar.LENGTH_LONG);
-                View view = snackBar.getView();
-                TextView tv = view.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextColor(Color.WHITE);
+                ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                 snackBar.show();
                 refreshParcelDataTask();
             }
@@ -681,7 +688,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_barcode_list || id == R.id.action_barcode_list_icon) {
+        if (id == R.id.action_barcode_list_icon) {
             if (parcelItems.size() > 0) {
                 startActivity(new Intent(MainMenu.this, BarcodeList.class));
             } else {
@@ -689,12 +696,13 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             }
             return true;
         }
-        if (id == R.id.action_archive || id == R.id.action_archive_icon) {
+        if (id == R.id.action_archive_icon) {
             startActivityForResult(new Intent(MainMenu.this, Archive.class), ACTIVITY_RESULT_ARCHIVE);
             return true;
         }
         if (id == R.id.action_settings) {
             startActivity(new Intent(MainMenu.this, MyPreferencesActivity.class));
+            finish();
             return true;
         }
         if (id == R.id.action_about) {

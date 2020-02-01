@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.nitramite.paketinseuranta"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
 
         versionCode 116
         versionName "2.1.0"
@@ -33,20 +33,21 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
     implementation 'com.wdullaer:swipeactionadapter:2.1.0'
-    implementation 'com.fnp:material-preferences:0.1.4'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.android:flexbox:1.1.0'
     testImplementation 'junit:junit:4.12'
+    implementation 'androidx.preference:preference:1.1.0'
+
 }
