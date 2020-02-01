@@ -30,12 +30,16 @@ Steps to get development environment running
 
 1. Install latest Android studio
 2. Click `File` -> `Open` -> Select project root containing `app` folder.
-3. Download all required SDK etc files. Anrdoid Studio automatically installs all required packages.
+3. Download all required SDK etc files. Android Studio automatically installs all required packages.
 4. Done!
 
 
-### Introduction to app basics
-* Coming...
+### For participants
+1. Let's keep Paketin Seuranta simple and respect privacy. No private servers and stuff like that. 
+Only direct communication to parcel service provider apis.
+
+2. I [norkator](https://github.com/norkator) will review and test pull requests. If everything looks and works 
+according to rules pr will be merged. Otherwise I ask changes. Just give me time. This repo is not dead. 
 
 
 ## Versioning
