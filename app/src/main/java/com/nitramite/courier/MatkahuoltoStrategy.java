@@ -102,7 +102,7 @@ public class MatkahuoltoStrategy implements CourierStrategy, HostnameVerifier {
                     JSONObject event = trackingEvents.getJSONObject(i);
 
                     String timeStamp = event.optString("date") + " " + event.optString("time");
-                    Date parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp));
+                    Date parseTimeDate = apiDateFormat.parse(timeStamp);
 
                     final String parsedDate = showingDateFormat.format(parseTimeDate);
                     final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
