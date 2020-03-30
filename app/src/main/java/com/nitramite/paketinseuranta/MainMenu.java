@@ -62,6 +62,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.CustomParcelsAdapterV2;
+import com.nitramite.paketinseuranta.notifier.PushUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -175,10 +176,13 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             LocalBroadcastManager.getInstance(this).unregisterReceiver(dataChangeReceiver);
             if (sharedPreferences != null) {
                 if (sharedPreferences.getBoolean(Constants.SP_PARCELS_AUTOMATIC_UPDATE, true)) {
-                    if (!isMyServiceRunning(ParcelServiceTimer.class)) {
+                   /* if (!isMyServiceRunning(ParcelServiceTimer.class)) {
                         startService(new Intent(MainMenu.this, ParcelServiceTimer.class));
-                    }
-                }
+                    }*/
+                    PushUtils.subscribeToTopic(PushUtils.TOPIC_UPDATE);
+                } else
+                    PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
+
             }
         } catch (IllegalStateException ignored) {
         } catch (RuntimeException ignored) {
@@ -245,11 +249,16 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         boolean autoParcelUpdates = sharedPreferences.getBoolean("parcels_automatic_update", true);
         // If automatic background updating is disabled ensure that service is not running
         boolean SP_PARCELS_AUTOMATIC_UPDATE = sharedPreferences.getBoolean(Constants.SP_PARCELS_AUTOMATIC_UPDATE, true);
-        if (!SP_PARCELS_AUTOMATIC_UPDATE) {
+        if (SP_PARCELS_AUTOMATIC_UPDATE) {
+            PushUtils.subscribeToTopic(PushUtils.TOPIC_UPDATE);
+        } else {
+            PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
+        }
+        /*if (!SP_PARCELS_AUTOMATIC_UPDATE) {
             if (isMyServiceRunning(ParcelServiceTimer.class)) {
                 stopService(new Intent(MainMenu.this, ParcelServiceTimer.class));
             }
-        }
+        }*/
 
 
         // Intro logic, show intro if not shown yet

@@ -14,7 +14,7 @@ public class Constants {
     // Shared preferences keys
     final static String SP_INTRO_IS_SHOWN = "SP_INTRO_IS_SHOWN";
     final static String SP_PARCELS_AUTOMATIC_UPDATE = "parcels_automatic_update";
-    final static String SP_PARCEL_UPDATE_NOTIFICATIONS = "parcels_notifications";
+    public final static String SP_PARCEL_UPDATE_NOTIFICATIONS = "parcels_notifications";
     final static String SP_UPDATE_PARCELS_ON_STARTUP = "SP_UPDATE_PARCELS_ON_STARTUP";
     final static String SP_BAR_CODE_LIST_ONLY_READY_FOR_PICKUP_PARCELS = "SP_BAR_CODE_LIST_ONLY_READY_FOR_PICKUP_PARCELS";
     final static String SP_BAR_CODE_LIST_SPACING_VALUE = "SP_BAR_CODE_LIST_SPACING_VALUE";

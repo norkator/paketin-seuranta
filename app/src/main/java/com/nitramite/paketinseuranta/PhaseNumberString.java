@@ -21,7 +21,7 @@ public class PhaseNumberString {
         return phaseNumber;
     }
 
-    String getPhaseString() {
+    public String getPhaseString() {
         return phaseString;
     }
 

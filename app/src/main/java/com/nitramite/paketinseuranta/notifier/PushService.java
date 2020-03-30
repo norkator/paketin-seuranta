@@ -1,21 +1,32 @@
-package com.nitramite.paketinseuranta;
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
 
-import android.app.Notification;
+package com.nitramite.paketinseuranta.notifier;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.IBinder;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.nitramite.courier.ArraPakettiStrategy;
 import com.nitramite.courier.CainiaoStrategy;
 import com.nitramite.courier.ChinaPostAirMailStrategy;
@@ -32,21 +43,25 @@ import com.nitramite.courier.PostiStrategy;
 import com.nitramite.courier.UPSStrategy;
 import com.nitramite.courier.USPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
+import com.nitramite.paketinseuranta.Constants;
+import com.nitramite.paketinseuranta.DatabaseHelper;
+import com.nitramite.paketinseuranta.MainMenu;
+import com.nitramite.paketinseuranta.ParcelService;
+import com.nitramite.paketinseuranta.ParcelServiceTimer;
+import com.nitramite.paketinseuranta.PhaseNumber;
+import com.nitramite.paketinseuranta.PhaseNumberString;
+import com.nitramite.paketinseuranta.R;
 import com.nitramite.utils.CarrierUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
+public class PushService extends FirebaseMessagingService {
 
-/**
- * Created by Martin on 25.1.2016.
- * This is Parcel data update controller.
- * Works with modes
- */
-public class ParcelService extends Service {
+    private String TAG = this.getClass().getSimpleName();
 
-    // Main variables
     private LocaleUtils localeUtils = new LocaleUtils();
     private Integer serviceMode = 999;
     private Boolean enableNotifications = false;
@@ -60,65 +75,27 @@ public class ParcelService extends Service {
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     // Arrays
-    private ArrayList<ParcelServiceParcelItem> parcelServiceParcelItems = new ArrayList<>();
-
-    // Logging
-    private static final String TAG = "ParcelService";
-
+    private ArrayList<ParcelService.ParcelServiceParcelItem> parcelServiceParcelItems = new ArrayList<>();
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(localeUtils.updateBaseContextLocale(base));
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        // Triggering the ParcelService to run
+        if (remoteMessage.getFrom().equals(PushUtils.TOPIC_UPDATE)) {
+            try {
+                startCheck();
+            } catch (IllegalStateException e) {
+                Log.i(TAG, e.toString());
+            } catch (Exception e) {
+                Log.i(TAG, e.toString());
+            }
+        }
+        super.onMessageReceived(remoteMessage);
     }
-
-
-    @Override
-    public void onCreate() {
-        //LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(this);
-        taskNumber = 0;
-    }
-
 
     /**
-     * Small notice: If you do any modifications, please make sure you apply them also to the "PushService" file.
-     * @param intent Intent
-     * @param flags Flags
-     * @param startId StartId
-     * @return Result
+     * Doing so we defend the Google's Doze, because it doesn't allow anyone to start a service here
      */
-
-    @SuppressWarnings("DanglingJavadoc")
-    @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
-        Log.i(TAG, " _____ _____ _____ _____ _____ _____    _____   ");
-        Log.i(TAG, "|     |  _  | __  |_   _|     |   | |  |  |  |  ");
-        Log.i(TAG, "| | | |     |    -| | | |-   -| | | |  |    -|_ ");
-        Log.i(TAG, "|_|_|_|__|__|__|__| |_| |_____|_|___|  |__|__|_|");
-
-        /**
-         * MODE -->
-         * 0 = normal update with notifications false or true
-         * 1 = events update --> PARCEL_ID = id to check updates for
-         */
-        Bundle extras = intent.getExtras();
-        if (extras == null) {
-            Log.i(TAG, "! No extras, service quitting !");
-        } else {
-            serviceMode = extras.getInt("MODE");
-            enableNotifications = extras.getBoolean("NOTIFICATIONS");
-            PARCEL_ID = extras.getString("PARCEL_ID");
-            updateFailedFirst = extras.getBoolean("UPDATE_FAILED_FIRST");
-            startAsForegroundService = extras.getBoolean("START_AS_FOREGROUND_SERVICE");
-        }
-
-
-        // https://stackoverflow.com/questions/46445265/android-8-0-java-lang-illegalstateexception-not-allowed-to-start-service-inten
-        if (startAsForegroundService) {
-            startServiceAsForeground();
-        }
-
-
-        // PARCEL UPDATE THREAD
+    public void startCheck() {
         new Thread(new Runnable() {
             @SuppressWarnings("SpellCheckingInspection")
             @Override
@@ -129,12 +106,11 @@ public class ParcelService extends Service {
 
 
                 try {
-
                     if (serviceMode == 0) {
                         Cursor cur = databaseHelper.getPackagesDataForParcelService(updateFailedFirst, PARCEL_ID);
                         while (cur.moveToNext()) {
                             parcelServiceParcelItems.add(
-                                    new ParcelServiceParcelItem(
+                                    new ParcelService.ParcelServiceParcelItem(
                                             cur.getString(0), cur.getString(1), cur.getString(2),
                                             cur.getString(3), cur.getString(4), cur.getString(4),
                                             cur.getString(5), cur.getString(5), cur.getString(6)
@@ -151,7 +127,7 @@ public class ParcelService extends Service {
                             }
 
                             // Get basic information
-                            String ID = parcelServiceParcelItems.get(i).parcelDatabaseID;
+                            String ID = parcelServiceParcelItems.get(i).getParcelDatabaseID();
                             int carrierCode = Integer.parseInt(parcelServiceParcelItems.get(i).getParcelCarrierCode());
                             int carrierStatus = Integer.parseInt(parcelServiceParcelItems.get(i).getParcelCarrierStatusCode());
 
@@ -306,7 +282,7 @@ public class ParcelService extends Service {
                             // ---------------------------------------------------------------------
                             // Package update progressbar progress update
                             Intent broadcastIntent = new Intent("service_package_broadcast");
-                            LocalBroadcastManager.getInstance(ParcelService.this).sendBroadcast(broadcastIntent);
+                            LocalBroadcastManager.getInstance(PushService.this).sendBroadcast(broadcastIntent);
                             broadcastIntent.putExtra("TASK_NUMBER", i);
                             broadcastIntent.putExtra("TASK_NUMBER_TOTAL", taskNumber);
                             broadcastIntent.putExtra("TASK_PACKAGE_IDENTITY",
@@ -358,12 +334,11 @@ public class ParcelService extends Service {
                 //********************************************************************************************************************************************
                 Log.i(TAG, "Service run fine!");
                 databaseHelper.close();
-                LocalBroadcastManager.getInstance(ParcelService.this).sendBroadcast(broadcastIntent); // SEND BROADCAST TO ACTIVITIES
+                LocalBroadcastManager.getInstance(PushService.this).sendBroadcast(broadcastIntent); // SEND BROADCAST TO ACTIVITIES
                 stopSelf();
             } // RUN
         }).start();
-        return Service.START_NOT_STICKY; // ANDROID OS WONT BOTHER STARTING SERVICE AGAIN IF SYSTEM RESOURCES RUN OUT
-    } // END OF SERVICE onSTART
+    }
 
 
     // ---------------------------------------------------------------------------------------------
@@ -371,8 +346,8 @@ public class ParcelService extends Service {
 
     // Creates notification
     private void showNotification(final String changedParcelCodeItem, final String currentEventText) {
-        Intent intent = new Intent(ParcelService.this, MainMenu.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(ParcelService.this, 0, intent, 0);
+        Intent intent = new Intent(PushService.this, MainMenu.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(PushService.this, 0, intent, 0);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -387,7 +362,7 @@ public class ParcelService extends Service {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         // Init notification and show it
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(ParcelService.this, NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(PushService.this, NOTIFICATION_CHANNEL_ID);
         notification.setSmallIcon(R.drawable.notifsmall);
         notification.setContentTitle("Paketin Seuranta");
         notification.setContentText("Tilassa muutos: " + changedParcelCodeItem + " - " + currentEventText);
@@ -400,128 +375,4 @@ public class ParcelService extends Service {
 
     // ---------------------------------------------------------------------------------------------
 
-    // New parcel service parcel item for comparing etc
-    public static class ParcelServiceParcelItem {
-
-        // Variables
-        private String parcelDatabaseID;
-        private String parcelCarrierCode;
-        private String parcelCarrierStatusCode;
-        private String parcelCodeItem;
-        private String parcelNameItem;
-        private String parcelPhaseItemOld;
-        private String parcelPhaseItemNew;
-        private String parcelEventStringOld;
-        private String parcelEventStringNew;
-
-        // Constructor
-        public ParcelServiceParcelItem(String parcelDatabaseID_, String parcelCarrierCode_, String parcelCarrierStatusCode_,
-                                String parcelCodeItem_, String parcelPhaseItemOld_, String parcelPhaseItemNew_,
-                                String parcelEventStringOld_, String parcelEventStringNew_,
-                                String parcelNameItem_) {
-            parcelDatabaseID = parcelDatabaseID_;
-            parcelCarrierCode = parcelCarrierCode_;
-            parcelCarrierStatusCode = parcelCarrierStatusCode_;
-            parcelCodeItem = parcelCodeItem_;
-            parcelPhaseItemOld = parcelPhaseItemOld_;
-            parcelPhaseItemNew = parcelPhaseItemNew_;
-            parcelEventStringOld = parcelEventStringOld_;
-            parcelEventStringNew = parcelEventStringNew_;
-            parcelNameItem = parcelNameItem_;
-        }
-
-        // ------------------------------------------
-        // Getters
-
-        public String getParcelDatabaseID() {
-            return parcelDatabaseID;
-        }
-
-        public String getParcelCarrierCode() {
-            return parcelCarrierCode;
-        }
-
-        public String getParcelCarrierStatusCode() {
-            return parcelCarrierStatusCode;
-        }
-
-        public String getParcelCodeItem() {
-            return parcelCodeItem;
-        }
-
-        public String getParcelPhaseItemOld() {
-            return parcelPhaseItemOld;
-        }
-
-        public String getParcelPhaseItemNew() {
-            return parcelPhaseItemNew;
-        }
-
-        public String getParcelEventStringOld() {
-            return parcelEventStringOld;
-        }
-
-        public String getParcelEventStringNew() {
-            return parcelEventStringNew;
-        }
-
-        public String getParcelNameItem() {
-            return parcelNameItem;
-        }
-
-        // ------------------------------------------
-        // Setters
-
-        public void setParcelPhaseItemNew(String parcelPhaseItemNew) {
-            this.parcelPhaseItemNew = parcelPhaseItemNew;
-        }
-
-        public void setParcelEventStringNew(String parcelEventStringNew) {
-            this.parcelEventStringNew = parcelEventStringNew;
-        }
-
-    } // End of class
-
-
-    // ---------------------------------------------------------------------------------------------
-
-
-    /**
-     * Service foreground problem solutions for android O and up
-     * https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
-     */
-    private void startServiceAsForeground() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
-            String channelName = "ParcelService";
-            NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
-            chan.setLightColor(Color.BLUE);
-            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            assert manager != null;
-            manager.createNotificationChannel(chan);
-
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-            Notification notification = notificationBuilder.setOngoing(true)
-                    .setSmallIcon(R.drawable.notifsmall)
-                    .setContentTitle("Paketin Seuranta updating parcel statuses")
-                    .setPriority(NotificationManager.IMPORTANCE_MIN)
-                    .setCategory(Notification.CATEGORY_SERVICE)
-                    .build();
-            startForeground(2, notification);
-        }
-    }
-
-
-
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
-
-
-    @Override
-    public void onDestroy() {
-    }
-
-} // End of class
+}

@@ -22,23 +22,23 @@ public class EventObject {
     // ---------------------------------------------------------------------------------------------
     // Getters
 
-    String getDescription() {
+    public String getDescription() {
         return this.description;
     }
 
-    String getTimeStamp() {
+    public String getTimeStamp() {
         return this.timeStamp;
     }
 
-    String getTimeStampSQLiteFormat() {
+    public String getTimeStampSQLiteFormat() {
         return this.timeStampSQLiteFormat;
     }
 
-    String getLocationCode() {
+    public String getLocationCode() {
         return this.locationCode;
     }
 
-    String getLocationName() {
+    public String getLocationName() {
         return this.locationName;
     }
 
