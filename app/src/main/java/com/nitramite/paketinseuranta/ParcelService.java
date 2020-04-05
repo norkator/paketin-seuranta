@@ -63,10 +63,6 @@ public class ParcelService extends Service {
     @SuppressWarnings("DanglingJavadoc")
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-        Log.i(TAG, " _____ _____ _____ _____ _____ _____    _____   ");
-        Log.i(TAG, "|     |  _  | __  |_   _|     |   | |  |  |  |  ");
-        Log.i(TAG, "| | | |     |    -| | | |-   -| | | |  |    -|_ ");
-        Log.i(TAG, "|_|_|_|__|__|__|__| |_| |_____|_|___|  |__|__|_|");
 
         /**
          * MODE -->
