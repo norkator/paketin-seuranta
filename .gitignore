@@ -26,12 +26,13 @@ output.json
 /captures
 gradle/
 
-#NDK
+# NDK
 obj/
 .externalNativeBuild
 
-#In some projects we dont want these
+# In some projects we dont want these
 /app/release/app-release.apk
 /app/src/release/res/values/google_maps_api.xml
 /ReleaseKey/*
 Paketin-Seuranta.zip
+/app/google-services.json
