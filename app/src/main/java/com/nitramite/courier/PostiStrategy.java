@@ -61,7 +61,7 @@ public class PostiStrategy implements CourierStrategy, HostnameVerifier {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            String url = "https://paketinseuranta.nitramite.com/henkiloasiakkaat/seuranta/api/shipments/" + parcelCode;
+            String url = "https://www.posti.fi/henkiloasiakkaat/seuranta/api/shipments/" + parcelCode;
             URL obj = new URL(url);
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
             con.setConnectTimeout(5000);    // Timeout for connecting

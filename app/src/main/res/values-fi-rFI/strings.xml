@@ -13,7 +13,6 @@
     <string name="app_name">Paketin Seuranta</string>
 
 
-
     <!-- Application strings -->
     <string name="action_settings">Asetukset</string>
     <string name="title_activity_parcel">Lähetys</string>
@@ -271,6 +270,7 @@
     <string name="settings_tweaks">Säädöt</string>
     <string name="parcel_phase">Vaihe</string>
     <string name="location_not_available">Sijainti ei ole saatavilla</string>
+    <string name="backup_feature_not_currently_supported">Varmuuskopiointi ei ole tällä hetkellä tuettu Android Q:lla ja ylöspäin.</string>
     <string name="notification_message">Paketin tilassa muutos: %1$s - %2$s</string>
 
     <!-- Strings related to Settings -->

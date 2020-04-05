@@ -270,8 +270,8 @@
     <string name="settings_tweaks">Tweaks</string>
     <string name="parcel_phase">Phase</string>
     <string name="location_not_available">Location not available</string>
+    <string name="backup_feature_not_currently_supported">Backup feature is currently not supported on Android Q and up.</string>
     <string name="notification_message">Parcel\' status changed: %1$s - %2$s</string>
-
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
