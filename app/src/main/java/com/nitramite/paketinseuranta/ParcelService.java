@@ -89,6 +89,8 @@ public class ParcelService extends Service {
 
         // PARCEL UPDATE THREAD
         UpdaterLogic.getUpdaterThread(this, localeUtils, enableNotifications, updateFailedFirst, serviceMode, PARCEL_ID, databaseHelper).start();
+        // Stopping after being done
+        stopSelf();
 
         return Service.START_NOT_STICKY; // ANDROID OS WONT BOTHER STARTING SERVICE AGAIN IF SYSTEM RESOURCES RUN OUT
     } // END OF SERVICE onSTART
