@@ -48,6 +48,7 @@ public class PushService extends FirebaseMessagingService {
         if (remoteMessage.getFrom().equals(PushUtils.TOPIC_UPDATE)) {
             try {
                 startCheck();
+                Log.i(TAG, "PushService update triggered");
             } catch (IllegalStateException e) {
                 Log.i(TAG, e.toString());
             } catch (Exception e) {
