@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.nitramite.paketinseuranta.notifier.PushUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
 
@@ -141,9 +143,9 @@ public class MyPreferencesActivity extends AppCompatActivity {
         SwitchPreference parcelAutomaticUpdateSwitch = myPreferenceFragment.findPreference(Constants.SP_PARCELS_AUTOMATIC_UPDATE);
         parcelAutomaticUpdateSwitch.setOnPreferenceChangeListener((preference, o) -> {
             if (o.toString().equals("false")) {
-                stopService(new Intent(MyPreferencesActivity.this, ParcelServiceTimer.class));
-                stopService(new Intent(MyPreferencesActivity.this, ParcelService.class));
-            }
+                PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
+            } else
+                PushUtils.subscribeToTopic(PushUtils.TOPIC_UPDATE);
             return true;
         });
 

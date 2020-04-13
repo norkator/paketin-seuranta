@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020
+  ~ Paketin Seuranta
+  ~
+  ~ @author developerfromjokela
+  ~ @author norkator
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nitramite.paketinseuranta">
@@ -13,7 +21,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="androidx.multidex.MultiDexApplication"
+        android:name=".PaketinSeurantaApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ps_logo_square"
@@ -48,7 +56,7 @@
         <activity
             android:name=".Intro"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- Service declarations -->
         <service
             android:name=".ParcelServiceTimer"
@@ -61,6 +69,15 @@
             android:name=".Parcel"
             android:label="@string/title_activity_parcel"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".notifier.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

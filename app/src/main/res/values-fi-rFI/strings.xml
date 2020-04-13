@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020
+  ~ Paketin Seuranta
+  ~
+  ~ @author developerfromjokela
+  ~ @author norkator
+  -->
+
 <resources>
 
     <!-- Not translatable -->
@@ -263,7 +271,7 @@
     <string name="parcel_phase">Vaihe</string>
     <string name="location_not_available">Sijainti ei ole saatavilla</string>
     <string name="backup_feature_not_currently_supported">Varmuuskopiointi ei ole tällä hetkellä tuettu Android Q:lla ja ylöspäin.</string>
-
+    <string name="notification_message">Paketin tilassa muutos: %1$s - %2$s</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
