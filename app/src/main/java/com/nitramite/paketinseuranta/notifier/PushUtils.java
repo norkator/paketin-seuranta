@@ -16,7 +16,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class PushUtils {
 
-    public static String TOPIC_UPDATE = "/topics/update_parcels";
+    public static String TOPIC_UPDATE = "update_parcels";
 
     public static void subscribeToTopic(String topic) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic);

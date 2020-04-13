@@ -39,6 +39,7 @@ public class PushService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         // Triggering the ParcelService to run
+        Log.e(TAG, "onMessageReceived " + remoteMessage.getFrom());
         if (Objects.equals(remoteMessage.getFrom(), PushUtils.TOPIC_UPDATE)) {
             try {
                 Log.e(TAG, "Push Update triggered");
