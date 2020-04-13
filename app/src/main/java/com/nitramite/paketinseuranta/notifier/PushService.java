@@ -8,6 +8,7 @@
 
 package com.nitramite.paketinseuranta.notifier;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,43 +19,53 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.nitramite.paketinseuranta.Constants;
 import com.nitramite.paketinseuranta.DatabaseHelper;
-import com.nitramite.paketinseuranta.ParcelService;
 import com.nitramite.paketinseuranta.updater.UpdaterLogic;
 import com.nitramite.utils.LocaleUtils;
 
-import java.util.ArrayList;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
 
+import java.util.Date;
+import java.util.Objects;
+
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class PushService extends FirebaseMessagingService {
 
     private String TAG = this.getClass().getSimpleName();
 
     private LocaleUtils localeUtils = new LocaleUtils();
-    private Integer serviceMode = 999;
-    private Boolean enableNotifications = false;
-    private String PARCEL_ID = ""; // Used to update only one package
-    private Boolean updateFailedFirst = false;
-    private Boolean startAsForegroundService = false;
-
-    private Integer taskNumber = 0;
-    // Intent to send back
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
-
-    // Arrays
-    private ArrayList<ParcelService.ParcelServiceParcelItem> parcelServiceParcelItems = new ArrayList<>();
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         // Triggering the ParcelService to run
-        if (remoteMessage.getFrom().equals(PushUtils.TOPIC_UPDATE)) {
+        if (Objects.equals(remoteMessage.getFrom(), PushUtils.TOPIC_UPDATE)) {
             try {
-                startCheck();
-            } catch (IllegalStateException e) {
-                Log.i(TAG, e.toString());
+                if (permittedToUpdate())
+                    startCheck();
             } catch (Exception e) {
                 Log.i(TAG, e.toString());
             }
         }
         super.onMessageReceived(remoteMessage);
+    }
+
+    /**
+     * Checking if user-defined interval is over. If it is, returning true and saving current time
+     *
+     * @return boolean Is the interval over?
+     */
+    private boolean permittedToUpdate() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        double parcelInterval = Double.parseDouble(sharedPreferences.getString(Constants.SP_UPDATE_INTERVAL, "1.0").replace(",", "."));
+        Date currentDateObject = new Date();
+        Date lastUpdate = new Date(sharedPreferences.getLong(Constants.SP_LAST_PUSH_UPDATE, currentDateObject.getTime()));
+        Duration period = new Interval(lastUpdate.getTime(), currentDateObject.getTime()).toDuration();
+        long intervalAsMinutes = (long) (parcelInterval * 60);
+        boolean permitted = period.getStandardMinutes() >= intervalAsMinutes;
+        if (permitted)
+            sharedPreferences.edit().putLong(Constants.SP_LAST_PUSH_UPDATE, currentDateObject.getTime()).apply();
+        return permitted;
     }
 
     /**
@@ -65,7 +76,6 @@ public class PushService extends FirebaseMessagingService {
         boolean notifications = sharedPreferences.getBoolean(Constants.SP_PARCEL_UPDATE_NOTIFICATIONS, false);
         UpdaterLogic.getUpdaterThread(this, localeUtils, notifications, false, 0, "", databaseHelper).start();
     }
-
 
 
 }
