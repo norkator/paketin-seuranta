@@ -41,8 +41,11 @@ public class PushService extends FirebaseMessagingService {
         // Triggering the ParcelService to run
         if (Objects.equals(remoteMessage.getFrom(), PushUtils.TOPIC_UPDATE)) {
             try {
-                if (permittedToUpdate())
+                Log.e(TAG, "Push Update triggered");
+                if (permittedToUpdate()) {
+                    Log.e(TAG, "Update permitted");
                     startCheck();
+                }
             } catch (Exception e) {
                 Log.i(TAG, e.toString());
             }
