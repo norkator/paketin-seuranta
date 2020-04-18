@@ -43,14 +43,15 @@ according to rules pr will be merged. Otherwise I ask changes. Just give me time
 
 
 ## Versioning
-
 Currently I just increment build number and version number itself doesn't have any logic in it.
 Maybe in the future will use Semver or similar. Not mandatory yet because haven't have need for breaking changes.
 
 
-## Authors
-
+## Author
 * **Norkator** - *Initial work, code owner* - [norkator](https://github.com/norkator)
+
+
+## Contributors
 * **Ristomatti Airo** - *Tons of ideas and project management* - [ristomatti](https://github.com/ristomatti)
 * **Developer From Jokela** - *Code improvements, upgrades, Firebase Cloud Messaging integration* - [developerfromjokela](https://github.com/developerfromjokela)
 * **CostelliGraphics** - *New app logo*
