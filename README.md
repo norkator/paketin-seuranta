@@ -51,6 +51,9 @@ Maybe in the future will use Semver or similar. Not mandatory yet because haven'
 ## Authors
 
 * **Norkator** - *Initial work, code owner* - [norkator](https://github.com/norkator)
+* **Ristomatti Airo** - *Tons of ideas and project management* - [ristomatti](https://github.com/ristomatti)
+* **Developer From Jokela** - *Code improvements, upgrades, Firebase Cloud Messaging integration* - [developerfromjokela](https://github.com/developerfromjokela)
+* **CostelliGraphics** - *New app logo*
 
 
 ## License
