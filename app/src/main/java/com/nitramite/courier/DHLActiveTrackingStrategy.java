@@ -1,7 +1,6 @@
 package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 
@@ -37,8 +36,6 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-
-            // String url = "https://www.logistics.dhl/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
             String url = "https://www.dhl.com/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
 
             OkHttpClient client = new OkHttpClient();
@@ -52,7 +49,7 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
                     .build();
             Response response = client.newCall(request).execute();
 
-            Log.i(TAG, response.body().string());
+            // Log.i(TAG, response.body().string());
 
             // Parse xml response
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
