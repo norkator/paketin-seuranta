@@ -1,95 +1,63 @@
 package com.nitramite.courier;
 
-import javax.net.ssl.HostnameVerifier;
 import android.annotation.SuppressLint;
+import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class DHLActiveTrackingStrategy implements CourierStrategy, HostnameVerifier {
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class DHLActiveTrackingStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "DHLActiveTrackingStrategy";
-
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
+    private static final String TAG = "DHLActiveTracking";
 
 
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
             String url = "https://www.logistics.dhl/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
-            URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);    // Timeout for connecting
-            con.setReadTimeout(5000);       // Timeout for reading content
-            con.setSSLSocketFactory(sc.getSocketFactory());
-            con.setHostnameVerifier(this);
-            con.setRequestMethod("GET");
-            String USER_AGENT = "Mozilla/5.0";
-            con.setRequestProperty("User-Agent", USER_AGENT);
-            con.setRequestProperty("Host", "www.logistics.dhl");
-            con.setRequestProperty("Connection", "keep-alive");
-            con.setRequestProperty("Cache-Control", "no-cache");
-            con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            // Get input steam
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine).append("\n");
-            }
-            // Close connection
-            in.close();
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("User-Agent", "Mozilla/5.0")
+                    .addHeader("Host", "www.logistics.dhl")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+
+            Log.i(TAG, response.body().string());
 
             // Parse xml response
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(response.toString()));
+            InputSource is = new InputSource(new StringReader(response.body().string()));
             org.w3c.dom.Document document = documentBuilder.parse(is);
 
             org.w3c.dom.Element element = document.getDocumentElement();
@@ -150,15 +118,7 @@ public class DHLActiveTrackingStrategy implements CourierStrategy, HostnameVerif
                 parcelObject.setEventObjects(eventObjects); // Set event object into parcel object for later fetching
                 // -----------------------------
             }
-        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException | SAXException | ParserConfigurationException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;
