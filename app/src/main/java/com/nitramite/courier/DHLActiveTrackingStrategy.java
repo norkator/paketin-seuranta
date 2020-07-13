@@ -38,19 +38,19 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
 
-            String url = "https://www.logistics.dhl/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
+            // String url = "https://www.logistics.dhl/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
+            String url = "https://www.dhl.com/DatPublic/search.do?autoSearch=true&l=fi&directDownload=XML&statusHistory=true&search=consignmentId&a=" + parcelCode;
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("User-Agent", "Mozilla/5.0")
-                    .addHeader("Host", "www.logistics.dhl")
+                    .addHeader("Host", "www.dhl.com")
                     .addHeader("Connection", "keep-alive")
-                    .addHeader("Cache-Control", "no-cache")
-                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    .addHeader("Cache-Control", "public")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
                     .build();
             Response response = client.newCall(request).execute();
-
 
             Log.i(TAG, response.body().string());
 
