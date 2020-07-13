@@ -21,75 +21,30 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
-public class CainiaoStrategy implements CourierStrategy, HostnameVerifier {
+public class CainiaoStrategy implements CourierStrategy {
 
     // Logging
     private static final String TAG = "CainiaoStrategy";
 
-
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
-
-    private String getRequest(String url) throws NoSuchAlgorithmException, IOException, KeyManagementException {
-        SSLContext sc = SSLContext.getInstance("SSL");
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
-        sc.init(null, trustAllCerts, new java.security.SecureRandom());
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        URL obj = new URL(url);
-        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-        con.setConnectTimeout(5000);    // Timeout for connecting
-        con.setReadTimeout(5000);       // Timeout for reading content
-        con.setSSLSocketFactory(sc.getSocketFactory());
-        con.setHostnameVerifier(this);
-        con.setRequestMethod("GET");
-        String USER_AGENT = "Mozilla/5.0";
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        return response.toString();
+    private String getRequest(String url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("User-Agent", "Mozilla/5.0")
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 
     @Override
@@ -138,17 +93,7 @@ public class CainiaoStrategy implements CourierStrategy, HostnameVerifier {
                 parcelObject.setIsFound(false); // Parcel not found
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (IOException | ParseException | JSONException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;
