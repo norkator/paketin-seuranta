@@ -31,7 +31,7 @@ public class PostNordStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.postnord.fi/api/shipment/" + parcelCode + "/fi";
+            String url = "https://www.postnord.fi/api/pnmw/shipment/" + parcelCode + "/fi";
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
