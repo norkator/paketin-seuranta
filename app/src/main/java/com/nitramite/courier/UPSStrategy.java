@@ -29,6 +29,9 @@ public class UPSStrategy implements CourierStrategy {
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
+    // Api url
+    private static final String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
+
 
     @Override
     public ParcelObject execute(String parcelCode) {
@@ -40,8 +43,6 @@ public class UPSStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
-
             OkHttpClient client = new OkHttpClient();
 
             final String json = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}"; // TODO: make proper way

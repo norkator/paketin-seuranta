@@ -26,13 +26,14 @@ public class ArraPakettiStrategy implements CourierStrategy {
     // Logging
     private static final String TAG = "ArraPakettiStrategy";
 
+    // Api url
+    private static final String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
+
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
-
             OkHttpClient client = new OkHttpClient();
             RequestBody body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)

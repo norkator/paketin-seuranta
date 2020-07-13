@@ -37,6 +37,7 @@ public class CainiaoStrategy implements CourierStrategy {
     // Logging
     private static final String TAG = "CainiaoStrategy";
 
+
     private String getRequest(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
