@@ -2,88 +2,56 @@ package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-public class ArraPakettiStrategy implements CourierStrategy, HostnameVerifier {
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class ArraPakettiStrategy implements CourierStrategy {
 
     // Logging
     private static final String TAG = "ArraPakettiStrategy";
-
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
-
 
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
-            URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);    // Timeout for connecting
-            con.setReadTimeout(5000);       // Timeout for reading content
-            con.setSSLSocketFactory(sc.getSocketFactory());
-            con.setHostnameVerifier(this);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Host", "www.r-kioski.fi");
-            con.setRequestProperty("Referer", "https://www.r-kioski.fi/lahetystenseuranta/");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36");
-            con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-            // Output stream
-            OutputStream outputStream = con.getOutputStream();
-            final String postBody = "action=parcel_tracking&parcel_id=" + parcelCode;
-            outputStream.write(postBody.getBytes());
-            // Input stream
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            String jsonResult = response.toString();
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("action", "parcel_tracking")
+                    .addFormDataPart("parcel_id", parcelCode)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("Host", "www.r-kioski.fi")
+                    .addHeader("Referer", "https://www.r-kioski.fi/lahetystenseuranta/")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+
+            String jsonResult = response.body().string();
             Log.i(TAG, jsonResult);
 
             // Parsing got json content
@@ -145,7 +113,7 @@ public class ArraPakettiStrategy implements CourierStrategy, HostnameVerifier {
         } catch (JSONException e) {
             e.printStackTrace();
             Log.i(TAG, e.toString());
-        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             Log.i(TAG, e.toString());
             e.printStackTrace();
         } catch (NullPointerException e) {
