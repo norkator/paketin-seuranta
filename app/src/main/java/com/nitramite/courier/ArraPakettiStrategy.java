@@ -32,8 +32,8 @@ public class ArraPakettiStrategy implements CourierStrategy {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
             String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
-            OkHttpClient client = new OkHttpClient();
 
+            OkHttpClient client = new OkHttpClient();
             RequestBody body = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("action", "parcel_tracking")
