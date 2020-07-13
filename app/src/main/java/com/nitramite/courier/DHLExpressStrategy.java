@@ -37,15 +37,18 @@ public class DHLExpressStrategy implements CourierStrategy {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(url)
-                    .addHeader("User-Agent", "Mozilla/5.0")
-                    .addHeader("Host", "www.dhl.fi")
-                    .addHeader("Content-Type", "application/json;charset=UTF-8")
+                    .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
+                    .addHeader("Accept-Encoding", "gzip, deflate, br")
+                    .addHeader("Accept-Language", "fi,en-US;q=0.9,en;q=0.8,de;q=0.7")
                     .addHeader("Connection", "keep-alive")
-                    .addHeader("Cache-Control", "max-age=0, no-cache, no-store")
+                    .addHeader("Host", "www.dhl.fi")
+                    .addHeader("Referer", "https://www.dhl.fi/exp-fi/express/lahetysten_seuranta.html?AWB=" + parcelCode + "&brand=DHL")
+                    .addHeader("User-Agent", "Mozilla/5.0")
                     .build();
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
 
+            Log.i(TAG, jsonResult);
 
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
