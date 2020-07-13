@@ -42,7 +42,7 @@ public class CainiaoStrategy implements CourierStrategy {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("User-Agent", "Mozilla/5.0")
+                .addHeader("User-Agent", Constants.UserAgent)
                 .build();
         Response response = client.newCall(request).execute();
         return response.body().string();

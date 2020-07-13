@@ -46,7 +46,7 @@ public class FedExStrategy implements CourierStrategy {
                     .post(body)
                     .addHeader("Host", "www.fedex.com")
                     .addHeader("Referer", "https://www.fedex.com/apps/fedextrack/index.html?action=track&tracknumbers=" + parcelCode + "&locale=en_US&cntry_code=en")
-                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
+                    .addHeader("User-Agent", Constants.UserAgent)
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .build();
             Response response = client.newCall(request).execute();

@@ -46,7 +46,7 @@ public class ArraPakettiStrategy implements CourierStrategy {
                     .post(body)
                     .addHeader("Host", "www.r-kioski.fi")
                     .addHeader("Referer", "https://www.r-kioski.fi/lahetystenseuranta/")
-                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36")
+                    .addHeader("User-Agent", Constants.UserAgent)
                     .addHeader("X-Requested-With", "XMLHttpRequest")
                     .build();
             Response response = client.newCall(request).execute();

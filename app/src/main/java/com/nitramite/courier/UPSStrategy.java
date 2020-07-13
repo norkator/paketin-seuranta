@@ -52,7 +52,7 @@ public class UPSStrategy implements CourierStrategy {
                     .url(url)
                     .post(body)
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Mobile Safari/537.36")
+                    .addHeader("User-Agent", Constants.UserAgent)
                     .build();
             Response response = client.newCall(request).execute();
 

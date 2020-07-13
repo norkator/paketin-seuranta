@@ -43,7 +43,7 @@ public class DHLExpressStrategy implements CourierStrategy {
                     .addHeader("Connection", "keep-alive")
                     .addHeader("Host", "www.dhl.fi")
                     .addHeader("Referer", "https://www.dhl.fi/exp-fi/express/lahetysten_seuranta.html?AWB=" + parcelCode + "&brand=DHL")
-                    .addHeader("User-Agent", "Mozilla/5.0")
+                    .addHeader("User-Agent", Constants.UserAgent)
                     .build();
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
