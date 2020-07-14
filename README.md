@@ -59,5 +59,5 @@ Maybe in the future will use Semver or similar. Not mandatory yet because haven'
 
 
 ## License
-GNU GENERAL PUBLIC LICENSE, V3
+GNU GENERAL PUBLIC LICENSE, V3  
 To see more, open LICENSE file.
