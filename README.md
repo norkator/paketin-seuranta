@@ -6,7 +6,8 @@ yleisesti Englannin kielellä.
 
 Paketin Seuranta is free application, no ads or paid content ever!
 
-Notice the license. You are not allowed to copy or use this app code to create similar application but If I drop Paketin Seuranta from play store and from this repository then I allow for this application to be republished again by someone else.
+You are not allowed to copy or use this app code to create similar application to 
+distribute it on Google Play or any other store.
 
 ### Help required
 
@@ -58,5 +59,5 @@ Maybe in the future will use Semver or similar. Not mandatory yet because haven'
 
 
 ## License
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons -licene" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Licensed with <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution - NonCommercial - NoDerivatives 4.0 International - license</a>.
+GNU GENERAL PUBLIC LICENSE, V3
+To see more, open LICENSE file.
