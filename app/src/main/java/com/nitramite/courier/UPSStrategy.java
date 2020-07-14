@@ -2,39 +2,35 @@ package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-public class UPSStrategy implements CourierStrategy, HostnameVerifier {
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class UPSStrategy implements CourierStrategy {
 
     // Logging
     private static final String TAG = "UPSStrategy";
 
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
+    // Api url
+    private static final String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
 
 
     @Override
@@ -46,51 +42,25 @@ public class UPSStrategy implements CourierStrategy, HostnameVerifier {
         // Objects
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
-            URL obj = new URL(url);
-            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) obj.openConnection();
-            httpsURLConnection.setConnectTimeout(5000);     // Timeout for connecting
-            httpsURLConnection.setReadTimeout(5000);        // Timeout for reading content
-            httpsURLConnection.setSSLSocketFactory(sc.getSocketFactory());
-            httpsURLConnection.setHostnameVerifier(this);
-            httpsURLConnection.setRequestMethod("POST");
-            httpsURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpsURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Mobile Safari/537.36");
-            OutputStream outputStream = httpsURLConnection.getOutputStream();
-            final String postBody = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}";
-            outputStream.write(postBody.getBytes());
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(httpsURLConnection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            String jsonResult = response.toString();
+            OkHttpClient client = new OkHttpClient();
+
+            final String json = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}"; // TODO: make proper way
+            RequestBody body = RequestBody.create(json, JSON);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("User-Agent", Constants.UserAgent)
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            String jsonResult = response.body().string();
             Log.i(TAG, jsonResult);
 
             // Parsing got json content
-            JSONObject jsonResponse = new JSONObject(jsonResult);                                   // Json content
+            JSONObject jsonResponse = new JSONObject(jsonResult); // Json content
             JSONObject parcelDetails = jsonResponse.optJSONArray("trackDetails").optJSONObject(0);  // Ge tracking details, this contains array of events
             JSONArray eventsArray = parcelDetails.optJSONArray("shipmentProgressActivities");       // Parcel events array
             JSONObject additionalInformation = parcelDetails.optJSONObject("additionalInformation"); // Additional information
@@ -147,13 +117,7 @@ public class UPSStrategy implements CourierStrategy, HostnameVerifier {
                 Log.i(TAG, "UPS shipment not found");
                 parcelObject.setIsFound(false); // Parcel not found
             }
-        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (IOException | JSONException | ParseException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;

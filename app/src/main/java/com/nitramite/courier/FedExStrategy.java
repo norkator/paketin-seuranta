@@ -2,86 +2,58 @@ package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-public class FedExStrategy implements CourierStrategy, HostnameVerifier {
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class FedExStrategy implements CourierStrategy {
 
     // Logging
     private static final String TAG = "FedExStrategy";
 
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
-
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             String url = "https://www.fedex.com/trackingCal/track" +
                     "?action=trackpackages&locale=en_IN&version=1&format=json&data={%22TrackPackagesRequest%22:{%22appType%22:%22WTRK%22,%22uniqueKey%22:%22%22,%22processingParameters%22:{}," +
                     "%22trackingInfoList%22:[{%22trackNumberInfo%22:{%22trackingNumber%22:%22" + parcelCode + "%22,%22trackingQualifier%22:%22%22,%22trackingCarrier%22:%22%22}}]}}&_=1421213504837";
-            URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);    // Timeout for connecting
-            con.setReadTimeout(5000);       // Timeout for reading content
-            con.setSSLSocketFactory(sc.getSocketFactory());
-            con.setHostnameVerifier(this);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Host", "www.fedex.com");
-            con.setRequestProperty("Referer", "https://www.fedex.com/apps/fedextrack/index.html?action=track&tracknumbers=" + parcelCode + "&locale=en_US&cntry_code=en");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36");
-            con.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            String jsonResult = response.toString();
-            //Log.i(TAG, jsonResult);
+
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = RequestBody.create("", JSON);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("Host", "www.fedex.com")
+                    .addHeader("Referer", "https://www.fedex.com/apps/fedextrack/index.html?action=track&tracknumbers=" + parcelCode + "&locale=en_US&cntry_code=en")
+                    .addHeader("User-Agent", Constants.UserAgent)
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            String jsonResult = response.body().string();
+            Log.i(TAG, jsonResult);
+
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                                   // Get while json content
             JSONObject trackPackagesResponse = jsonResponse.getJSONObject("TrackPackagesResponse"); // Get TrackPackagesResponse object
@@ -97,8 +69,7 @@ public class FedExStrategy implements CourierStrategy, HostnameVerifier {
                 final String keyStatusStr = jsonChildNode.getString("keyStatus").toUpperCase();
                 if (keyStatusStr.equals("LABEL CREATED") || keyStatusStr.contains("TRANSPORT") || keyStatusStr.contains("TRANSIT") || keyStatusStr.equals("SHIPMENT EXCEPTION") || keyStatusStr.equals("CLEARANCE DELAY")) {
                     parcelObject.setPhase("TRANSIT"); // Phase
-                }
-                else if (keyStatusStr.contains("DELIVERY") || keyStatusStr.contains("DELIVERED")) {
+                } else if (keyStatusStr.contains("DELIVERY") || keyStatusStr.contains("DELIVERED")) {
                     parcelObject.setPhase("DELIVERED"); // Phase
                 } else {
                     parcelObject.setPhase("TRANSIT"); // Phase
@@ -134,13 +105,7 @@ public class FedExStrategy implements CourierStrategy, HostnameVerifier {
                 Log.i(TAG, "FedEx shipment not found");
                 parcelObject.setIsFound(false); // Parcel not found
             }
-        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (IOException | JSONException | ParseException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;

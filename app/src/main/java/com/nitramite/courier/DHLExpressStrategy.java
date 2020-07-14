@@ -2,83 +2,53 @@ package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Utils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-public class DHLExpressStrategy implements CourierStrategy, HostnameVerifier {
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class DHLExpressStrategy implements CourierStrategy {
 
     // Logging
     private static final String TAG = "DHLExpressStrategy";
-
-
-    // Host name verifier
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
-    }
 
 
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                    @SuppressLint("TrustAllX509TrustManager")
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
         try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             String url = "https://www.dhl.fi/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=fi";
-            URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);    // Timeout for connecting
-            con.setReadTimeout(5000);       // Timeout for reading content
-            con.setSSLSocketFactory(sc.getSocketFactory());
-            con.setHostnameVerifier(this);
-            con.setRequestMethod("GET");
-            String USER_AGENT = "Mozilla/5.0";
-            con.setRequestProperty("User-Agent", USER_AGENT);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            String jsonResult = response.toString();
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
+                    .addHeader("Accept-Encoding", "gzip, deflate, br")
+                    .addHeader("Accept-Language", "fi,en-US;q=0.9,en;q=0.8,de;q=0.7")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Host", "www.dhl.fi")
+                    .addHeader("Referer", "https://www.dhl.fi/exp-fi/express/lahetysten_seuranta.html?AWB=" + parcelCode + "&brand=DHL")
+                    .addHeader("User-Agent", Constants.UserAgent)
+                    .build();
+            Response response = client.newCall(request).execute();
+            String jsonResult = response.body().string();
+
+            Log.i(TAG, jsonResult);
 
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
@@ -164,11 +134,7 @@ public class DHLExpressStrategy implements CourierStrategy, HostnameVerifier {
         } catch (JSONException e) {
             e.printStackTrace();
             Log.i(TAG, e.toString());
-        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (IOException | ParseException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;
