@@ -52,6 +52,7 @@ public class CainiaoStrategy implements CourierStrategy {
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
 
+        // TODO when package arrives to finland i.e., it gets tracking from posti. What if we can detect that and load posti details with cainiao's?
         try {
             String url = "https://global.cainiao.com/detail.htm?mailNoList=" + parcelCode;
 
