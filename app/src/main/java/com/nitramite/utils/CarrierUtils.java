@@ -132,6 +132,9 @@ public class CarrierUtils {
             case CARRIER_CPRAM_STR:
                 return R.mipmap.cpram;
 
+            case CARRIER_BRING_STR:
+                return R.mipmap.bring_logo;
+
             case CARRIER_OTHER_STR:
                 return R.mipmap.muu_logo;
         }
@@ -191,6 +194,9 @@ public class CarrierUtils {
 
             case CARRIER_CPRAM:
                 return R.mipmap.cpram;
+
+            case CARRIER_BRING:
+                return R.mipmap.bring_logo;
 
             case CARRIER_OTHER:
                 return R.mipmap.muu_logo;
