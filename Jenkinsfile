@@ -4,6 +4,12 @@ pipeline {
   //   // Run on a build agent where we have the Android SDK installed
   //   label 'android'
   // }
+  environment {
+    // Specified for Jenkins server
+    ANDROID_SDK_ROOT = "C:/Android/Sdk"
+  }
+  ANDROID_SDK_ROOT
+
   options {
     // Stop the build early in case of compile or test failures
     skipStagesAfterUnstable()
