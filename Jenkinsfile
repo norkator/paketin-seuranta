@@ -8,6 +8,7 @@ pipeline {
     // Specified for Jenkins server
     JAVA_HOME = "C:/Program Files/Android/Android Studio/jre"
     ANDROID_SDK_ROOT = "C:/Android/Sdk"
+    GRADLE_USER_HOME = "C:/gradle-cache"
   }
   options {
     // Stop the build early in case of compile or test failures
