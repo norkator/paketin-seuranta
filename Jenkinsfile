@@ -16,7 +16,7 @@ pipeline {
   stages {
     stage('Google Services Json') {
       steps {
-        bat 'copy "C:/Projects/PaketinSeuranta/google-services.json" %WORKSPACE%'
+        powershell 'copy "C:/Projects/PaketinSeuranta/google-services.json" %WORKSPACE%'
       }
     }
     stage('Compile') {
