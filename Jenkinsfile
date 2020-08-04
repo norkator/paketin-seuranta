@@ -14,6 +14,11 @@ pipeline {
     skipStagesAfterUnstable()
   }
   stages {
+    stage('Google Services Json') {
+      steps {
+        bat 'xcopy C:\Projects\PaketinSeuranta\google-services.json "%WORKSPACE%"'
+      }
+    }
     stage('Compile') {
       steps {
         // Compile the app and its dependencies
