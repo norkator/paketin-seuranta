@@ -6,7 +6,7 @@ pipeline {
   // }
   environment {
     // Specified for Jenkins server
-    JAVA_HOME = "C:/Program Files/Java/jre1.8.0_261"
+    JAVA_HOME = "C:/Program Files/Android/Android Studio/jre"
     ANDROID_SDK_ROOT = "C:/Android/Sdk"
   }
   options {
