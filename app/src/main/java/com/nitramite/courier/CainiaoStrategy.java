@@ -152,7 +152,7 @@ public class CainiaoStrategy implements CourierStrategy {
         String dest = jsonObject.optString("destCountry", "null");
         String status = jsonObject.optString("status", "");
         parcelObject.setDestinationCountry(dest);
-
+        Log.i(TAG, status);
         if (status.equals("LTL_SIGNIN") || status.equals("SIGNIN") || status.equals("OWS_SIGNIN") || status.contains("WAIT4SIGNIN")) {
             parcelObject.setPhase("DELIVERED");
         } else if (status.equals("CWS_WAIT4SIGNIN") || status.equals("LTL_WAIT4SIGNIN") || status.equals("WAIT4SIGNIN") || status.contains("WAIT4PICKUP")) {
