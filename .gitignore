@@ -24,7 +24,7 @@ output.json
 .DS_Store
 /build
 /captures
-gradle/
+# gradle/
 
 # NDK
 obj/
