@@ -7,9 +7,11 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -24,11 +26,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.nitramite.adapters.AutoCompleteScenario;
 import com.nitramite.adapters.CustomAutoCompleteAdapter;
 import com.nitramite.adapters.CustomCarrierSpinnerAdapter;
 import com.nitramite.utils.CarrierUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,7 +87,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         View view = inflater.inflate(R.layout.fragment_tracked_delivery, container, false);
 
         // Connect interface for barcode result
-        ((ParcelEditor)getActivity()).setFragmentTrackedDeliveryInterface(this);
+        ((ParcelEditor) getActivity()).setFragmentTrackedDeliveryInterface(this);
 
         // Find components
         Button positiveBtn = view.findViewById(R.id.positiveBtn);
@@ -165,7 +169,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                     positiveBtn.setEnabled(true);
                     positiveBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.bootStrapPrimary));
                 }
-                ((ParcelEditor)getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
+                ((ParcelEditor) getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
             }
 
             @Override
@@ -187,7 +191,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                     positiveBtn.setEnabled(true);
                     positiveBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.bootStrapPrimary));
                 }
-                ((ParcelEditor)getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
+                ((ParcelEditor) getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
             }
 
             @Override
@@ -224,9 +228,9 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         if (packageNameET.getText().length() == 0 && trackingCodeET.getText().length() == 0) {
             positiveBtn.setEnabled(false);
             positiveBtn.setTextColor(ContextCompat.getColor(getContext(), R.color.buttonDisabled));
-            ((ParcelEditor)getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
+            ((ParcelEditor) getActivity()).toggleSaveActionBtnVisibility(positiveBtn.isEnabled());
         } else {
-            ((ParcelEditor)getActivity()).saveBtnMenuItemVisibility = true;
+            ((ParcelEditor) getActivity()).saveBtnMenuItemVisibility = true;
         }
 
         res.close();
@@ -328,6 +332,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_GLS_STR,
                 CarrierUtils.CARRIER_CAINIAO_STR,
                 // CarrierUtils.CARRIER_CPRAM_STR,
+                CarrierUtils.CARRIER_BRING_STR,
                 CarrierUtils.CARRIER_OTHER_STR
         };
         Integer[] carrierCodes = {
@@ -346,6 +351,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_GLS,
                 CarrierUtils.CARRIER_CAINIAO,
                 // CarrierUtils.CARRIER_CPRAM,
+                CarrierUtils.CARRIER_BRING,
                 CarrierUtils.CARRIER_OTHER
         };
         CustomCarrierSpinnerAdapter customCarrierAdapter = new CustomCarrierSpinnerAdapter(activityContext, R.layout.carrier_adapter, carriers);
@@ -400,8 +406,11 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 selectCarrierSpinner.setSelection(13);
                 break;
                 */
-            case CarrierUtils.CARRIER_OTHER:
+            case CarrierUtils.CARRIER_BRING:
                 selectCarrierSpinner.setSelection(13);
+                break;
+            case CarrierUtils.CARRIER_OTHER:
+                selectCarrierSpinner.setSelection(14);
                 break;
         }
         selectCarrierSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -460,6 +469,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
 
     /**
      * Set tracking code from activity hosting this fragment
+     *
      * @param trackingCode str
      */
     public void setTrackingCodeToFragment(final String trackingCode) {
