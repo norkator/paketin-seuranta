@@ -272,6 +272,14 @@
     <string name="location_not_available">Sijainti ei ole saatavilla</string>
     <string name="backup_feature_not_currently_supported">Varmuuskopiointi ei ole tällä hetkellä tuettu Android Q:lla ja ylöspäin.</string>
     <string name="notification_message">Paketin tilassa muutos: %1$s - %2$s</string>
+    <string name="no_code">Ei seurantakoodia</string>
+    <string name="courier_set">Valittu kuljetusyhtiö asetettu</string>
+    <string name="status_waiting_for_pickup">Odottaa kuljetusyhtiön paketin noutoa</string>
+    <string name="status_in_transit">Kuljetuksessa!</string>
+    <string name="status_ready">Valmiina noudettavaksi!</string>
+    <string name="status_delivered">Toimitettu!</string>
+    <string name="status_returned">Palautettu!</string>
+    <string name="status_customs">Tullaus vaaditaan!</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

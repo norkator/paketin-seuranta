@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.annotation.SuppressLint;
@@ -7,9 +15,6 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -24,11 +29,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.nitramite.adapters.AutoCompleteScenario;
 import com.nitramite.adapters.CustomAutoCompleteAdapter;
 import com.nitramite.adapters.CustomCarrierSpinnerAdapter;
 import com.nitramite.utils.CarrierUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -327,6 +338,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_YANWEN_STR,
                 CarrierUtils.CARRIER_GLS_STR,
                 CarrierUtils.CARRIER_CAINIAO_STR,
+                CarrierUtils.CARRIER_4PX_STR,
                 // CarrierUtils.CARRIER_CPRAM_STR,
                 CarrierUtils.CARRIER_OTHER_STR
         };
@@ -345,6 +357,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_YANWEN,
                 CarrierUtils.CARRIER_GLS,
                 CarrierUtils.CARRIER_CAINIAO,
+                CarrierUtils.CARRIER_4PX,
                 // CarrierUtils.CARRIER_CPRAM,
                 CarrierUtils.CARRIER_OTHER
         };
@@ -395,13 +408,16 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
             case CarrierUtils.CARRIER_CAINIAO:
                 selectCarrierSpinner.setSelection(12);
                 break;
+            case CarrierUtils.CARRIER_4PX:
+                selectCarrierSpinner.setSelection(13);
+                break;
                 /*
             case CarrierUtils.CARRIER_CPRAM:
                 selectCarrierSpinner.setSelection(13);
                 break;
                 */
             case CarrierUtils.CARRIER_OTHER:
-                selectCarrierSpinner.setSelection(13);
+                selectCarrierSpinner.setSelection(14);
                 break;
         }
         selectCarrierSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright (c) 2020
+  ~ Paketin Seuranta
+  ~
+  ~ @author developerfromjokela
+  ~ @author norkator
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="150dp"
+    android:height="150dp"
+    android:viewportWidth="150"
+    android:viewportHeight="150">
+    <path android:pathData="M59.66,13.43L90.48,13.43A41.18,41.18 0,0 1,131.66 54.61L131.66,85.43A41.18,41.18 0,0 1,90.48 126.61L59.66,126.61A41.18,41.18 0,0 1,18.48 85.43L18.48,54.61A41.18,41.18 0,0 1,59.66 13.43z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="75.07"
+                android:endY="13.4299965"
+                android:startX="75.07"
+                android:startY="126.60999"
+                android:type="linear">
+                <item
+                    android:color="#FFF15A24"
+                    android:offset="0" />
+                <item
+                    android:color="#FFF56426"
+                    android:offset="0.2" />
+                <item
+                    android:color="#FFFC7629"
+                    android:offset="0.67" />
+                <item
+                    android:color="#FFFF7D2A"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#fff"
+        android:pathData="M113.16,94.36v3.72L83.38,107.39l-26,-7.22v5.36L35,105.53L35,64.59L64.66,64.59l22.93,8.56a10.75,10.75 0,0 1,7 10.05L102,83.2a11.15,11.15 0,0 1,11.17 11.16M49.89,98.08L49.89,72L42.44,72L42.44,98.08h7.45m55.45,-5.32A3.77,3.77 0,0 0,102 90.64L82.08,90.64a18.59,18.59 0,0 1,-5.88 -0.93l-8.86,-2.94 2.35,-7.07 8.86,2.94c1.11,0.37 8.56,0.56 8.56,0.56A3.31,3.31 0,0 0,85 80.11L63.32,72h-6L57.32,92.5l25.94,7.11ZM82.17,34.64L110.6,34.64l-1.95,-2.07L83.84,32.57l-1.67,2.07m31.88,0.47a4,4 0,0 1,1 2.63L115.05,63.59a4.13,4.13 0,0 1,-4.14 4.13L81.92,67.72a4.13,4.13 0,0 1,-4.14 -4.13L77.78,37.74a4,4 0,0 1,1 -2.63l2.86,-3.47A3.07,3.07 0,0 1,84 30.5L108.8,30.5a3,3 0,0 1,2.37 1.14l2.88,3.47M84,61.52L96.39,61.52L96.39,55.31L84,55.31Z" />
+</vector>

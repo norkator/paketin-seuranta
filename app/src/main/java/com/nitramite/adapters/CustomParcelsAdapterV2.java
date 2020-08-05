@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nitramite.utils.CarrierUtils;
+import androidx.annotation.NonNull;
+
 import com.nitramite.paketinseuranta.ParcelItem;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.paketinseuranta.R;
+import com.nitramite.utils.CarrierUtils;
 
 import java.util.ArrayList;
 
@@ -83,6 +93,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
                 R.mipmap.muu_logo,
                 R.drawable.returned,
                 R.drawable.customs,
+                R.drawable.ic_waiting4pickup
         };
 
         String phase = parcelItems.get(position).getParcelPhase();
@@ -97,24 +108,28 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         //}
 
         // Check for item in transit
-        if (phase.length() == 11 || phase.equals("TRANSIT")) {
+        if (phase.equals(PhaseNumber.PHASE_WAITING_FOR_PICKUP)) {
+            // TODO made new icon. if it's good, let's use that in upcoming ones, as it's SVG not png
+            pos = 9;
+            phaseTextFix = context.getString(R.string.status_waiting_for_pickup);
+        } else if (phase.length() == 11 || phase.equals("TRANSIT")) {
             pos = 3;
-            phaseTextFix = "Kuljetuksessa!";
+            phaseTextFix = context.getString(R.string.status_in_transit);
         } else if (phase.length() == 12) {
             pos = 3;
-            phaseTextFix = "Kuljetuksessa!";
+            phaseTextFix = context.getString(R.string.status_in_transit);
         } else if (phase.length() == 16 || latestEventDescription.contains("ilmoitus tekstiviestillä") || latestEventDescription.contains("toimitettu noutopisteeseen")) {
             pos = 4;
-            phaseTextFix = "Valmiina noudettavaksi!";
+            phaseTextFix = context.getString(R.string.status_ready);
         } else if (phase.length() == 9) {
             pos = 5;
-            phaseTextFix = "Toimitettu!";
+            phaseTextFix = context.getString(R.string.status_delivered);
         } else if (phase.length() == 8 || phase.equals("RETURNED_TO_SENDER")) {
             pos = 7;
-            phaseTextFix = "Palautettu!";
+            phaseTextFix = context.getString(R.string.status_returned);
         } else if (phase.length() == 7 || phase.equals("CUSTOMS")) {
             pos = 8;
-            phaseTextFix = "Tullaus vaaditaan!";
+            phaseTextFix = context.getString(R.string.status_customs);
         }
         // Not inside Finland
         else if (phase.length() == 24 || latestEventDescription.equals("Lähetys ei ole vielä saapunut Postille, odotathan") ||
@@ -122,7 +137,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
                 || latestEventDescription.equals("Lähetys on rekisteröity.") || latestEventDescription.equals("Lähetys on matkalla kohdemaahan")
         ) {
             pos = 2;
-            phaseTextFix = "Kuljetuksessa!";
+            phaseTextFix = context.getString(R.string.status_in_transit);
         }
         else if (parcelItems.get(position).getParcelCarrier().equals("99") && phase.equals("")) {
             pos = 6;

@@ -30,6 +30,7 @@ import com.nitramite.courier.DHLActiveTrackingStrategy;
 import com.nitramite.courier.DHLAmazonStrategy;
 import com.nitramite.courier.DHLExpressStrategy;
 import com.nitramite.courier.FedExStrategy;
+import com.nitramite.courier.FourPXStrategy;
 import com.nitramite.courier.GlsStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
 import com.nitramite.courier.ParcelObject;
@@ -183,6 +184,12 @@ public class UpdaterLogic {
                                     courier.setCourierStrategy(new CainiaoStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
                                     break;
+                                // 4PX
+                                case CarrierUtils.CARRIER_4PX:
+                                    Log.i(TAG, "# Running 4PX #");
+                                    courier.setCourierStrategy(new FourPXStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    break;
                                 // China Post Registered Air Mail
                                 case CarrierUtils.CARRIER_CPRAM:
                                     Log.i(TAG, "# Running China Post Registered Air Mail #");
@@ -284,6 +291,7 @@ public class UpdaterLogic {
 
                 } catch (IndexOutOfBoundsException e) {
                     Log.i(TAG, e.toString());
+                    e.printStackTrace();
                 } catch (IllegalStateException e) {
                     Log.i(TAG, e.toString());
                 } catch (ConcurrentModificationException e) {
