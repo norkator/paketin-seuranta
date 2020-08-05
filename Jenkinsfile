@@ -78,6 +78,17 @@ pipeline {
         // Archive the APKs so that they can be downloaded from Jenkins
         archiveArtifacts '**/*.apk'
 
+        signAndroidApks (
+            keyStoreId: "paketin-seuranta-signing-keystore",
+            keyAlias: "Nitramite",
+            apksToSign: "**/*-unsigned.apk"
+            // uncomment the following line to output the signed APK to a separate directory as described above
+            // signedApkMapping: [ $class: UnsignedApkBuilderDirMapping ]
+            // uncomment the following line to output the signed APK as a sibling of the unsigned APK, as described above, or just omit signedApkMapping
+            // you can override these within the script if necessary
+            // androidHome: env.ANDROID_HOME
+            // zipalignPath: env.ANDROID_ZIPALIGN
+        )
         // Upload the APK to Google Play (will upload manually from Jenkins Artifacts)
         // androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
       }
