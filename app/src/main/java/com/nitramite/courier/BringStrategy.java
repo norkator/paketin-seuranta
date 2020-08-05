@@ -52,7 +52,7 @@ public class BringStrategy implements CourierStrategy {
             JSONObject consignmentSet = jsonResponse.getJSONArray("consignmentSet").getJSONObject(0);
 
 
-            if (consignmentSet.has("packageSet")) { // parcel details exists
+            if (hasParcelDetails(consignmentSet, "packageSet")) { // parcel details exists
                 parcelObject.setIsFound(true);
 
                 JSONObject packageSet = consignmentSet.getJSONArray("packageSet").getJSONObject(0);
@@ -115,6 +115,11 @@ public class BringStrategy implements CourierStrategy {
             e.printStackTrace();
         }
         return parcelObject;
+    }
+
+
+    private boolean hasParcelDetails(JSONObject jsonObject, String keyName) {
+        return jsonObject.has(keyName);
     }
 
 
