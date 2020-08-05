@@ -58,10 +58,10 @@ pipeline {
     //   }
     // }
     stage('Deploy') {
-      when {
-        // Only execute this stage when building from the `master` branch
-        branch 'master'
-      }
+      // when {
+      //   // Only execute this stage when building from the `master` branch
+      //   branch 'master'
+      // }
       environment {
         // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
         // this will export an environment variable during the build, pointing to the absolute path of
