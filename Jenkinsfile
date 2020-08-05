@@ -22,6 +22,7 @@ pipeline {
     }
     stage('Google Maps Api File') {
       steps {
+        bat 'mkdir %WORKSPACE%\\app\\src\\release\\res\\values\\'
         bat 'copy C:\\Projects\\PaketinSeuranta\\google_maps_api.xml %WORKSPACE%\\app\\src\\release\\res\\values\\'
       }
     }
