@@ -124,8 +124,8 @@ public class BringStrategy implements CourierStrategy {
 
                 parseTimeDate = apiDateFormat.parse(timeStamp);
 
-                final String parsedDate = showingDateFormat.format(parseTimeDate);
-                final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
+                String parsedDate = showingDateFormat.format(parseTimeDate);
+                String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
 
 
                 // Get event description
