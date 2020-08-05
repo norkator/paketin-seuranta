@@ -67,7 +67,6 @@ pipeline {
         // this will export an environment variable during the build, pointing to the absolute path of
         // the stored Android keystore file.  When the build ends, the temporarily file will be removed.
         SIGNING_KEYSTORE = credentials('paketin-seuranta-signing-keystore')
-        echo SIGNING_KEYSTORE
 
         // Similarly, the value of this variable will be a password stored by the Credentials Plugin
         SIGNING_KEY_PASSWORD = credentials('paketin-seuranta-signing-password')
