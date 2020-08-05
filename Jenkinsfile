@@ -62,15 +62,15 @@ pipeline {
         // Only execute this stage when building from the `master` branch
         branch 'master'
       }
-      environment {
-        // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
-        // this will export an environment variable during the build, pointing to the absolute path of
-        // the stored Android keystore file.  When the build ends, the temporarily file will be removed.
-        SIGNING_KEYSTORE = credentials('paketin-seuranta-signing-keystore')
+      // environment {
+      //   // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
+      //   // this will export an environment variable during the build, pointing to the absolute path of
+      //   // the stored Android keystore file.  When the build ends, the temporarily file will be removed.
+      //   SIGNING_KEYSTORE = credentials('paketin-seuranta-signing-keystore')
 
-        // Similarly, the value of this variable will be a password stored by the Credentials Plugin
-        SIGNING_KEY_PASSWORD = credentials('paketin-seuranta-signing-password')
-      }
+      //   // Similarly, the value of this variable will be a password stored by the Credentials Plugin
+      //   SIGNING_KEY_PASSWORD = credentials('paketin-seuranta-signing-password')
+      // }
       steps {
         // Build the app in release mode, and sign the APK using the environment variables
         bat './gradlew assembleRelease'
@@ -78,10 +78,12 @@ pipeline {
         // Archive the APKs so that they can be downloaded from Jenkins
         archiveArtifacts '**/*.apk'
 
+        // Testing with Android Signing Plugin
         signAndroidApks (
             keyStoreId: "paketin-seuranta-signing-key",
             keyAlias: "Nitramite",
-            apksToSign: "**/*-unsigned.apk"
+            apksToSign: "**/*-unsigned.apk",
+            skipZipalign: true
             // uncomment the following line to output the signed APK to a separate directory as described above
             // signedApkMapping: [ $class: UnsignedApkBuilderDirMapping ]
             // uncomment the following line to output the signed APK as a sibling of the unsigned APK, as described above, or just omit signedApkMapping
