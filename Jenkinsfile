@@ -20,6 +20,11 @@ pipeline {
         bat 'copy C:\\Projects\\PaketinSeuranta\\google-services.json %WORKSPACE%\\app\\'
       }
     }
+    stage('Google Maps Api File') {
+      steps {
+        bat 'copy C:\\Projects\\PaketinSeuranta\\google_maps_api.xml %WORKSPACE%\\app\\src\\release\\res\\values\\'
+      }
+    }
     stage('Compile') {
       steps {
         // Compile the app and its dependencies
@@ -41,7 +46,7 @@ pipeline {
         bat './gradlew assembleDebug'
 
         // Archive the APKs so that they can be downloaded from Jenkins
-        archiveArtifacts '**/*.apk'
+        // archiveArtifacts '**/*.apk'
       }
     }
     // stage('Static analysis') {
@@ -53,8 +58,8 @@ pipeline {
     // }
     stage('Deploy') {
       when {
-        // Only execute this stage when building from the `beta` branch
-        branch 'beta'
+        // Only execute this stage when building from the `master` branch
+        branch 'master'
       }
       environment {
         // Assuming a file credential has been added to Jenkins, with the ID 'my-app-signing-keystore',
@@ -72,8 +77,8 @@ pipeline {
         // Archive the APKs so that they can be downloaded from Jenkins
         archiveArtifacts '**/*.apk'
 
-        // Upload the APK to Google Play
-        androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
+        // Upload the APK to Google Play (will upload manually from Jenkins Artifacts)
+        // androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
       }
       // post {
       //   success {
