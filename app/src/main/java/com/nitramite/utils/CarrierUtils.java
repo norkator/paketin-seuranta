@@ -29,8 +29,9 @@ public class CarrierUtils {
     public static final int CARRIER_YANWEN = 12;
     public static final int CARRIER_GLS = 13;
     public static final int CARRIER_CAINIAO = 14;
-    public static final int CARRIER_4PX = 16;
+    public static final int CARRIER_4PX = 17;
     public static final int CARRIER_CPRAM = 15;
+    public static final int CARRIER_BRING = 16;
     public static final int CARRIER_OTHER = 99;
 
     // Carries names
@@ -50,6 +51,7 @@ public class CarrierUtils {
     public static final String CARRIER_CAINIAO_STR = "Cainiao";
     public static final String CARRIER_4PX_STR = "4PX";
     public static final String CARRIER_CPRAM_STR = "Ch Post R.A. Mail";
+    public static final String CARRIER_BRING_STR = "Bring";
     public static final String CARRIER_OTHER_STR = "Muu (ei kohdistu hakua)";
 
 
@@ -143,6 +145,9 @@ public class CarrierUtils {
             case CARRIER_CPRAM_STR:
                 return R.mipmap.cpram;
 
+            case CARRIER_BRING_STR:
+                return R.mipmap.bring_logo;
+
             case CARRIER_OTHER_STR:
                 return R.mipmap.muu_logo;
         }
@@ -205,6 +210,9 @@ public class CarrierUtils {
 
             case CARRIER_CPRAM:
                 return R.mipmap.cpram;
+
+            case CARRIER_BRING:
+                return R.mipmap.bring_logo;
 
             case CARRIER_OTHER:
                 return R.mipmap.muu_logo;

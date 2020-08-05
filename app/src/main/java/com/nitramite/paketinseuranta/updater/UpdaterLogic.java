@@ -23,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.nitramite.courier.ArraPakettiStrategy;
+import com.nitramite.courier.BringStrategy;
 import com.nitramite.courier.CainiaoStrategy;
 import com.nitramite.courier.ChinaPostAirMailStrategy;
 import com.nitramite.courier.Courier;
@@ -194,6 +195,12 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_CPRAM:
                                     Log.i(TAG, "# Running China Post Registered Air Mail #");
                                     courier.setCourierStrategy(new ChinaPostAirMailStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    break;
+                                // Bring
+                                case CarrierUtils.CARRIER_BRING:
+                                    Log.i(TAG, "# Running Bring #");
+                                    courier.setCourierStrategy(new BringStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
                                     break;
 

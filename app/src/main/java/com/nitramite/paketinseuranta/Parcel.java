@@ -1319,6 +1319,9 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 case CarrierUtils.CARRIER_CAINIAO:
                     addCarrierForDetectionView(carrierId, R.mipmap.cainiao_logo);
                     break;
+                case CarrierUtils.CARRIER_BRING:
+                    addCarrierForDetectionView(carrierId, R.mipmap.bring_logo);
+                    break;
             }
         });
     }

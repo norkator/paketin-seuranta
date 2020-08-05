@@ -11,6 +11,7 @@ package com.nitramite.paketinseuranta;
 import android.os.AsyncTask;
 
 import com.nitramite.courier.ArraPakettiStrategy;
+import com.nitramite.courier.BringStrategy;
 import com.nitramite.courier.CainiaoStrategy;
 import com.nitramite.courier.Courier;
 import com.nitramite.courier.CourierStrategy;
@@ -91,6 +92,10 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
 
         courierStrategies.add(new FourPXStrategy());
         courierIntegers.add(CarrierUtils.CARRIER_4PX);
+
+
+        courierStrategies.add(new BringStrategy());
+        courierIntegers.add(CarrierUtils.CARRIER_BRING);
 
         int increment = 100 / courierStrategies.size();
         int progress = increment;
