@@ -48,7 +48,7 @@ public class BringStrategy implements CourierStrategy {
             JSONObject consignmentSet = jsonResponse.getJSONArray("consignmentSet").getJSONObject(0);
 
 
-            if (hasParcelDetails(consignmentSet, "packageSet")) { // parcel details exists
+            if (hasParcelDetails(consignmentSet)) { // parcel details exists
                 JSONObject packageSet = consignmentSet.getJSONArray("packageSet").getJSONObject(0);
 
                 JSONArray jsonEvents = packageSet.getJSONArray("eventSet"); // Get events
@@ -76,11 +76,10 @@ public class BringStrategy implements CourierStrategy {
      * Checks key existence from json object
      *
      * @param jsonObject any json object
-     * @param keyName    key to look for
      * @return boolean
      */
-    private boolean hasParcelDetails(JSONObject jsonObject, String keyName) {
-        return jsonObject.has(keyName);
+    private boolean hasParcelDetails(JSONObject jsonObject) {
+        return jsonObject.has("packageSet");
     }
 
 
