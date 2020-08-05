@@ -327,9 +327,7 @@ public class UpdaterLogic {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         notification.setSmallIcon(R.drawable.notifsmall);
         notification.setContentTitle(context.getString(R.string.app_name));
-        String content = context.getString(R.string.notification_message, changedParcelCodeItem, currentEventText);
-        notification.setContentText(content);
-        notification.setStyle(new NotificationCompat.BigTextStyle().bigText(content).setSummaryText(content));
+        notification.setContentText(context.getString(R.string.notification_message, changedParcelCodeItem, currentEventText));
         notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo));
         notification.setContentIntent(pendingIntent);
         notification.setAutoCancel(true);
