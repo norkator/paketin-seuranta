@@ -79,7 +79,7 @@ pipeline {
         archiveArtifacts '**/*.apk'
 
         signAndroidApks (
-            keyStoreId: "paketin-seuranta-signing-keystore",
+            keyStoreId: "paketin-seuranta-signing-key",
             keyAlias: "Nitramite",
             apksToSign: "**/*-unsigned.apk"
             // uncomment the following line to output the signed APK to a separate directory as described above
