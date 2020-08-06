@@ -147,8 +147,6 @@ public class FourPXStrategy implements CourierStrategy {
 
 
     private void setBasicDetails(ParcelObject parcelObject, FourPXParcel parcel) {
-        String status = "";
-        String desc = "";
         boolean hasArrivedAtDestCountry = false;
         for (FourPXEvent event : parcel.getEvents()) {
             if (event.getTkCode() != null)
@@ -157,18 +155,11 @@ public class FourPXStrategy implements CourierStrategy {
                     break;
                 }
         }
-        if (!parcel.getEvents().isEmpty()) {
-            FourPXEvent firstEvent = parcel.getEvents().get(0);
-            if (!firstEvent.getTkCode().isEmpty()) {
-                status = parcel.getEvents().get(0).getTkCode();
-                desc = parcel.getEvents().get(0).getTkDesc();
-            }
-        }
         // This part is tricky. I didn't find any list of what different TkCodes mean. I am waiting my parcel to be delivered, and possibly extracting info from that
         if (!hasArrivedAtDestCountry && parcel.getDestinationCode().equals("FI")) {
             parcelObject.setPhase("INTRANSPORT_NOTINFINLAND");
         }
-        if (status.toLowerCase().contains("delivered") || desc.toLowerCase().contains("delivered")) {
+        if (parcel.getStatus() == 2) {
             parcelObject.setPhase("DELIVERED");
         }
     }

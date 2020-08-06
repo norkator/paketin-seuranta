@@ -281,6 +281,10 @@
     <string name="status_delivered">Delivered!</string>
     <string name="status_returned">Returned!</string>
     <string name="status_customs">Customs clearance is required!</string>
+    <string name="archive_empty">No items in archive</string>
+    <string name="no_parcels">No parcels added</string>
+    <string name="guide_part_one">Press</string>
+    <string name="guide_part_two">to add</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
@@ -293,11 +297,13 @@
     <string-array name="pref_theme_entries">
         <item>Light (stock)</item>
         <item>Dark</item>
+        <item>System default</item>
     </string-array>
 
     <string-array name="pref_theme_values">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- Strings related to Settings -->

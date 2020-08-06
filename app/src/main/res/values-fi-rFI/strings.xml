@@ -280,7 +280,10 @@
     <string name="status_delivered">Toimitettu!</string>
     <string name="status_returned">Palautettu!</string>
     <string name="status_customs">Tullaus vaaditaan!</string>
-
+    <string name="archive_empty">Arkisto on tyhjä</string>
+    <string name="no_parcels">Seurannassa ei ole paketteja</string>
+    <string name="guide_part_one">Paina</string>
+    <string name="guide_part_two">lisätäksesi seurantaan</string>
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
         <item>Lataa tapahtumat</item>
@@ -292,11 +295,8 @@
     <string-array name="pref_theme_entries">
         <item>Vaalea (vakio)</item>
         <item>Tumma</item>
-    </string-array>
+        <item>Seuraa järjestelmää</item>
 
-    <string-array name="pref_theme_values">
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <!-- Strings related to Settings -->

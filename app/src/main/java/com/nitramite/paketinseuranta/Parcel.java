@@ -62,6 +62,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -84,6 +85,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.nitramite.utils.CarrierUtils;
 import com.nitramite.utils.LocaleUtils;
+import com.nitramite.utils.ThemeUtils;
 import com.nitramite.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -192,12 +194,15 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (sharedPreferences.getString(Constants.SP_THEME_SELECTION, "").equals("2")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.BLACK);
-            }
+        if (ThemeUtils.Theme.isDarkThemeForced(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        } else if (ThemeUtils.Theme.isAutoTheme(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parcel);
