@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020
+  ~ Paketin Seuranta
+  ~
+  ~ @author developerfromjokela
+  ~ @author norkator
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -55,6 +63,7 @@
                         android:layout_gravity="end|bottom"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="0"
                         android:adjustViewBounds="true"
                         tools:ignore="ContentDescription" />
 
@@ -153,6 +162,11 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/parcelLastMovementStatusTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/parcelUpdateStatusTV"

@@ -33,9 +33,10 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
     private final ArrayList<ParcelItem> parcelItems;
     private final LayoutInflater inflater;
     private final Boolean showCourierIcon;
+    private final Boolean lastUpdate;
 
     // Constructor
-    public CustomParcelsAdapterV2(Context context, ArrayList<ParcelItem> parcelItems, Boolean showCourierIcon) {
+    public CustomParcelsAdapterV2(Context context, ArrayList<ParcelItem> parcelItems, Boolean showCourierIcon, boolean lastUpdate) {
         super(context, R.layout.parcel_item, parcelItems);
         // TODO Auto-generated constructor stub
 
@@ -43,6 +44,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         this.parcelItems = parcelItems;
         this.showCourierIcon = showCourierIcon;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.lastUpdate = lastUpdate;
     }
 
 
@@ -70,6 +72,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         TextView sixthLineTitle = rowView.findViewById(R.id.sixthLineTitle);
         TextView seventhLineNormal = rowView.findViewById(R.id.seventhLineNormal);
         TextView parcelUpdateStatusTV = rowView.findViewById(R.id.parcelUpdateStatusTV);
+        TextView parcelLastMovementStatusTV = rowView.findViewById(R.id.parcelLastMovementStatusTV);
         ImageView statusImageView = rowView.findViewById(R.id.statusImageView);
         ImageView courierIcon = rowView.findViewById(R.id.courierIcon);
 
@@ -224,8 +227,16 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
 
 
         // Fourth line
+        ParcelItem item = parcelItems.get(position);
+        parcelLastMovementStatusTV.setVisibility(!lastUpdate || (item.getLastEventDate() == null || parcelItems.get(position).getArchivedPackage()) ? View.GONE : View.VISIBLE);
         if (!parcelItems.get(position).getArchivedPackage()) {
             parcelUpdateStatusTV.setText(parcelItems.get(position).getParcelUpdateStatus());
+            if (lastUpdate) {
+                if (item.getLastEventDate() != null) {
+                    parcelUpdateStatusTV.setVisibility(View.GONE);
+                    parcelLastMovementStatusTV.setText(context.getString(R.string.last_change, item.getLastEventDate()));
+                }
+            }
         } else {
             if (parcelItems.get(position).getParcelCreateDate() != null && !parcelItems.get(position).getParcelCreateDate().equals("null")) {
                 parcelUpdateStatusTV.setText(context.getString(R.string.parcel_parcel_added_time_stamp) + " " + parcelItems.get(position).getParcelCreateDate());

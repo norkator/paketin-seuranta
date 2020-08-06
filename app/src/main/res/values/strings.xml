@@ -285,6 +285,9 @@
     <string name="no_parcels">No parcels added</string>
     <string name="guide_part_one">Press</string>
     <string name="guide_part_two">to add</string>
+    <string name="last_change">Last change: %1$s</string>
+    <string name="preferences_last_change_summary">Shows the date when last event occurred. Last refresh date will be hidden</string>
+    <string name="preferences_last_change_title">Show \"Last change\"</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

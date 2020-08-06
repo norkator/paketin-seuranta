@@ -232,7 +232,8 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
                     res.getString(9),
                     res.getString(10),
                     res.getString(11),
-                    null    // Last pickup date
+                    null,    // Last pickup date,
+                    null // Last event date, null because not used here
             );
             parcelItem.setArchivedPackage(true); // This package is archived item
             parcelItems.add(parcelItem);
@@ -246,7 +247,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     // Update list view
     public void updateListView() {
         if (adapter == null) {
-            adapter = new CustomParcelsAdapterV2(this, parcelItems, true);
+            adapter = new CustomParcelsAdapterV2(this, parcelItems, true, false);
             mAdapter = new SwipeActionAdapter(adapter);
             mAdapter.setSwipeActionListener(this)
                     .setDimBackgrounds(true)

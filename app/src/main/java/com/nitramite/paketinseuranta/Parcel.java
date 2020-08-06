@@ -359,6 +359,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     null,
                     null,
                     null,
+                    null,
                     null
             ));
         }
@@ -410,6 +411,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     private ArrayList<ParcelItem> getParcelItems() {
         ArrayList<ParcelItem> parcelItems = new ArrayList<>();
         Cursor res = databaseHelper.getAllDataWithLatestEvent();
+        String date = databaseHelper.getLatestParcelEventDate(res.getString(0));
         while (res.moveToNext()) {
             parcelItems.add(new ParcelItem(
                     res.getString(0),
@@ -424,7 +426,8 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    date
             ));
         }
         return parcelItems;

@@ -64,6 +64,12 @@
 
         <SwitchPreference
             android:defaultValue="true"
+            android:key="SP_PACKAGE_LAST_CHANGE"
+            android:summary="@string/preferences_last_change_summary"
+            android:title="@string/preferences_last_change_title" />
+
+        <SwitchPreference
+            android:defaultValue="true"
             android:key="SP_PACKAGE_UPDATE_NOTIFY_SNACKBAR"
             android:summary="@string/preferences_individual_update_notes_summary"
             android:title="@string/preferences_individual_update_notes_title" />
