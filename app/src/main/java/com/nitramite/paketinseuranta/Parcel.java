@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.Manifest;
@@ -31,15 +39,6 @@ import android.os.StrictMode;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.multidex.MultiDex;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -62,11 +61,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.multidex.MultiDex;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -74,6 +76,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -81,8 +85,15 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.nitramite.utils.CarrierUtils;
 import com.nitramite.utils.LocaleUtils;
+import com.nitramite.utils.ThemeUtils;
 import com.nitramite.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Parcel extends AppCompatActivity implements OnMapReadyCallback, SwipeRefreshLayout.OnRefreshListener, CarrierDetectorTaskInterface {
@@ -183,12 +194,15 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (sharedPreferences.getString(Constants.SP_THEME_SELECTION, "").equals("2")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.BLACK);
-            }
+        if (ThemeUtils.Theme.isDarkThemeForced(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        } else if (ThemeUtils.Theme.isAutoTheme(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parcel);
@@ -1264,7 +1278,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 }
             });
         } else {
-            Toast.makeText(this, "Ei seurantakoodia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_code, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1304,6 +1318,9 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 case CarrierUtils.CARRIER_YANWEN:
                     addCarrierForDetectionView(carrierId, R.mipmap.yanwen_logo);
                     break;
+                case CarrierUtils.CARRIER_4PX:
+                    addCarrierForDetectionView(carrierId, R.mipmap.fpx_logo);
+                    break;
                 case CarrierUtils.CARRIER_CAINIAO:
                     addCarrierForDetectionView(carrierId, R.mipmap.cainiao_logo);
                     break;
@@ -1336,7 +1353,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         imageView.setBackgroundResource(carrierIconDrawable);
         imageView.setOnClickListener(view -> {
             if (databaseHelper.updateCarrierCode(ID, carrierId)) {
-                Toast.makeText(Parcel.this, "Valittu kuljetusyhtiö asetettu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Parcel.this, R.string.courier_set, Toast.LENGTH_SHORT).show();
                 readParcelDataFromSqlite(); // Refresh current parcel data
                 refreshParcels(); // Refresh parcels data
                 if (carrierDetectorDialog != null) {

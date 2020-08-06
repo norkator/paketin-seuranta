@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.Manifest;
@@ -14,15 +22,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.preference.PreferenceManager;
-import androidx.multidex.MultiDex;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.cardview.widget.CardView;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,12 +38,23 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.multidex.MultiDex;
+
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
+import com.nitramite.utils.ThemeUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -64,6 +76,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     private CardView searchQueryCard;
     private EditText searchArchiveInput;
     private ImageView clearToolBarImage;
+    private View emptyView;
 
     // Swipe action adapter
     protected SwipeActionAdapter mAdapter;
@@ -93,12 +106,17 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (sharedPreferences.getString(Constants.SP_THEME_SELECTION, "").equals("2")) {
+        super.onCreate(savedInstanceState);
+        if (ThemeUtils.Theme.isDarkTheme(getBaseContext())) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        } else if (ThemeUtils.Theme.isAutoTheme(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archive);
         setTitle(R.string.archive_title);
 
@@ -123,6 +141,8 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
 
         // Find and int views
         archiveItemsList = findViewById(R.id.archiveItemsList);
+        emptyView = findViewById(R.id.emptyView);
+        archiveItemsList.setEmptyView(emptyView);
         searchQueryCard = findViewById(R.id.searchQueryCard);
         searchQueryCard.setVisibility(View.GONE);
         searchArchiveInput = findViewById(R.id.searchArchiveInput);
@@ -169,15 +189,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         });
 
 
-        // Shared preferences
-        if (sharedPreferences.getString(Constants.SP_THEME_SELECTION, "").equals("2")) {
-            findViewById(R.id.backgroundLayout).setBackgroundColor(ContextCompat.getColor(this, R.color.background_darker));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.BLACK);
-            }
-        }
+
 
 
         // Activity results set
@@ -250,8 +262,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     @Override
     public boolean hasActions(int position, SwipeDirection direction) {
         if (direction.isLeft()) return true;
-        if (direction.isRight()) return true;
-        return false;
+        return direction.isRight();
     }
 
     @Override

@@ -273,6 +273,19 @@
     <string name="backup_feature_not_currently_supported">Backup feature is currently not supported on Android Q and up.</string>
     <string name="notification_message">Parcel\' status changed: %1$s - %2$s</string>
 
+    <string name="no_code">No tracking code</string>
+    <string name="courier_set">Selected courier saved</string>
+    <string name="status_waiting_for_pickup">Packed for postal service to pickup</string>
+    <string name="status_in_transit">In transit!</string>
+    <string name="status_ready">Ready to pickup!</string>
+    <string name="status_delivered">Delivered!</string>
+    <string name="status_returned">Returned!</string>
+    <string name="status_customs">Customs clearance is required!</string>
+    <string name="archive_empty">No items in archive</string>
+    <string name="no_parcels">No parcels added</string>
+    <string name="guide_part_one">Press</string>
+    <string name="guide_part_two">to add</string>
+
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
         <item>Load events</item>
@@ -284,11 +297,13 @@
     <string-array name="pref_theme_entries">
         <item>Light (stock)</item>
         <item>Dark</item>
+        <item>System default</item>
     </string-array>
 
     <string-array name="pref_theme_values">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- Strings related to Settings -->

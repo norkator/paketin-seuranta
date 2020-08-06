@@ -31,35 +31,34 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.multidex.MultiDex;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.multidex.MultiDex;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.paketinseuranta.notifier.PushUtils;
@@ -95,6 +94,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private SwipeRefreshLayout swipeRefreshLayout;
     private CustomParcelsAdapterV2 adapter;
     private ListView trackItemsList;
+    private View emptyView;
     private SharedPreferences sharedPreferences;
     private Boolean SP_UPDATE_FAILED_FIRST = false;
 
@@ -193,27 +193,27 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dataChangeReceiver);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if (ThemeUtils.Theme.isDarkTheme(getBaseContext())) {
+        if (ThemeUtils.Theme.isDarkThemeForced(getBaseContext())) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.BLACK);
-            }
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        } else if (ThemeUtils.Theme.isAutoTheme(getBaseContext())) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
@@ -281,7 +281,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
+        emptyView = findViewById(R.id.emptyView);
         trackItemsList = findViewById(R.id.trackItemsList);
+        trackItemsList.setEmptyView(emptyView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -354,6 +356,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             final String parcelId = data.getStringExtra("PARCEL_ID");
             if (requestCode == ACTIVITY_RESULT_PARCEL_EDITOR && parcelId != null) {
                 // Start service
+                swipeRefreshLayout.setRefreshing(true);
                 Intent intent = new Intent(this, ParcelService.class);
                 intent.putExtra("MODE", 0);
                 intent.putExtra("PARCEL_ID", parcelId);
@@ -467,6 +470,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 intent.putExtra("COURIER_ICONS_ENABLED", true);
                 intent.putExtra("START_AS_FOREGROUND_SERVICE", false);
                 startService(intent);
+                swipeRefreshLayout.setRefreshing(true);
             }
             readItems();
         } catch (RuntimeException ignored) {
@@ -520,8 +524,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     @Override
     public boolean hasActions(int position, SwipeDirection direction) {
         if (direction.isLeft()) return true;
-        if (direction.isRight()) return true;
-        return false;
+        return direction.isRight();
     }
 
     @Override
@@ -664,8 +667,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private void refreshParcels() {
         if (isMyServiceRunning(ParcelService.class)) {
             Toast.makeText(MainMenu.this, R.string.main_menu_update_in_progress_try_again_later, Toast.LENGTH_LONG).show();
-            swipeRefreshLayout.setRefreshing(true);
+            swipeRefreshLayout.setRefreshing(false);
         } else {
+            swipeRefreshLayout.setRefreshing(true);
             Cursor res = databaseHelper.getAllData();
             int TaskCount = res.getCount();
             if (TaskCount == 0) {
@@ -673,7 +677,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 swipeRefreshLayout.setRefreshing(false);
             } else {
                 final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), R.string.main_menu_updating, Snackbar.LENGTH_LONG);
-                ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
+                ((TextView) (snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                 snackBar.show();
                 refreshParcelDataTask();
             }

@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020
+  ~ Paketin Seuranta
+  ~
+  ~ @author developerfromjokela
+  ~ @author norkator
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/backgroundLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
     android:fitsSystemWindows="true"
     tools:context=".Archive"
     android:orientation="vertical">
 
     <include layout="@layout/search_query_section" />
 
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_margin="3dp"
+            app:srcCompat="@drawable/eventsicon" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@string/archive_empty"
+            android:textSize="20sp" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/archiveItemsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        tools:visibility="gone" />
 
 </LinearLayout>

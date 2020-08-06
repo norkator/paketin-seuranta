@@ -31,6 +31,7 @@ import com.nitramite.courier.DHLActiveTrackingStrategy;
 import com.nitramite.courier.DHLAmazonStrategy;
 import com.nitramite.courier.DHLExpressStrategy;
 import com.nitramite.courier.FedExStrategy;
+import com.nitramite.courier.FourPXStrategy;
 import com.nitramite.courier.GlsStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
 import com.nitramite.courier.ParcelObject;
@@ -184,6 +185,12 @@ public class UpdaterLogic {
                                     courier.setCourierStrategy(new CainiaoStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
                                     break;
+                                // 4PX
+                                case CarrierUtils.CARRIER_4PX:
+                                    Log.i(TAG, "# Running 4PX #");
+                                    courier.setCourierStrategy(new FourPXStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    break;
                                 // China Post Registered Air Mail
                                 case CarrierUtils.CARRIER_CPRAM:
                                     Log.i(TAG, "# Running China Post Registered Air Mail #");
@@ -277,11 +284,27 @@ public class UpdaterLogic {
                                     if (parcelServiceParcelItems.get(i).getParcelPhaseItemOld().length() != parcelServiceParcelItems.get(i).getParcelPhaseItemNew().length()
                                             || !parcelServiceParcelItems.get(i).getParcelEventStringOld().equals(parcelServiceParcelItems.get(i).getParcelEventStringNew())) {
                                         // Has difference => show notification for this item
-                                        showNotification(
-                                                context,
-                                                parcelServiceParcelItems.get(i).getParcelCodeItem(),
-                                                parcelServiceParcelItems.get(i).getParcelEventStringNew()
-                                        );
+                                        try {
+                                            if (parcelServiceParcelItems.get(i).getParcelNameItem() != null) {
+                                                showNotification(
+                                                        context,
+                                                        parcelServiceParcelItems.get(i).getParcelNameItem(),
+                                                        parcelServiceParcelItems.get(i).getParcelEventStringNew()
+                                                );
+                                            } else {
+                                                showNotification(
+                                                        context,
+                                                        parcelServiceParcelItems.get(i).getParcelCodeItem(),
+                                                        parcelServiceParcelItems.get(i).getParcelEventStringNew()
+                                                );
+                                            }
+                                        } catch (Exception ignored) {
+                                            showNotification(
+                                                    context,
+                                                    parcelServiceParcelItems.get(i).getParcelCodeItem(),
+                                                    parcelServiceParcelItems.get(i).getParcelEventStringNew()
+                                            );
+                                        }
                                     }
                                 } catch (NullPointerException ignored) {
                                 }
@@ -291,6 +314,7 @@ public class UpdaterLogic {
 
                 } catch (IndexOutOfBoundsException e) {
                     Log.i(TAG, e.toString());
+                    e.printStackTrace();
                 } catch (IllegalStateException e) {
                     Log.i(TAG, e.toString());
                 } catch (ConcurrentModificationException e) {
@@ -334,7 +358,11 @@ public class UpdaterLogic {
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         notification.setSmallIcon(R.drawable.notifsmall);
         notification.setContentTitle(context.getString(R.string.app_name));
-        notification.setContentText(context.getString(R.string.notification_message, changedParcelCodeItem, currentEventText));
+
+        String content = context.getString(R.string.notification_message, changedParcelCodeItem, currentEventText);
+        notification.setContentText(content);
+        notification.setStyle(new NotificationCompat.BigTextStyle().bigText(content).setSummaryText(content));
+
         notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo));
         notification.setContentIntent(pendingIntent);
         notification.setAutoCancel(true);

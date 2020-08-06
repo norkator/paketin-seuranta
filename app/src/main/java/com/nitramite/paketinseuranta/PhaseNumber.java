@@ -1,9 +1,18 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 public class PhaseNumber {
 
     // Status variable names
     final static String PHASE_DELIVERED_STRING = "DELIVERED";
+    public final static String PHASE_WAITING_FOR_PICKUP = "WAIT4PICKUP";
 
     // Status variables integers
     public final static Integer PHASE_IN_TRANSPORT = 2;
@@ -14,12 +23,12 @@ public class PhaseNumber {
     public final static String PHASE_READY_FOR_PICKUP_STR = "3";
 
 
+
     // Returns number equivalent for phase string
     public static PhaseNumberString phaseToNumber(final String phaseString) {
 
         if (phaseString.equals("INTRANSPORT_NOTINFINLAND")) {
             return new PhaseNumberString("1", "INTRANSPORT_NOTINFINLAND");
-
         } else if (phaseString.equals("IN_TRANSPORT") || phaseString.equals("Lähetys on saapunut kohdemaahan.") || phaseString.equals("Lähetys on lajiteltu.")
                 || phaseString.equals("TRANSIT") || phaseString.equals("WAITING")) {
             return new PhaseNumberString("2", "IN_TRANSPORT");
@@ -40,8 +49,10 @@ public class PhaseNumber {
         } else if ( phaseString.equals("RETURNED") || phaseString.equals("RETURNED_TO_SENDER") ) {
             return new PhaseNumberString("5", "RETURNED");
 
-        } else if ( phaseString.equals("CUSTOMS") || phaseString.contains("odottaa tullaustasi") || phaseString.contains("tullaus") ) {
+        } else if (phaseString.equals("CUSTOMS") || phaseString.contains("odottaa tullaustasi") || phaseString.contains("tullaus")) {
             return new PhaseNumberString("6", "CUSTOMS");
+        } else if (phaseString.equals(PHASE_WAITING_FOR_PICKUP)) {
+            return new PhaseNumberString("9", PHASE_WAITING_FOR_PICKUP);
         }
 
 

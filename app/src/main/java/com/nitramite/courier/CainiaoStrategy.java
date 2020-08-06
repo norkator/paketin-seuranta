@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -125,7 +126,10 @@ public class CainiaoStrategy implements CourierStrategy {
         }
         setBasicDetails(parcelObject, detailsObject);
         // Add to stack
-        parcelObject.setEventObjects(eventObjects);
+        if (!eventObjects.isEmpty())
+            parcelObject.setEventObjects(eventObjects);
+        else
+            parcelObject.setEventObjects(null);
     }
 
     private EventObject parseEventObject(JSONObject event) throws JSONException, ParseException {
@@ -152,11 +156,13 @@ public class CainiaoStrategy implements CourierStrategy {
         String dest = jsonObject.optString("destCountry", "null");
         String status = jsonObject.optString("status", "");
         parcelObject.setDestinationCountry(dest);
-
+        Log.i(TAG, status);
         if (status.equals("LTL_SIGNIN") || status.equals("SIGNIN") || status.equals("OWS_SIGNIN") || status.contains("WAIT4SIGNIN")) {
             parcelObject.setPhase("DELIVERED");
-        } else if (status.equals("CWS_WAIT4SIGNIN") || status.equals("LTL_WAIT4SIGNIN") || status.equals("WAIT4SIGNIN") || status.contains("WAIT4PICKUP")) {
+        } else if (status.equals("CWS_WAIT4SIGNIN") || status.equals("LTL_WAIT4SIGNIN") || status.equals("WAIT4SIGNIN")) {
             parcelObject.setPhase("READY_FOR_PICKUP");
+        } else if (status.contains("WAIT4PICKUP")) {
+            parcelObject.setPhase(PhaseNumber.PHASE_WAITING_FOR_PICKUP);
         } else if (status.contains("RETURN")) {
             parcelObject.setPhase("RETURNED");
         }
