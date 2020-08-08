@@ -619,7 +619,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
         AboutDialog.Builder aboutDialog = new AboutDialog.Builder(MainMenu.this)
                 // .setImageRecourse(R.mipmap.ps_logo_round)
-                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round))
+                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round_big))
                 .setTextTitle(R.string.main_menu_about_title)
                 .setTitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
                 .setSubtitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)

@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/package_edit_dialog_name_package_hint"
                 android:nextFocusForward="@+id/trackingCodeET"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="text" />
 
 
             <TextView
@@ -50,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/package_edit_dialog_tracking_code_hint"
                 android:nextFocusForward="@+id/lockerCodeET"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="text"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -105,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/package_edit_dialog_locker_code_hint"
                 android:nextFocusForward="@+id/senderET"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:inputType="text" />
 
 
             <TextView

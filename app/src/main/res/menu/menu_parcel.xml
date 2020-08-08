@@ -7,7 +7,8 @@
         android:id="@+id/action_edit_package"
         android:icon="@drawable/ic_edit"
         android:title="@string/menu_parcel_edit_information"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/action_clipboard"

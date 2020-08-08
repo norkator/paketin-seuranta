@@ -154,7 +154,7 @@ public class AboutDialog extends DialogFragment {
             if (builder.getImageRecourse() != 0) {
                 //Drawable imageRes = VectorDrawableCompat.create(getResources(), builder.getImageRecourse(), getActivity().getTheme());
                 //image.setImageDrawable(imageRes);
-                image.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.logo_round));
+                image.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ps_logo_round_big));
             } else if (builder.getImageDrawable() != null) {
                 image.setImageDrawable(builder.getImageDrawable());
             } else {

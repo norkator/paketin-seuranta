@@ -1,9 +1,12 @@
 package com.nitramite.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+
 import androidx.cardview.widget.CardView;
+
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.nitramite.paketinseuranta.Parcel;
@@ -38,9 +42,10 @@ public class CustomBarcodeListAdapter extends ArrayAdapter<String> {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.custom_barcodes_list_adapter, null, true);
+        @SuppressLint({"InflateParams", "ViewHolder"}) View rowView = inflater.inflate(R.layout.custom_barcodes_list_adapter, null, true);
 
         // Find views
         CardView cardView = rowView.findViewById(R.id.cardView);
