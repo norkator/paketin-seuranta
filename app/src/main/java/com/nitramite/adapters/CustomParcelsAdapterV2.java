@@ -188,21 +188,24 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
             // Sender
             if (parcelItems.get(position).getParcelSender() != null && !parcelItems.get(position).getParcelSender().equals("")) {
                 fourthLineTitle.setVisibility(View.VISIBLE);
-                fourthLineTitle.setText(context.getString(R.string.parcel_sender) + " ");
+                String str = context.getString(R.string.parcel_sender) + " ";
+                fourthLineTitle.setText(str);
                 fourthLineNormal.setVisibility(View.VISIBLE);
                 fourthLineNormal.setText(parcelItems.get(position).getParcelSender());
             }
             // Delivery method
             if (parcelItems.get(position).getParcelDeliveryMethod() != null && !parcelItems.get(position).getParcelDeliveryMethod().equals("")) {
                 fifthLineTitle.setVisibility(View.VISIBLE);
-                fifthLineTitle.setText(context.getString(R.string.parcel_delivery_method) + " ");
+                String str = context.getString(R.string.parcel_delivery_method) + " ";
+                fifthLineTitle.setText(str);
                 fifthLineNormal.setVisibility(View.VISIBLE);
                 fifthLineNormal.setText(parcelItems.get(position).getParcelDeliveryMethod());
             }
             // Additional notes
             if (parcelItems.get(position).getParcelAdditionalNote() != null && !parcelItems.get(position).getParcelAdditionalNote().equals("")) {
                 sixthLineTitle.setVisibility(View.VISIBLE);
-                sixthLineTitle.setText(context.getString(R.string.parcel_additional_notes) + " ");
+                String str = context.getString(R.string.parcel_additional_notes) + " ";
+                sixthLineTitle.setText(str);
                 sixthLineNormal.setVisibility(View.VISIBLE);
                 sixthLineNormal.setText(parcelItems.get(position).getParcelAdditionalNote());
             }
@@ -213,7 +216,8 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         if (parcelItems.get(position).getParcelLastPickupDate() != null) {
             if (!parcelItems.get(position).getParcelLastPickupDate().equals("") && !parcelItems.get(position).getParcelLastPickupDate().equals("null")) {
                 seventhLineNormal.setVisibility(View.VISIBLE);
-                seventhLineNormal.setText(context.getString(R.string.parcel_last_pickup_date) + " " + parcelItems.get(position).getParcelLastPickupDate());
+                String str = context.getString(R.string.parcel_last_pickup_date) + " " + parcelItems.get(position).getParcelLastPickupDate();
+                seventhLineNormal.setText(str);
             }
         }
 
@@ -223,7 +227,8 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
             parcelUpdateStatusTV.setText(parcelItems.get(position).getParcelUpdateStatus());
         } else {
             if (parcelItems.get(position).getParcelCreateDate() != null && !parcelItems.get(position).getParcelCreateDate().equals("null")) {
-                parcelUpdateStatusTV.setText(context.getString(R.string.parcel_parcel_added_time_stamp) + " " + parcelItems.get(position).getParcelCreateDate());
+                String str = context.getString(R.string.parcel_parcel_added_time_stamp) + " " + parcelItems.get(position).getParcelCreateDate();
+                parcelUpdateStatusTV.setText(str);
             } else {
                 parcelUpdateStatusTV.setVisibility(View.GONE);
             }

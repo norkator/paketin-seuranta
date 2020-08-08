@@ -211,10 +211,10 @@ public class AboutDialog extends DialogFragment {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 switch (builder.getButtonsGravity()) {
                     case LEFT:
-                        params.gravity = Gravity.LEFT;
+                        params.gravity = Gravity.START;
                         break;
                     case RIGHT:
-                        params.gravity = Gravity.RIGHT;
+                        params.gravity = Gravity.END;
                         break;
                     case CENTER:
                         params.gravity = Gravity.CENTER;

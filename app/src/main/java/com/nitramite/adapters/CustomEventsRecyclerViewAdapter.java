@@ -46,7 +46,8 @@ public class CustomEventsRecyclerViewAdapter extends RecyclerView.Adapter<Custom
         if (locationCodeFix.length() == 4) {
             locationCodeFix = "-";
         }
-        holder.locationcodenameOutput.setText(locationCodeFix + ", " + parcelEventsArray_LOCATIONNAMES.get(position));
+        String str = locationCodeFix + ", " + parcelEventsArray_LOCATIONNAMES.get(position);
+        holder.locationcodenameOutput.setText(str);
     }
 
     @Override

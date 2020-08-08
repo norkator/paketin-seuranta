@@ -30,14 +30,12 @@
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:background="@null"
         android:text="@string/intro_next_button"
         android:textColor="@android:color/white"
         tools:ignore="RelativeOverlap"
-        android:layout_alignParentRight="true"
         android:layout_marginEnd="5dp" />
 
 </RelativeLayout>

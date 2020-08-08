@@ -50,7 +50,6 @@
                 android:gravity="center_vertical"
                 android:hint="Aika"
                 android:paddingStart="10dp"
-                android:paddingLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 tools:ignore="HardcodedText,RtlSymmetry" />
 
@@ -76,7 +75,6 @@
                 android:gravity="center_vertical"
                 android:hint="Sijaintikoodi ja paikkakunta"
                 android:paddingStart="10dp"
-                android:paddingLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 tools:ignore="HardcodedText,RtlSymmetry" />
 
