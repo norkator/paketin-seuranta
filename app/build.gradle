@@ -43,6 +43,7 @@ android {
         disable 'IconLocation'
         disable 'IconDuplicates'
         disable 'IconMissingDensityFolder'
+        disable 'ObsoleteLintCustomCheck'
     }
 }
 
