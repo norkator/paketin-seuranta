@@ -259,6 +259,7 @@
     <string name="description">Selite</string>
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
+  
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

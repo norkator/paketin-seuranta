@@ -259,6 +259,7 @@
     <string name="description">Description</string>
     <string name="carrier_detector_tool">Carrier detector tool</string>
     <string name="carrier_detector_tool_description">This tool tries to find possible carriers for given tracking code. If tool gives options, you can select one via clicking carrier image.</string>
+    <string name="reference_to_database_is_null_cannot_add_items">Reference to database is missing, cannot add items!</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
