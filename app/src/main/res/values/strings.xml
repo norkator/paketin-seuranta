@@ -86,8 +86,6 @@
     <string name="main_menu_take_backup_with_this_tool_text">With this tool you can take backup from internal database or restore taken backup. Feature requires access to your phones internal storage, where app can save backup file. After giving permission run this feature again.</string>
     <string name="main_menu_take_backup">Take backup</string>
     <string name="main_menu_result">Result</string>
-    <string name="main_menu_taking_backup_was_successfull_for_following_directory">Taking backup was successful. File is saved on location:</string>
-    <string name="main_menu_taking_backup_failed">Taking backup failed. This happens sometimes when app was creating required folders but it took too long time. Run this feature again.</string>
     <string name="archive_title">Archive</string>
     <string name="archive_delete_title">Delete</string>
     <string name="archive_delete_description">You are about to delete archived item. Do you want to continue?</string>
@@ -259,7 +257,9 @@
     <string name="description">Description</string>
     <string name="carrier_detector_tool">Carrier detector tool</string>
     <string name="carrier_detector_tool_description">This tool tries to find possible carriers for given tracking code. If tool gives options, you can select one via clicking carrier image.</string>
-    <string name="backup_location_external_storage_downloads_dir">External storage downloads directory.</string>
+    <string name="main_menu_taking_backup_success">Taking backup was successful. File can be found from: </string>
+    <string name="main_menu_taking_backup_failed">Taking backup failed. Please try again. If taking backup fails multiple time, please contact developer.</string>
+    <string name="backup_location_external_storage_downloads_dir">external storage downloads directory with a name </string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

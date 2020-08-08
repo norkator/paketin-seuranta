@@ -63,6 +63,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.paketinseuranta.notifier.PushUtils;
+import com.nitramite.utils.Backup;
 import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
@@ -768,18 +769,22 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
         takeBackupBtn.setOnClickListener(view -> {
             if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                if (BackupUtils.backupDatabase(MainMenu.this)) {
-                    //noinspection HardCodedStringLiteral
-                    genericErrorDialog(getString(R.string.main_menu_result), getString(R.string.main_menu_taking_backup_was_successfull_for_following_directory) + " " +
-                            Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
+                Backup backup = BackupUtils.backupDatabase(MainMenu.this);
+                if (backup.isSuccess()) {
+                    genericErrorDialog(
+                            getString(R.string.main_menu_result),
+                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation() + " " + backup.getFileName()
+                    );
                 } else {
                     genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.main_menu_taking_backup_failed));
                 }
             }
         });
+
         restoreBackupBtn.setOnClickListener(view -> {
             if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                if (BackupUtils.restoreDatabase(MainMenu.this)) {
+                Backup backup = BackupUtils.restoreDatabase(MainMenu.this);
+                if (backup.isSuccess()) {
                     Toast.makeText(MainMenu.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
                     MainMenu.this.finish();
                 } else {
@@ -787,6 +792,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 }
             }
         });
+
         closeBtn.setOnClickListener(view -> {
             dialog.dismiss();
         });
@@ -795,25 +801,23 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     @SuppressWarnings("HardCodedStringLiteral")
     private void checkForAutomaticBackup() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false)) {
-                final String lastBackupDate = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
-                Calendar c = Calendar.getInstance();
-                if (lastBackupDate == null) {
-                    BackupUtils.backupDatabase(this);
-                    saveBackupDate(c);
-                } else {
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                        c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
-                        c.add(Calendar.DATE, 5);
-                        if (c.getTimeInMillis() < System.currentTimeMillis()) {
-                            BackupUtils.backupDatabase(this);
-                            saveBackupDate(c);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+        if (sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false)) {
+            final String lastBackupDate = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
+            Calendar c = Calendar.getInstance();
+            if (lastBackupDate == null) {
+                BackupUtils.backupDatabase(this);
+                saveBackupDate(c);
+            } else {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                    c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
+                    c.add(Calendar.DATE, 5);
+                    if (c.getTimeInMillis() < System.currentTimeMillis()) {
+                        BackupUtils.backupDatabase(this);
+                        saveBackupDate(c);
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }

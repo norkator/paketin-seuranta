@@ -86,8 +86,6 @@
     <string name="main_menu_take_backup_with_this_tool_text">Tällä työkalulla voit ottaa sovelluksen sisäisestä kannasta varmuuskopion ja myös palauttaa varmuuskopion tarpeen vaatiessa. Toiminto vaatii pääsyn tallennustilaan, jotta varmuuskopio voidaan tallentaa ulos sovelluksen omasta sisäisestä kansiosta. Tallennustila oikeuden annon jälkeen aja tämä uudelleen.</string>
     <string name="main_menu_take_backup">Ota varmuuskopio</string>
     <string name="main_menu_result">Tulos</string>
-    <string name="main_menu_taking_backup_was_successfull_for_following_directory">Varmuuskopion otto onnistui. Tiedosto on tallennettu sijaintiin:</string>
-    <string name="main_menu_taking_backup_failed">Varmuuskopion otto epäonnistui. Tämä tapahtuu joskus kun sovellus ei ilmeisesti ehdi luomaan kansioita. Yritä uudelleen niin toiminnon pitäisi onnistua.</string>
     <string name="archive_title">Arkisto</string>
     <string name="archive_delete_title">Poisto</string>
     <string name="archive_delete_description">Olet poistamassa arkistoidun paketin listalta. Haluatko jatkaa?</string>
@@ -259,6 +257,9 @@
     <string name="description">Selite</string>
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
+    <string name="main_menu_taking_backup_success">Varmuuskopion otto onnistui. Tiedosto löytyy sijainnista:</string>
+    <string name="main_menu_taking_backup_failed">Varmuuskopion otto epäonnistui. Yritä kerran uudelleen. Jos varmuuskopion otto epäonnistuu uudelleen, ota yhteys kehittäjään.</string>
+    <string name="backup_location_external_storage_downloads_dir">ulkoisen muistin lataukset kansio, tiedosto nimeltä </string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

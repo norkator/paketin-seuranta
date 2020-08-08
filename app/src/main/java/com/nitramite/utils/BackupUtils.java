@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.nitramite.paketinseuranta.R;
 
@@ -18,7 +19,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
 
@@ -58,9 +58,10 @@ public class BackupUtils {
     public static Backup restoreDatabase(Context context) {
         Backup backup = new Backup();
         try {
-
             File targetPathFile = getCleanedAppDBTargetPath(context);
             FileInputStream fileInputStream = getDBFileInputSteamFromExternalStorage(context);
+
+            Log.i(TAG, targetPathFile.getPath());
 
             OutputStream output = new FileOutputStream(targetPathFile);
             byte[] buffer = new byte[1024];
@@ -77,6 +78,7 @@ public class BackupUtils {
             backup.setSuccess(true);
             return backup;
         } catch (IOException e) {
+            Log.i(TAG, e.toString());
             return backup;
         }
     }
@@ -104,7 +106,7 @@ public class BackupUtils {
      * @return file output stream
      * @throws FileNotFoundException todo: document uri not found?
      */
-    private static OutputStream getDBOutputStream(Context context, Backup backup) throws FileNotFoundException {
+    private static OutputStream getDBOutputStream(Context context, Backup backup) throws FileNotFoundException, NullPointerException {
         OutputStream outputStream = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContentResolver resolver = context.getContentResolver();
@@ -132,23 +134,23 @@ public class BackupUtils {
      * @return file input steam
      * @throws FileNotFoundException db file not found
      */
-    private static FileInputStream getDBFileInputSteamFromExternalStorage(Context context) throws FileNotFoundException {
+    private static FileInputStream getDBFileInputSteamFromExternalStorage(Context context) throws FileNotFoundException, NullPointerException {
         FileInputStream fileInputStream = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContentResolver resolver = context.getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, DATABASE_NAME);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/x-sqlite3");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-            Uri documentUri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
-            assert documentUri != null;
-            fileInputStream = new FileInputStream(Objects.requireNonNull(context.getContentResolver().openFileDescriptor(documentUri, "r")).getFileDescriptor());
-        } else {
-            @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+
+            // TODO: Wrong implementation because Google's documentation sucks with this subject.
+            // TODO: currently using android:requestLegacyExternalStorage="true" at manifest.
+            // TODO: research proper solution!
+            @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStorageDirectory() + "/Download/";
             File file = new File(downloadsDir, DATABASE_NAME);
             fileInputStream = new FileInputStream(file);
-        }
 
+        } else {
+            @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStorageDirectory() + "/Download/";
+            File file = new File(downloadsDir, DATABASE_NAME);
+            fileInputStream = new FileInputStream(file);
+
+        }
         return fileInputStream;
     }
 
