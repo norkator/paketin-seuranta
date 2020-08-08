@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ListTrackResponse {
 
     @SerializedName("data")

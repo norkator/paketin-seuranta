@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ParcelServiceTimer extends Service {
 
     // Logging
@@ -65,6 +66,7 @@ public class ParcelServiceTimer extends Service {
     }
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     class TimeDisplayTimerTask extends TimerTask {
 
         @Override
@@ -97,8 +99,6 @@ public class ParcelServiceTimer extends Service {
                         startService(intent);
                     }
 
-                } catch (IllegalStateException e) {
-                    Log.i(TAG, e.toString());
                 } catch (Exception e) {
                     Log.i(TAG, e.toString());
                 }

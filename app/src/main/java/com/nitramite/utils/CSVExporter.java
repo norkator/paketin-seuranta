@@ -11,9 +11,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CSVExporter {
 
     //  Logging
@@ -53,7 +55,7 @@ public class CSVExporter {
         CSVWriter csvWrite = null;
         try {
             // Init writer
-            csvWrite = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvExportFile), "UTF-8"));
+            csvWrite = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvExportFile), StandardCharsets.UTF_8));
             // Prepare cursor
             Cursor cursor = databaseHelper.getArchiveForCSVExport(nameChecked, parcelCodeChecked, senderChecked, deliveryMethodChecked,
                     parcelAddDateChecked, parcelLastEventChecked, readyForPickupDateChecked, productPageChecked);

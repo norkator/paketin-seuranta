@@ -24,9 +24,12 @@ import com.google.zxing.integration.android.IntentResult;
 import com.nitramite.utils.CarrierUtils;
 import com.nitramite.utils.LocaleUtils;
 
+import org.jetbrains.annotations.NonNls;
+
 public class ParcelEditor extends AppCompatActivity {
 
     //  Logging
+    @NonNls
     private static final String TAG = "ParcelEditor";
 
     // Marshmallow+ permission request
@@ -62,7 +65,7 @@ public class ParcelEditor extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
 
         // New or existing package
-        Intent intent = getIntent();
+        @NonNls Intent intent = getIntent();
         parcelId = intent.getStringExtra("PARCEL_ID");
         if (parcelId != null) {
             setTitle(R.string.edit_tracked_delivery);

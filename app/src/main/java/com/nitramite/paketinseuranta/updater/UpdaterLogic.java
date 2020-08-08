@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class UpdaterLogic {
 
     private static String TAG = "UpdaterLogic";

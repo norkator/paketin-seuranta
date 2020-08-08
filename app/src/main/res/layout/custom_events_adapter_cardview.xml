@@ -37,7 +37,6 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/imageView5"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/timestamp"
@@ -51,7 +50,6 @@
                 android:gravity="center_vertical"
                 android:hint="Aika"
                 android:paddingStart="10dp"
-                android:paddingLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 tools:ignore="HardcodedText,RtlSymmetry" />
 
@@ -64,7 +62,6 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/imageView6"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/locationcodename"
@@ -78,7 +75,6 @@
                 android:gravity="center_vertical"
                 android:hint="Sijaintikoodi ja paikkakunta"
                 android:paddingStart="10dp"
-                android:paddingLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 tools:ignore="HardcodedText,RtlSymmetry" />
 

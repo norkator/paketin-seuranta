@@ -10,6 +10,7 @@ package com.nitramite.utils;
 
 import okhttp3.MediaType;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class OkHttpUtils {
 
     public static final MediaType JSON

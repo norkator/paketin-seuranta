@@ -49,51 +49,49 @@ public class CustomZoomLayout extends FrameLayout implements ScaleGestureDetecto
         init(context);
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @SuppressLint("ClickableViewAccessibility")
     private void init(Context context) {
         final ScaleGestureDetector scaleDetector = new ScaleGestureDetector(context, this);
-        this.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (scale > MIN_ZOOM) {
-                            mode = Mode.DRAG;
-                            startX = motionEvent.getX() - prevDx;
-                            startY = motionEvent.getY() - prevDy;
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mode == Mode.DRAG) {
-                            dx = motionEvent.getX() - startX;
-                            dy = motionEvent.getY() - startY;
-                        }
-                        break;
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        mode = Mode.ZOOM;
-                        break;
-                    case MotionEvent.ACTION_POINTER_UP:
+        this.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    if (scale > MIN_ZOOM) {
                         mode = Mode.DRAG;
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        mode = Mode.NONE;
-                        prevDx = dx;
-                        prevDy = dy;
-                        break;
-                }
-                scaleDetector.onTouchEvent(motionEvent);
-
-                if ((mode == Mode.DRAG && scale >= MIN_ZOOM) || mode == Mode.ZOOM) {
-                    getParent().requestDisallowInterceptTouchEvent(true);
-                    float maxDx = (child().getWidth() - (child().getWidth() / scale)) / 2 * scale;
-                    float maxDy = (child().getHeight() - (child().getHeight() / scale)) / 2 * scale;
-                    dx = Math.min(Math.max(dx, -maxDx), maxDx);
-                    dy = Math.min(Math.max(dy, -maxDy), maxDy);
-                    applyScaleAndTranslation();
-                }
-
-                return true;
+                        startX = motionEvent.getX() - prevDx;
+                        startY = motionEvent.getY() - prevDy;
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (mode == Mode.DRAG) {
+                        dx = motionEvent.getX() - startX;
+                        dy = motionEvent.getY() - startY;
+                    }
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mode = Mode.ZOOM;
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = Mode.DRAG;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    mode = Mode.NONE;
+                    prevDx = dx;
+                    prevDy = dy;
+                    break;
             }
+            scaleDetector.onTouchEvent(motionEvent);
+
+            if ((mode == Mode.DRAG && scale >= MIN_ZOOM) || mode == Mode.ZOOM) {
+                getParent().requestDisallowInterceptTouchEvent(true);
+                float maxDx = (child().getWidth() - (child().getWidth() / scale)) / 2 * scale;
+                float maxDy = (child().getHeight() - (child().getHeight() / scale)) / 2 * scale;
+                dx = Math.min(Math.max(dx, -maxDx), maxDx);
+                dy = Math.min(Math.max(dy, -maxDy), maxDy);
+                applyScaleAndTranslation();
+            }
+
+            return true;
         });
     }
 

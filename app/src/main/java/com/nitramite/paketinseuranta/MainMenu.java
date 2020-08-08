@@ -68,15 +68,20 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
 
+import org.jetbrains.annotations.NonNls;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener {
 
     //  Logging
+    @NonNls
     private static final String TAG = "MainMenu";
 
     // Main items
@@ -118,15 +123,14 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     // Parcel service finish broad cast receiver
     private BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
+        @SuppressWarnings("HardCodedStringLiteral")
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
             int serviceMode = 0;
             String parcelID = "";
             String parcelCode = "";
-            if (extras == null) {
-                Log.i(TAG, "!No extras from service broadcast receiver!");
-            } else {
+            if (extras != null) {
                 serviceMode = extras.getInt("MODE");
                 parcelCode = extras.getString("PARCEL_CODE");
                 parcelID = extras.getString("PARCEL_ID");
@@ -141,6 +145,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     // Package update animation receiver for each service service package update
     private BroadcastReceiver packageUpdateChangeReceiver = new BroadcastReceiver() {
+        @SuppressWarnings("HardCodedStringLiteral")
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
@@ -150,7 +155,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 if (sharedPreferences.getBoolean("SP_PACKAGE_UPDATE_NOTIFY_SNACKBAR", true)) {
                     if (extras.getString("TASK_PACKAGE_IDENTITY") != null) {
                         final Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), extras.getString("TASK_PACKAGE_IDENTITY") + " " + getString(R.string.main_menu_snackbar_message_updated), Snackbar.LENGTH_SHORT);
-                        ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
+                        ((TextView) (snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                         snackBar.show();
                     }
                 }
@@ -159,6 +164,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     };
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     protected void onStart() {
         super.onStart();
@@ -204,6 +210,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         super.onResume();
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -228,19 +235,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         }
 
 
-        // Install security provider, which is not supported by android kitkat for ssl connections
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            try {
-                ProviderInstaller.installIfNeeded(getApplicationContext());
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        //startActivity(new Intent(MainMenu.this, Archive.class));
         // Stop service if running
         stopService(new Intent(MainMenu.this, ParcelService.class));
 
@@ -256,28 +250,13 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         } else {
             PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
         }
-        /*if (!SP_PARCELS_AUTOMATIC_UPDATE) {
-            if (isMyServiceRunning(ParcelServiceTimer.class)) {
-                stopService(new Intent(MainMenu.this, ParcelServiceTimer.class));
-            }
-        }*/
 
 
         // Intro logic, show intro if not shown yet
-        if (!sharedPreferences.getBoolean(Constants.SP_INTRO_IS_SHOWN, false) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (!sharedPreferences.getBoolean(Constants.SP_INTRO_IS_SHOWN, false)) {
             startActivity(new Intent(MainMenu.this, Intro.class));
         }
 
-
-        // -----------------------------------------------------------------------------------------
-
-        // Status bar tint
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.colorPrimary);
-        }
 
         // -----------------------------------------------------------------------------------------
 
@@ -318,9 +297,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         checkForAutomaticBackup();
 
 
-        Log.i(TAG, "-------------- SERVICE CHECK --------------");
-        Log.i(TAG, "ParcelServiceTimer.class running: " + isMyServiceRunning(ParcelServiceTimer.class));
-        Log.i(TAG, "-------------------------------------------");
+        Log.i(TAG, "-------------- SERVICE CHECK --------------"); //NON-NLS
+        Log.i(TAG, "ParcelServiceTimer.class running: " + isMyServiceRunning(ParcelServiceTimer.class)); //NON-NLS
+        Log.i(TAG, "-------------------------------------------"); //NON-NLS
     } // End of onCreate();
 
     // ---------------------------------------------------------------------------------------------
@@ -346,6 +325,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     }
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -372,6 +352,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     // ---------------------------------------------------------------------------------------------
 
     // ON CLICK LISTENER
+    @SuppressWarnings("HardCodedStringLiteral")
     private void setupListViewListener2() {
         trackItemsList.setOnItemClickListener(
                 (parent, view, position, id) -> {
@@ -403,6 +384,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                             trackingEvents_LOCATIONNAMES.clear();
                             Cursor res = databaseHelper.getAllTrackingData(parcelItems.get(pos).getParcelId());
                             if (res.getCount() == 0) {
+                                //noinspection HardCodedStringLiteral
                                 Log.i(TAG, "Got nothing saved on tracking table with parcelID: " + parcelItems.get(pos).getParcelCode());
                             }
                             while (res.moveToNext()) {
@@ -421,6 +403,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                         Toast.makeText(MainMenu.this, R.string.main_menu_code_copied_to_your_clipboard, Toast.LENGTH_SHORT).show();
                     } else if (longTapSelectedAction.equals("") || longTapSelectedAction.equals(longTapArrayItems[2])) { // Edit information
                         Intent intent = new Intent(MainMenu.this, ParcelEditor.class);
+                        //noinspection HardCodedStringLiteral
                         intent.putExtra("PARCEL_ID", parcelItems.get(pos).getParcelId());
                         startActivityForResult(intent, ACTIVITY_RESULT_PARCEL_EDITOR);
                     } else {
@@ -435,7 +418,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     public void showPackageEventsDialog() {
         if (trackingEvents_FIS.size() > 0) {
             final Dialog dialog = new Dialog(MainMenu.this);
-            dialog.setTitle("Tapahtumat");
+            dialog.setTitle(getString(R.string.content_parcel_parcel_events_title));
             dialog.setContentView(R.layout.custom_events_recycler_view);
             dialog.setCanceledOnTouchOutside(false);
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -459,6 +442,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     // ---------------------------------------------------------------------------------------------
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     public void refreshParcelDataTask() {
         try {
             if (!isMyServiceRunning(ParcelService.class)) {
@@ -637,10 +621,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                         getString(R.string.main_menu_version_name) + " " + appVersionName;
 
 
-
         AboutDialog.Builder aboutDialog = new AboutDialog.Builder(MainMenu.this)
                 // .setImageRecourse(R.mipmap.ps_logo_round)
-                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round))
+                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round_big))
                 .setTextTitle(R.string.main_menu_about_title)
                 .setTitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
                 .setSubtitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
@@ -654,6 +637,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 .setOnNegativeClicked((view, dialog) -> dialog.dismiss())
                 .setUserManualButtonText(R.string.menu_menu_user_manual)
                 .setOnUserManualClicked((view, dialog) -> {
+                    //noinspection HardCodedStringLiteral
                     String url = "http://www.nitramite.com/paketin-seuranta.html";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
@@ -788,6 +772,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             takeBackupBtn.setOnClickListener(view -> {
                 if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     if (databaseHelper.backupDatabase(MainMenu.this)) {
+                        //noinspection HardCodedStringLiteral
                         genericErrorDialog(getString(R.string.main_menu_result), getString(R.string.main_menu_taking_backup_was_successfull_for_following_directory) + " " +
                                 Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
                     } else {
@@ -814,6 +799,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     }
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private void checkForAutomaticBackup() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false)) {
@@ -824,8 +810,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     saveBackupDate(c);
                 } else {
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        c.setTime(sdf.parse(lastBackupDate));
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                        c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
                         c.add(Calendar.DATE, 5);
                         if (c.getTimeInMillis() < System.currentTimeMillis()) {
                             databaseHelper.backupDatabase(this);
@@ -839,9 +825,10 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         }
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private void saveBackupDate(Calendar calendar) {
         Date now = calendar.getTime();
-        SimpleDateFormat simpleDate =  new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String strDt = simpleDate.format(now);
         SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor normalEditor = setSharedPreferences.edit();

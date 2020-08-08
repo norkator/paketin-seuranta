@@ -21,6 +21,7 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 public class FragmentNumberList extends Fragment {
 
     // Logging
+    @SuppressWarnings("HardCodedStringLiteral")
     private static final String TAG = "FragmentNumberList";
 
     // Activity components
@@ -49,7 +50,7 @@ public class FragmentNumberList extends Fragment {
 
         pasteBtn.setOnClickListener(v12 -> {
             StringBuilder clipStringBuilder = new StringBuilder();
-            ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(getContext()).getSystemService(CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(CLIPBOARD_SERVICE);
             if (clipboard != null) {
                 if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClip() != null) {
                     for (int i = 0; i < clipboard.getPrimaryClip().getItemCount(); i++) {
@@ -125,7 +126,7 @@ public class FragmentNumberList extends Fragment {
                     getActivity().finish(); // Finish this activity
                 }
             } else {
-                Toast.makeText(getContext(), "Reference to database is null, cannot add items!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.reference_to_database_is_null_cannot_add_items, Toast.LENGTH_LONG).show();
             }
         } catch (StringIndexOutOfBoundsException ignored) {
         }

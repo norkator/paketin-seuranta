@@ -31,6 +31,7 @@ import com.nitramite.utils.LocaleUtils;
  * This is Parcel data update controller.
  * Works with modes
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class ParcelService extends Service {
 
     // Main variables

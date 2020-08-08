@@ -2,6 +2,8 @@ package com.nitramite.courier;
 
 import android.util.Log;
 import com.nitramite.paketinseuranta.EventObject;
+
+import org.jetbrains.annotations.NonNls;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,9 +13,11 @@ import java.util.ArrayList;
 public class ChinaPostAirMailStrategy implements CourierStrategy {
 
     // Logging
+    @NonNls
     private static final String TAG = "CPRAM";
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);

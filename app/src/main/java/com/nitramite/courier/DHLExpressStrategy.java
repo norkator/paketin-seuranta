@@ -16,11 +16,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class DHLExpressStrategy implements CourierStrategy {
 
     // Logging
@@ -62,7 +64,7 @@ public class DHLExpressStrategy implements CourierStrategy {
 
                 // Parse all package related normal data found
                 if (jsonChildNode.has("delivery")) {
-                    parcelObject.setPhase(jsonChildNode.getJSONObject("delivery").getString("status").toUpperCase()); // Phase
+                    parcelObject.setPhase(jsonChildNode.getJSONObject("delivery").getString("status").toUpperCase(Locale.getDefault())); // Phase
                 } else {
                     parcelObject.setPhase("TRANSIT"); // Set as transit phase since it's still coming
                 }

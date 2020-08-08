@@ -38,6 +38,7 @@ import java.util.Locale;
 /**
  * Created by Martin on 28.1.2016.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class MyPreferencesActivity extends AppCompatActivity {
 
 
@@ -46,7 +47,6 @@ public class MyPreferencesActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(this, MainMenu.class));
     }
-
 
 
     //  Logging
@@ -64,25 +64,21 @@ public class MyPreferencesActivity extends AppCompatActivity {
     }
 
 
-
     protected <T extends Fragment> T initFragment(@IdRes int target,
-                                                  @NonNull T fragment)
-    {
+                                                  @NonNull T fragment) {
         return initFragment(target, fragment, null);
     }
 
     protected <T extends Fragment> T initFragment(@IdRes int target,
                                                   @NonNull T fragment,
-                                                  @Nullable Locale locale)
-    {
+                                                  @Nullable Locale locale) {
         return initFragment(target, fragment, locale, null);
     }
 
     protected <T extends Fragment> T initFragment(@IdRes int target,
                                                   @NonNull T fragment,
                                                   @Nullable Locale locale,
-                                                  @Nullable Bundle extras)
-    {
+                                                  @Nullable Bundle extras) {
         Bundle args = new Bundle();
 
         if (extras != null) {
@@ -132,7 +128,7 @@ public class MyPreferencesActivity extends AppCompatActivity {
 
         // Change listener
         myPreferenceFragment.getFragmentManager().executePendingTransactions();
-        ListPreference listPreference = (ListPreference) myPreferenceFragment.findPreference(Constants.SP_THEME_SELECTION);
+        ListPreference listPreference = myPreferenceFragment.findPreference(Constants.SP_THEME_SELECTION);
         listPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             recreate();
             return true;
@@ -156,8 +152,6 @@ public class MyPreferencesActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     public static class MyPreferenceFragment extends PreferenceFragmentCompat {
@@ -171,15 +165,13 @@ public class MyPreferencesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB
-                        && getFragmentManager().getBackStackEntryCount() > 0) {
-                    getFragmentManager().popBackStack();
-                } else {
-                    MyPreferencesActivity.this.onBackPressed();
-                }
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            } else {
+                MyPreferencesActivity.this.onBackPressed();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -22,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class FedExStrategy implements CourierStrategy {
 
     // Logging
@@ -66,7 +68,7 @@ public class FedExStrategy implements CourierStrategy {
                 parcelObject.setIsFound(true); // Parcel is found
 
                 // Parse all package related normal data which is found
-                final String keyStatusStr = jsonChildNode.getString("keyStatus").toUpperCase();
+                final String keyStatusStr = jsonChildNode.getString("keyStatus").toUpperCase(Locale.getDefault());
                 if (keyStatusStr.equals("LABEL CREATED") || keyStatusStr.contains("TRANSPORT") || keyStatusStr.contains("TRANSIT") || keyStatusStr.equals("SHIPMENT EXCEPTION") || keyStatusStr.equals("CLEARANCE DELAY")) {
                     parcelObject.setPhase("TRANSIT"); // Phase
                 } else if (keyStatusStr.contains("DELIVERY") || keyStatusStr.contains("DELIVERED")) {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,9 +12,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_gravity="center">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -27,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Kuljetusyhtiön tunnistustyökalu"
+                android:text="@string/carrier_detector_tool"
                 android:textSize="18sp" />
 
 
@@ -37,7 +36,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
-                android:text="Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja."
+                android:text="@string/carrier_detector_tool_description"
                 android:textAlignment="center"
                 android:textSize="15sp" />
 
@@ -46,26 +45,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ProgressBar
                     android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:indeterminate="false"
                     android:max="100"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/detectedLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
             </LinearLayout>
 
