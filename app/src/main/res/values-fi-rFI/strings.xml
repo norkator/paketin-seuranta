@@ -253,13 +253,14 @@
     <string name="no_parcels">Seurannassa ei ole paketteja</string>
     <string name="guide_part_one">Paina</string>
     <string name="guide_part_two">lisätäksesi seurantaan</string>
-    <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
     <string name="description">Selite</string>
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
+	<string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
     <string name="main_menu_taking_backup_success">Varmuuskopion otto onnistui. Tiedosto löytyy sijainnista:</string>
     <string name="main_menu_taking_backup_failed">Varmuuskopion otto epäonnistui. Yritä kerran uudelleen. Jos varmuuskopion otto epäonnistuu uudelleen, ota yhteys kehittäjään.</string>
     <string name="backup_location_external_storage_downloads_dir">ulkoisen muistin lataukset kansio, tiedosto nimeltä </string>
+
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
