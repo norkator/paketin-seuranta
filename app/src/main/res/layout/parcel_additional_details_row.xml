@@ -13,13 +13,13 @@
         tools:ignore="HardcodedText"
         android:textStyle="bold"
         android:textSize="14sp"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginEnd="5dp"/>
 
     <TextView
         android:id="@+id/additionalDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="@string/description"
         android:autoLink="web"
         android:linksClickable="true"
         android:textSize="14sp"/>

@@ -26,7 +26,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center_vertical"
         android:text="Kuljetusyhtiö"
-        android:paddingLeft="5dp"
         android:paddingStart="5dp"
         tools:ignore="HardcodedText,RtlSymmetry"/>
 

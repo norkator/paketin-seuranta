@@ -75,6 +75,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -617,7 +619,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
         AboutDialog.Builder aboutDialog = new AboutDialog.Builder(MainMenu.this)
                 // .setImageRecourse(R.mipmap.ps_logo_round)
-                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round))
+                .setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ps_logo_round_big))
                 .setTextTitle(R.string.main_menu_about_title)
                 .setTitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
                 .setSubtitleColor(ThemeUtils.Theme.isDarkTheme(getBaseContext()) ? R.color.color_white : R.color.black)
@@ -804,8 +806,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     saveBackupDate(c);
                 } else {
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        c.setTime(sdf.parse(lastBackupDate));
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                        c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
                         c.add(Calendar.DATE, 5);
                         if (c.getTimeInMillis() < System.currentTimeMillis()) {
                             databaseHelper.backupDatabase(this);
@@ -822,7 +824,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     @SuppressWarnings("HardCodedStringLiteral")
     private void saveBackupDate(Calendar calendar) {
         Date now = calendar.getTime();
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String strDt = simpleDate.format(now);
         SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor normalEditor = setSharedPreferences.edit();

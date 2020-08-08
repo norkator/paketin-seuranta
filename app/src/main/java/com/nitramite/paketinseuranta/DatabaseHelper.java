@@ -14,8 +14,6 @@ import com.nitramite.courier.ParcelObject;
 import com.nitramite.utils.FileUtils;
 import com.nitramite.utils.Utils;
 
-import org.jsoup.helper.StringUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -184,17 +182,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (upgrade) {
             // Parcels
             columnsParcels.retainAll(GetColumns(db, PARCELS_TABLE));
-            String parcelCols = StringUtil.join(columnsParcels, ",");
+            String parcelCols = join(columnsParcels, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", PARCELS_TABLE, parcelCols, parcelCols, PARCELS_TABLE));
             db.execSQL("DROP TABLE TEMP_" + PARCELS_TABLE);
             // Tracking data
             columnsEventsData.retainAll(GetColumns(db, EVENTS_TABLE));
-            String trackingCols = StringUtil.join(columnsEventsData, ",");
+            String trackingCols = join(columnsEventsData, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", EVENTS_TABLE, trackingCols, trackingCols, EVENTS_TABLE));
             db.execSQL("DROP TABLE TEMP_" + EVENTS_TABLE);
             // Images data
             columnsImages.retainAll(GetColumns(db, IMAGES_TABLE));
-            String imagesCols = StringUtil.join(columnsImages, ",");
+            String imagesCols = join(columnsImages, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", IMAGES_TABLE, imagesCols, imagesCols, IMAGES_TABLE));
             db.execSQL("DROP TABLE TEMP_" + IMAGES_TABLE);
         }
@@ -811,7 +809,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TIMESTAMP + " = ?" // 10.12.2018 added this to check
                 , new String[]{parcel_id, description, locationCode, timeStamp});
         res.moveToFirst();
-        Log.i(TAG, "Package with id: " + parcel_id + " returned event db count of: " + String.valueOf(res.getInt(0)));
+        Log.i(TAG, "Package with id: " + parcel_id + " returned event db count of: " + res.getInt(0));
         if (res.getInt(0) <= 0) {
             Log.i(TAG, "Inserting row: " + description);
             ContentValues contentValues = new ContentValues();
@@ -909,11 +907,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(IMAGE_DATA, imageData);
         long result = db.insert(IMAGES_TABLE, null, contentValues);
         Log.i(TAG, contentValues.toString());
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
 
@@ -959,7 +953,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (int i = 0; i < num; i++) {
             if (i != 0)
                 buf.append(delim);
-            buf.append((String) list.get(i));
+            buf.append(list.get(i));
         }
         return buf.toString();
     }

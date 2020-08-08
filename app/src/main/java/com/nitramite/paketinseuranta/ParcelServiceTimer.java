@@ -99,8 +99,6 @@ public class ParcelServiceTimer extends Service {
                         startService(intent);
                     }
 
-                } catch (IllegalStateException e) {
-                    Log.i(TAG, e.toString());
                 } catch (Exception e) {
                     Log.i(TAG, e.toString());
                 }
