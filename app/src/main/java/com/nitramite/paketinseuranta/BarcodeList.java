@@ -53,10 +53,10 @@ public class BarcodeList extends AppCompatActivity {
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         // Find components
-        showOnlyReadyForPickupSwitch = (Switch) findViewById(R.id.showOnlyReadyForPickupSwitch);
-        barcodeList = (ListView) findViewById(R.id.barcodeList);
-        spacingPlusBtn = (Button) findViewById(R.id.spacingPlusBtn);
-        spacingMinusBtn = (Button) findViewById(R.id.spacingMinusBtn);
+        showOnlyReadyForPickupSwitch = findViewById(R.id.showOnlyReadyForPickupSwitch);
+        barcodeList = findViewById(R.id.barcodeList);
+        spacingPlusBtn = findViewById(R.id.spacingPlusBtn);
+        spacingMinusBtn = findViewById(R.id.spacingMinusBtn);
 
 
         // Get shared preferences

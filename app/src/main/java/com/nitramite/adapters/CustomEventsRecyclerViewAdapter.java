@@ -60,9 +60,9 @@ public class CustomEventsRecyclerViewAdapter extends RecyclerView.Adapter<Custom
         private TextView locationcodenameOutput;
         MyViewHolder(View itemView) {
             super(itemView);
-            fiOutput = (TextView)itemView.findViewById(R.id.fiOutput);
-            timestampOutput = (TextView)itemView.findViewById(R.id.timestampOutput);
-            locationcodenameOutput = (TextView)itemView.findViewById(R.id.locationcodenameOutput);
+            fiOutput = itemView.findViewById(R.id.fiOutput);
+            timestampOutput = itemView.findViewById(R.id.timestampOutput);
+            locationcodenameOutput = itemView.findViewById(R.id.locationcodenameOutput);
         }
     }
 

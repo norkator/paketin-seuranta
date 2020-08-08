@@ -93,8 +93,6 @@ public class Utils {
         return "0";
     }
 
-    ;
-
 
     // Resize bitmap without cropping
     @SuppressWarnings("SameParameterValue")

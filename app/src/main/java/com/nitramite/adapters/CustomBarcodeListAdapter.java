@@ -43,9 +43,9 @@ public class CustomBarcodeListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.custom_barcodes_list_adapter, null, true);
 
         // Find views
-        CardView cardView = (CardView) rowView.findViewById(R.id.cardView);
-        TextView packageInfoTV = (TextView) rowView.findViewById(R.id.packageInfoTV);
-        ImageView barcodeView = (ImageView) rowView.findViewById(R.id.barcodeView);
+        CardView cardView = rowView.findViewById(R.id.cardView);
+        TextView packageInfoTV = rowView.findViewById(R.id.packageInfoTV);
+        ImageView barcodeView = rowView.findViewById(R.id.barcodeView);
 
         // Set package info view
         packageInfoTV.setText(parcelCodeItems.get(position) + " | " + parcelTitleItems.get(position));
