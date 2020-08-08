@@ -51,13 +51,6 @@ public class BarcodeList extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        // STATUS BAR TINT TESTING
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.colorPrimary);
-        }
 
         // Find components
         showOnlyReadyForPickupSwitch = (Switch) findViewById(R.id.showOnlyReadyForPickupSwitch);

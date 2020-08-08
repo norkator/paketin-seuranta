@@ -26,7 +26,7 @@ public class LocaleUtils {
         if (localeStr != null) {
             // Override language with selected one
             Log.i(TAG, localeStr);
-            Locale locale = new Locale(localeStr.toLowerCase(), localeStr.toUpperCase());
+            Locale locale = new Locale(localeStr.toLowerCase(Locale.getDefault()), localeStr.toUpperCase(Locale.getDefault()));
             Locale.setDefault(locale);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -73,11 +73,9 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     private LocaleUtils localeUtils = new LocaleUtils();
     private CustomParcelsAdapterV2 adapter;
     private ListView archiveItemsList;
-    private SharedPreferences sharedPreferences;
     private CardView searchQueryCard;
     private EditText searchArchiveInput;
     private ImageView clearToolBarImage;
-    private View emptyView;
 
     // Swipe action adapter
     protected SwipeActionAdapter mAdapter;
@@ -105,7 +103,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         super.onCreate(savedInstanceState);
         if (ThemeUtils.Theme.isDarkTheme(getBaseContext())) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -128,20 +126,12 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        // Status bar tint testing
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.colorPrimary);
-        }
-
         // Get system services
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // Find and int views
         archiveItemsList = findViewById(R.id.archiveItemsList);
-        emptyView = findViewById(R.id.emptyView);
+        View emptyView = findViewById(R.id.emptyView);
         archiveItemsList.setEmptyView(emptyView);
         searchQueryCard = findViewById(R.id.searchQueryCard);
         searchQueryCard.setVisibility(View.GONE);

@@ -50,7 +50,7 @@ public class FragmentNumberList extends Fragment {
 
         pasteBtn.setOnClickListener(v12 -> {
             StringBuilder clipStringBuilder = new StringBuilder();
-            ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(getContext()).getSystemService(CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) requireContext().getSystemService(CLIPBOARD_SERVICE);
             if (clipboard != null) {
                 if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClip() != null) {
                     for (int i = 0; i < clipboard.getPrimaryClip().getItemCount(); i++) {

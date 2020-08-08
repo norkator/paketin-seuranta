@@ -75,6 +75,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -804,8 +806,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     saveBackupDate(c);
                 } else {
                     try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        c.setTime(sdf.parse(lastBackupDate));
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                        c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
                         c.add(Calendar.DATE, 5);
                         if (c.getTimeInMillis() < System.currentTimeMillis()) {
                             databaseHelper.backupDatabase(this);
@@ -822,7 +824,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     @SuppressWarnings("HardCodedStringLiteral")
     private void saveBackupDate(Calendar calendar) {
         Date now = calendar.getTime();
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String strDt = simpleDate.format(now);
         SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor normalEditor = setSharedPreferences.edit();

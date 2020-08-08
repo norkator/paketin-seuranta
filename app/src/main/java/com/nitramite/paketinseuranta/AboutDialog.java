@@ -8,6 +8,7 @@
 
 package com.nitramite.paketinseuranta;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Typeface;
@@ -15,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -22,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +37,10 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 public class AboutDialog extends DialogFragment {
+
     public static final String TAG = AboutDialog.class.getSimpleName();
     private Builder builder;
+    @SuppressLint("StaticFieldLeak")
     private static AboutDialog instance = new AboutDialog();
 
     public static AboutDialog getInstance() {
@@ -229,16 +234,16 @@ public class AboutDialog extends DialogFragment {
     }
 
     private void initViews(View view) {
-        cardView = (CardView) view.findViewById(R.id.card_view);
-        image = (AppCompatImageView) view.findViewById(R.id.image);
-        cardView = (CardView) view.findViewById(R.id.card_view);
-        title = (TextView) view.findViewById(R.id.title);
-        subTitle = (TextView) view.findViewById(R.id.sub_title);
-        body = (TextView) view.findViewById(R.id.body);
-        positiveBtn = (Button) view.findViewById(R.id.positiveBtn);
-        negativeBtn = (Button) view.findViewById(R.id.negativeBtn);
-        userManualBtn = (Button) view.findViewById(R.id.userManualBtn);
-        buttonsPanel = (LinearLayout) view.findViewById(R.id.buttons_panel);
+        cardView = view.findViewById(R.id.card_view);
+        image = view.findViewById(R.id.image);
+        cardView = view.findViewById(R.id.card_view);
+        title = view.findViewById(R.id.title);
+        subTitle = view.findViewById(R.id.sub_title);
+        body = view.findViewById(R.id.body);
+        positiveBtn = view.findViewById(R.id.positiveBtn);
+        negativeBtn = view.findViewById(R.id.negativeBtn);
+        userManualBtn = view.findViewById(R.id.userManualBtn);
+        buttonsPanel = view.findViewById(R.id.buttons_panel);
     }
 
     private Dialog show(Activity activity, Builder builder) {
