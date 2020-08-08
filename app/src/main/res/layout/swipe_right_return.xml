@@ -12,8 +12,8 @@
         android:gravity="center"
         android:text="@string/swipe_right_return_return_button"
         android:textColor="@color/black"
-        android:textSize="20dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp" />
+        android:textSize="20sp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp" />
 
 </LinearLayout>
