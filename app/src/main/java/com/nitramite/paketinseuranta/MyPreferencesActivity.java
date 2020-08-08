@@ -38,6 +38,7 @@ import java.util.Locale;
 /**
  * Created by Martin on 28.1.2016.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class MyPreferencesActivity extends AppCompatActivity {
 
 

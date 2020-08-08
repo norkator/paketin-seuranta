@@ -15,6 +15,7 @@ import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
+import org.jetbrains.annotations.NonNls;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,9 +37,11 @@ import okhttp3.Response;
 public class CainiaoStrategy implements CourierStrategy {
 
     // Logging
+    @NonNls
     private static final String TAG = "CainiaoStrategy";
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private String getRequest(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -49,6 +52,7 @@ public class CainiaoStrategy implements CourierStrategy {
         return response.body().string();
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
@@ -101,6 +105,7 @@ public class CainiaoStrategy implements CourierStrategy {
         return parcelObject;
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private void proceedParsing(ParcelObject parcelObject, JSONObject detailsObject) throws JSONException, ParseException {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         parcelObject.setIsFound(true);
@@ -132,6 +137,7 @@ public class CainiaoStrategy implements CourierStrategy {
             parcelObject.setEventObjects(null);
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private EventObject parseEventObject(JSONObject event) throws JSONException, ParseException {
         @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         @SuppressLint("SimpleDateFormat") DateFormat apiDateFormatNoTime = new SimpleDateFormat("yyyy-MM-dd");
@@ -152,6 +158,7 @@ public class CainiaoStrategy implements CourierStrategy {
     }
 
 
+    @SuppressWarnings("HardCodedStringLiteral")
     private void setBasicDetails(ParcelObject parcelObject, JSONObject jsonObject) {
         String dest = jsonObject.optString("destCountry", "null");
         String status = jsonObject.optString("status", "");

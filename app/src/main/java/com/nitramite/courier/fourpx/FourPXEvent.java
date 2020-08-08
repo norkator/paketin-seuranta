@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class FourPXEvent {
 
     @SerializedName("tkCategoryCode")

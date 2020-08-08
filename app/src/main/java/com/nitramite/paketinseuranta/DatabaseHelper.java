@@ -33,6 +33,7 @@ import java.util.List;
  * Parcels: Parcel data storage
  * Events: stored tracking data, get via Parcel ID
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Logging

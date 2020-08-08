@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class DateTimeUtils {
 
     @SuppressLint("SimpleDateFormat")

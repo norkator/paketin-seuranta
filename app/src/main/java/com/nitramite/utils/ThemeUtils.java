@@ -21,6 +21,7 @@ import static android.content.res.Configuration.UI_MODE_NIGHT_YES;
 
 public class ThemeUtils {
 
+    @SuppressWarnings("HardCodedStringLiteral")
     public enum Theme {
         BASIC(1),
         DARK(2),

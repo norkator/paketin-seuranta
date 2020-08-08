@@ -31,7 +31,7 @@ import com.nitramite.utils.CarrierUtils;
 import java.util.ArrayList;
 
 
-@SuppressWarnings("SpellCheckingInspection")
+@SuppressWarnings("HardCodedStringLiteral")
 public class CarrierDetectorTask extends AsyncTask<String, String, String> {
 
     // Variables

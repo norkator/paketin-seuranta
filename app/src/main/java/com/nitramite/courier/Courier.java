@@ -1,5 +1,7 @@
 package com.nitramite.courier;
 
+import org.jetbrains.annotations.NonNls;
+
 /**
  * Created by Martin on 28.2.2016.
  * Handles Parcel data loading and parsing.
@@ -8,6 +10,7 @@ package com.nitramite.courier;
 public class Courier {
 
     // Logging
+    @NonNls
     private static final String TAG = "Courier";
 
     // Strategy interface

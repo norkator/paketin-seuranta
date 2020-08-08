@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class YanwenStrategy implements CourierStrategy {
 
     // Logging

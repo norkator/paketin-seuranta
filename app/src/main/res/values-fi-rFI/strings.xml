@@ -284,6 +284,8 @@
     <string name="no_parcels">Seurannassa ei ole paketteja</string>
     <string name="guide_part_one">Paina</string>
     <string name="guide_part_two">lisätäksesi seurantaan</string>
+    <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
+
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
         <item>Lataa tapahtumat</item>
@@ -296,7 +298,6 @@
         <item>Vaalea (vakio)</item>
         <item>Tumma</item>
         <item>Seuraa järjestelmää</item>
-
     </string-array>
 
     <!-- Strings related to Settings -->

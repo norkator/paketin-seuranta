@@ -6,6 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
@@ -46,18 +47,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                         result = true;
                     }
                 }
-
-                /*
-                // Taking this into use will ruin Fling scrolling
-                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipeBottom();
-                    } else {
-                        onSwipeTop();
-                    }
-                    result = true;
-                }
-                */
 
             } catch (Exception exception) {
                 exception.printStackTrace();

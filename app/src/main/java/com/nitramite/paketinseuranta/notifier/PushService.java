@@ -28,6 +28,7 @@ import org.joda.time.Interval;
 import java.util.Date;
 import java.util.Objects;
 
+@SuppressWarnings("HardCodedStringLiteral")
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class PushService extends FirebaseMessagingService {
 
@@ -36,6 +37,7 @@ public class PushService extends FirebaseMessagingService {
     private LocaleUtils localeUtils = new LocaleUtils();
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         // Triggering the ParcelService to run

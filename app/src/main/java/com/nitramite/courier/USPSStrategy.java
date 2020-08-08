@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class USPSStrategy implements CourierStrategy {
 
     // Logging

@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "HardCodedStringLiteral"})
 public class FragmentTrackedDelivery extends Fragment implements DatePickerDialog.OnDateSetListener, FragmentTrackedDeliveryInterface {
 
     // Logging

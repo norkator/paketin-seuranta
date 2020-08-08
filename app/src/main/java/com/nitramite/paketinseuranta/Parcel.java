@@ -89,6 +89,8 @@ import com.nitramite.utils.ThemeUtils;
 import com.nitramite.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.jetbrains.annotations.NonNls;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -99,6 +101,7 @@ import java.util.Map;
 public class Parcel extends AppCompatActivity implements OnMapReadyCallback, SwipeRefreshLayout.OnRefreshListener, CarrierDetectorTaskInterface {
 
     // Logging
+    @NonNls
     private static final String TAG = "Parcel";
 
     // Activity request codes
@@ -169,6 +172,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         super.onStop();
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     protected void onStart() {
         super.onStart();
@@ -189,6 +193,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         LocalBroadcastManager.getInstance(this).unregisterReceiver(dataChangeReceiver);
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,13 +220,6 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        // Status bar tint testing
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.colorPrimary);
-        }
 
         // Activity results set
         Intent returnIntent = new Intent();
@@ -258,7 +256,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
         // Get db id of parcel
         Intent intent = getIntent();
-        ID = intent.getStringExtra("PARCEL_ID");
+        ID = intent.getStringExtra("PARCEL_ID"); //NON-NLS
 
         // Deactivate swipe to refresh if archived package
         if (databaseHelper.isCurrentPackageArchived(ID)) {
@@ -281,7 +279,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         fab.setOnClickListener(view -> {
             if (latitude == 0) {
                 Snackbar snackBar = Snackbar.make(findViewById(android.R.id.content), R.string.parcel_no_pick_up_destination_coordinates, Snackbar.LENGTH_SHORT);
-                ((TextView)(snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
+                ((TextView) (snackBar.getView().findViewById(com.google.android.material.R.id.snackbar_text))).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorWhite));
                 snackBar.show();
             } else {
                 // ON MAP
@@ -535,7 +533,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 }
                 // Weight
                 if (!res.getString(20).equals("null") && res.getString(20).length() > 0) {
-                    addAdditionalDetailsLine(getString(R.string.parcel_weight), res.getString(20) + " kg");
+                    addAdditionalDetailsLine(getString(R.string.parcel_weight), res.getString(20) + " kg"); //NON-NLS
                 }
                 // Height
                 if (!res.getString(21).equals("null") && res.getString(21).length() > 0) {
@@ -702,7 +700,6 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
                 loadParcelImages();
             } else {
-                Log.i(TAG, "res.getCount was == 0");
                 clearAllViewsContents();
                 try {
                     setTitle(databaseHelper.getParcelTitleByID(ID));
@@ -882,7 +879,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         // Very crude at the moment
         for (int i = 0; i < contents.length(); i++) {
             if (contents.charAt(i) > 0xFF) {
-                return "UTF-8";
+                return "UTF-8"; //NON-NLS
             }
         }
         return null;
@@ -902,6 +899,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         int id = item.getItemId();
         if (id == R.id.action_edit_package) {
             Intent intent = new Intent(Parcel.this, ParcelEditor.class);
+            //noinspection HardCodedStringLiteral
             intent.putExtra("PARCEL_ID", ID);
             startActivityForResult(intent, ACTIVITY_RESULT_PARCEL_EDITOR);
             return true;
@@ -1060,6 +1058,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
     // Refresh Parcel's data
+    @SuppressWarnings("HardCodedStringLiteral")
     private void refreshParcels() {
         if (isMyServiceRunning(ParcelService.class)) {
             Toast.makeText(Parcel.this, R.string.parcel_search_running_try_again_later, Toast.LENGTH_LONG).show();
@@ -1083,6 +1082,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
     // Activity result
+    @SuppressWarnings("HardCodedStringLiteral")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Package photo feature
         super.onActivityResult(requestCode, resultCode, data);
@@ -1169,14 +1169,13 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 });
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = getLayoutInflater();
-        @SuppressLint("InflateParams") View dialogLayout = inflater.inflate(R.layout.image_view_dialog, null);
+        View dialogLayout = inflater.inflate(R.layout.image_view_dialog, null);
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.show();
         ImageView image = dialog.findViewById(R.id.dialogImage);
         image.setImageBitmap(bitmap);
     }
-
 
     // Confirmation dialog for image deletion
     private void deletePackageImageConfirmationDialog(final String imageId) {
@@ -1229,6 +1228,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
     // If has external storage permission, do image dir for package image
+    @SuppressWarnings("HardCodedStringLiteral")
     private void createParcelImageDirectory() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             File root = new File(Environment.getExternalStorageDirectory() + File.separator + "PaketinSeuranta" + File.separator + "Kuvat" + File.separator);
