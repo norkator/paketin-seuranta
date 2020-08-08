@@ -102,13 +102,15 @@
                                     android:layout_height="wrap_content"
                                     android:lines="1"
                                     android:text="Vastaanotettu noutopisteestä"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    tools:ignore="HardcodedText" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Tiedot päivitetty 14.3.2019 12:00"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    tools:ignore="HardcodedText" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -177,13 +179,15 @@
                                     android:layout_height="wrap_content"
                                     android:lines="1"
                                     android:text="Vastaanotettu noutopisteestä"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    tools:ignore="HardcodedText" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Tiedot päivitetty 14.3.2019 12:00"
-                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    tools:ignore="HardcodedText" />
 
                             </LinearLayout>
                         </LinearLayout>

@@ -108,7 +108,8 @@
                 android:hint="@string/package_edit_dialog_locker_code_hint"
                 android:nextFocusForward="@+id/senderET"
                 android:singleLine="true"
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="Autofill" />
 
 
             <TextView
@@ -197,10 +198,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="xxxx-xx-xx xx:xx"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="HardcodedText" />
 
                 <Button
                     android:id="@+id/selectOrderDateBtn"
@@ -233,10 +234,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="xxxx-xx-xx xx:xx"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="HardcodedText" />
 
                 <Button
                     android:id="@+id/selectManualDeliveryDateBtn"
