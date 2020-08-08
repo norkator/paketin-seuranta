@@ -6,19 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 
 import com.nitramite.adapters.AutoCompleteScenario;
 import com.nitramite.courier.ParcelObject;
-import com.nitramite.utils.FileUtils;
 import com.nitramite.utils.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // DATABASE NAME
-    private static final String DATABASE_NAME = "PARCELS.db";
+    public static final String DATABASE_NAME = "PARCELS.db";
 
     // TABLE NAME'S
     private static final String PARCELS_TABLE = "Parcels";
@@ -211,79 +204,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Returns this database as readable for exported
     public SQLiteDatabase getReadableDatabaseObject() {
         return this.getReadableDatabase();
-    }
-
-
-    // Backup database
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    Boolean backupDatabase(Context context) {
-        try {
-            @SuppressLint("SdCardPath") final String databaseLocation = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/" + DATABASE_NAME;
-            File databaseFile = new File(databaseLocation);
-            FileInputStream fis = new FileInputStream(databaseFile);
-            File outputFile = FileUtils.createDirIfNotExist(Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
-            String outFileName = outputFile + "/" + DATABASE_NAME;
-            // Delete file if exists, writing straight causes corruption
-            File destFile = new File(outFileName);
-            if (destFile.exists()) {
-                destFile.delete();
-            }
-            // Write new file out
-            OutputStream output = new FileOutputStream(outFileName);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-            output.flush();
-            output.close();
-            fis.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    // Restore database
-    Boolean restoreDatabase(Context context) {
-        try {
-            // Application side /data/data...
-            @SuppressLint("SdCardPath") final String dbOnAppPath = "/data/data/" + context.getApplicationContext().getPackageName() + "/databases/";
-            File dbOnAppPathFull = new File(dbOnAppPath + DATABASE_NAME);
-            // External storage dir side /sdcard...
-            File dbBackupPath = FileUtils.createDirIfNotExist(Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
-            String dbBackupPathFull = dbBackupPath + "/" + DATABASE_NAME;
-            // Clean existing junk first from application
-            if (dbOnAppPathFull.exists()) {
-                dbOnAppPathFull.delete();
-            }
-            File dbShmFile = new File(dbOnAppPath + DATABASE_NAME + "-shm");
-            if (dbShmFile.exists()) {
-                dbShmFile.delete();
-            }
-            File dbWalFile = new File(dbOnAppPath + DATABASE_NAME + "-wal");
-            if (dbWalFile.exists()) {
-                dbWalFile.delete();
-            }
-            // Transfer
-            FileInputStream fis = new FileInputStream(dbBackupPathFull);
-            OutputStream output = new FileOutputStream(dbOnAppPathFull);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-            // Flush & Close
-            output.flush();
-            output.close();
-            fis.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
 

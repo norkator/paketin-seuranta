@@ -24,6 +24,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -62,6 +63,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.paketinseuranta.notifier.PushUtils;
+import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -739,59 +741,55 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
 
     private void databaseBackupDialog() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            final Dialog dialog = new Dialog(this);
-            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.database_backup_dialog);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+        final Dialog dialog = new Dialog(this);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.database_backup_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-            final CheckBox timedBackupToggle = dialog.findViewById(R.id.timedBackupToggle);
-            final Button takeBackupBtn = dialog.findViewById(R.id.takeBackupBtn);
-            final Button restoreBackupBtn = dialog.findViewById(R.id.restoreBackupBtn);
-            final Button closeBtn = dialog.findViewById(R.id.closeBtn);
+        final CheckBox timedBackupToggle = dialog.findViewById(R.id.timedBackupToggle);
+        final Button takeBackupBtn = dialog.findViewById(R.id.takeBackupBtn);
+        final Button restoreBackupBtn = dialog.findViewById(R.id.restoreBackupBtn);
+        final Button closeBtn = dialog.findViewById(R.id.closeBtn);
 
-            timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
-            timedBackupToggle.setOnCheckedChangeListener((compoundButton, b) -> {
-                if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    SharedPreferences.Editor normalEditor = setSharedPreferences.edit();
-                    normalEditor.putBoolean(Constants.SP_TIMED_BACKUP_ENABLED, b);
-                    normalEditor.apply();
-                    Toast.makeText(this, getString(R.string.timed_back_up_toggle) + " " + (b ? getString(R.string.timed_backup_on) : getString(R.string.timed_backup_off)), Toast.LENGTH_SHORT).show();
+        timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
+        timedBackupToggle.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor normalEditor = setSharedPreferences.edit();
+                normalEditor.putBoolean(Constants.SP_TIMED_BACKUP_ENABLED, b);
+                normalEditor.apply();
+                Toast.makeText(this, getString(R.string.timed_back_up_toggle) + " " + (b ? getString(R.string.timed_backup_on) : getString(R.string.timed_backup_off)), Toast.LENGTH_SHORT).show();
+            } else {
+                timedBackupToggle.setChecked(false);
+            }
+        });
+
+        takeBackupBtn.setOnClickListener(view -> {
+            if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (BackupUtils.backupDatabase(MainMenu.this)) {
+                    //noinspection HardCodedStringLiteral
+                    genericErrorDialog(getString(R.string.main_menu_result), getString(R.string.main_menu_taking_backup_was_successfull_for_following_directory) + " " +
+                            Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
                 } else {
-                    timedBackupToggle.setChecked(false);
+                    genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.main_menu_taking_backup_failed));
                 }
-            });
-
-            takeBackupBtn.setOnClickListener(view -> {
-                if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (databaseHelper.backupDatabase(MainMenu.this)) {
-                        //noinspection HardCodedStringLiteral
-                        genericErrorDialog(getString(R.string.main_menu_result), getString(R.string.main_menu_taking_backup_was_successfull_for_following_directory) + " " +
-                                Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Varmuuskopiot/");
-                    } else {
-                        genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.main_menu_taking_backup_failed));
-                    }
+            }
+        });
+        restoreBackupBtn.setOnClickListener(view -> {
+            if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (BackupUtils.restoreDatabase(MainMenu.this)) {
+                    Toast.makeText(MainMenu.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
+                    MainMenu.this.finish();
+                } else {
+                    genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.main_menu_restore_un_successfull));
                 }
-            });
-            restoreBackupBtn.setOnClickListener(view -> {
-                if (hasPermission(MainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (databaseHelper.restoreDatabase(MainMenu.this)) {
-                        Toast.makeText(MainMenu.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
-                        MainMenu.this.finish();
-                    } else {
-                        genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.main_menu_restore_un_successfull));
-                    }
-                }
-            });
-            closeBtn.setOnClickListener(view -> {
-                dialog.dismiss();
-            });
-        } else {
-            genericErrorDialog(getString(R.string.main_menu_error), getString(R.string.backup_feature_not_currently_supported));
-        }
+            }
+        });
+        closeBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
     }
 
 
@@ -802,7 +800,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                 final String lastBackupDate = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
                 Calendar c = Calendar.getInstance();
                 if (lastBackupDate == null) {
-                    databaseHelper.backupDatabase(this);
+                    BackupUtils.backupDatabase(this);
                     saveBackupDate(c);
                 } else {
                     try {
@@ -810,7 +808,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                         c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
                         c.add(Calendar.DATE, 5);
                         if (c.getTimeInMillis() < System.currentTimeMillis()) {
-                            databaseHelper.backupDatabase(this);
+                            BackupUtils.backupDatabase(this);
                             saveBackupDate(c);
                         }
                     } catch (ParseException e) {

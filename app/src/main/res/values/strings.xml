@@ -259,6 +259,7 @@
     <string name="description">Description</string>
     <string name="carrier_detector_tool">Carrier detector tool</string>
     <string name="carrier_detector_tool_description">This tool tries to find possible carriers for given tracking code. If tool gives options, you can select one via clicking carrier image.</string>
+    <string name="backup_location_external_storage_downloads_dir">External storage downloads directory.</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
