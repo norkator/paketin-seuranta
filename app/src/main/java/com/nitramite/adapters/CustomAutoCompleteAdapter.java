@@ -13,10 +13,10 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.nitramite.paketinseuranta.DatabaseHelper;
-import com.nitramite.utils.Utils;
 import java.util.ArrayList;
 
 // Reference: https://gist.github.com/korniltsev/4071915
+@SuppressWarnings("HardCodedStringLiteral")
 public class CustomAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     //  Logging

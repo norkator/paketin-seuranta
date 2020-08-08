@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 
+import org.jetbrains.annotations.NonNls;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,11 +25,14 @@ import okhttp3.Response;
 public class ArraPakettiStrategy implements CourierStrategy {
 
     // Logging
+    @NonNls
     private static final String TAG = "ArraPakettiStrategy";
 
     // Api url
+    @NonNls
     private static final String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);

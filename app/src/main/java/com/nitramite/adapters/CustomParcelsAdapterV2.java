@@ -8,7 +8,6 @@
 
 package com.nitramite.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.nitramite.utils.CarrierUtils;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
 
     // Variables
@@ -46,7 +46,6 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
     }
 
 
-    @SuppressLint("SetTextI18n")
     @NonNull
     public View getView(int position, View view, @NonNull ViewGroup parent) {
         View rowView;
@@ -102,10 +101,6 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         final String latestEventDescription = (parcelItems.get(position).getParcelLatestEventDescription() != null ?
                 parcelItems.get(position).getParcelLatestEventDescription() : ""); // Latest event
         phaseTextFix = context.getString(R.string.package_not_found);
-        //if (phase.length() == null) {
-        //    pos = 1;
-        //    phaseTextFix = "Pakettia ei löytynyt!";
-        //}
 
         // Check for item in transit
         if (phase.equals(PhaseNumber.PHASE_WAITING_FOR_PICKUP)) {
@@ -127,22 +122,22 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         } else if (phase.length() == 8 || phase.equals("RETURNED_TO_SENDER")) {
             pos = 7;
             phaseTextFix = context.getString(R.string.status_returned);
-        } else if (phase.length() == 7 || phase.equals("CUSTOMS")) {
-            pos = 8;
-            phaseTextFix = context.getString(R.string.status_customs);
-        }
-        // Not inside Finland
-        else if (phase.length() == 24 || latestEventDescription.equals("Lähetys ei ole vielä saapunut Postille, odotathan") ||
-                latestEventDescription.equals("Lähetys on saapunut varastolle") || latestEventDescription.equals("Lähetys on lähtenyt varastolta")
-                || latestEventDescription.equals("Lähetys on rekisteröity.") || latestEventDescription.equals("Lähetys on matkalla kohdemaahan")
-        ) {
-            pos = 2;
-            phaseTextFix = context.getString(R.string.status_in_transit);
-        }
-        else if (parcelItems.get(position).getParcelCarrier().equals("99") && phase.equals("")) {
-            pos = 6;
-            phaseTextFix = "";
-        }
+        } else //noinspection ConstantConditions
+            if (phase.length() == 7 || phase.equals("CUSTOMS")) {
+                pos = 8;
+                phaseTextFix = context.getString(R.string.status_customs);
+            }
+            // Not inside Finland
+            else if (phase.length() == 24 || latestEventDescription.equals("Lähetys ei ole vielä saapunut Postille, odotathan") ||
+                    latestEventDescription.equals("Lähetys on saapunut varastolle") || latestEventDescription.equals("Lähetys on lähtenyt varastolta")
+                    || latestEventDescription.equals("Lähetys on rekisteröity.") || latestEventDescription.equals("Lähetys on matkalla kohdemaahan")
+            ) {
+                pos = 2;
+                phaseTextFix = context.getString(R.string.status_in_transit);
+            } else if (parcelItems.get(position).getParcelCarrier().equals("99") && phase.equals("")) {
+                pos = 6;
+                phaseTextFix = "";
+            }
 
         // -----------------------------------------------------------------------------------------
         /* Set values */

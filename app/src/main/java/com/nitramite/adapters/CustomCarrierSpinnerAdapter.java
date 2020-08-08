@@ -30,7 +30,7 @@ public class CustomCarrierSpinnerAdapter extends ArrayAdapter<String> {
     }
 
 
-    @SuppressWarnings("NullableProblems")
+    @SuppressWarnings({"NullableProblems", "HardCodedStringLiteral"})
     public View getView(int position, View convertView, ViewGroup parent ){
         @SuppressLint("ViewHolder") View itemView = inflater.inflate(groupId, parent, false);
 

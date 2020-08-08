@@ -8,6 +8,7 @@
 
 package com.nitramite.paketinseuranta;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class PhaseNumber {
 
     // Status variable names

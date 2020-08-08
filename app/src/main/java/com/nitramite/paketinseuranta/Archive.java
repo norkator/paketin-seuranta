@@ -9,6 +9,7 @@
 package com.nitramite.paketinseuranta;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -61,7 +62,7 @@ import java.util.ArrayList;
 public class Archive extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener {
 
     //  Logging
-    private static final String TAG = "Archive";
+    private static final String TAG = "Archive"; //NON-NLS
 
     // Main items
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -91,7 +92,6 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         if (searchArchiveInput != null) {
             if (searchArchiveInput.getText().toString().length() > 0) {
                 triggerSearch();
-                Log.i(TAG, "onResume triggerSearch");
             }
         }
     }
@@ -179,7 +179,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         archiveItemsList.setOnItemClickListener((parent, view, position, id) -> {
             String parcelId = parcelItems.get(position).getParcelId();
             Intent i = new Intent(Archive.this, Parcel.class);
-            i.putExtra("PARCEL_ID", parcelId);
+            i.putExtra("PARCEL_ID", parcelId); //NON-NLS
             startActivityForResult(i, PARCEL_ACTIVITY_RESULT);
         });
 

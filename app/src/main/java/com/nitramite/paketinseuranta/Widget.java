@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class Widget extends AppWidgetProvider {
 
     //  Logging

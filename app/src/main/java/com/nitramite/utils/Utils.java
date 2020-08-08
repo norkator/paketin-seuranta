@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class Utils {
 
     //  Logging

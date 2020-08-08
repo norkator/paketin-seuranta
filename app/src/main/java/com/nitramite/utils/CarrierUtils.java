@@ -10,7 +10,7 @@ package com.nitramite.utils;
 
 import com.nitramite.paketinseuranta.R;
 
-@SuppressWarnings({"SpellCheckingInspection", "WeakerAccess"})
+@SuppressWarnings({"SpellCheckingInspection", "WeakerAccess", "HardCodedStringLiteral"})
 public class CarrierUtils {
 
     // Carrier codes

@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CSVExporter {
 
     //  Logging

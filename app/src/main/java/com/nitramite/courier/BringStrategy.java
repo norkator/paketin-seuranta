@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 
+import org.jetbrains.annotations.NonNls;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +32,10 @@ import okhttp3.Response;
 public class BringStrategy implements CourierStrategy {
 
     // Logging
+    @NonNls
     private static final String TAG = "BringStrategy";
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @Override
     public ParcelObject execute(String parcelCode) {
 
@@ -86,6 +89,7 @@ public class BringStrategy implements CourierStrategy {
      * @param jsonObject any json object
      * @return boolean
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     private boolean hasParcelDetails(JSONObject jsonObject) {
         return jsonObject.has("packageSet");
     }
@@ -98,6 +102,7 @@ public class BringStrategy implements CourierStrategy {
      * @param packageSet   parcel basic data object
      * @param jsonEvents   parcel events array
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     private void setParcelDetails(ParcelObject parcelObject, JSONObject packageSet, JSONArray jsonEvents) {
         parcelObject.setIsFound(true);
         parcelObject.setPhase(jsonEvents.optJSONObject(0).optString("status")); // Only events have "phase" status, first is newest
@@ -116,6 +121,7 @@ public class BringStrategy implements CourierStrategy {
      * @param jsonEvents events for parcel
      * @return event objects array
      */
+    @SuppressWarnings("HardCodedStringLiteral")
     private ArrayList<EventObject> setParcelEvents(JSONArray jsonEvents) {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {

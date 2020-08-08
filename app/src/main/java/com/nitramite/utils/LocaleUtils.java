@@ -13,6 +13,7 @@ import com.nitramite.paketinseuranta.Constants;
 
 import java.util.Locale;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class LocaleUtils {
 
     //  Logging
