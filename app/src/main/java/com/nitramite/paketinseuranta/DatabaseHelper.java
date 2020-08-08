@@ -14,8 +14,6 @@ import com.nitramite.courier.ParcelObject;
 import com.nitramite.utils.FileUtils;
 import com.nitramite.utils.Utils;
 
-import org.jsoup.helper.StringUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -184,17 +182,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (upgrade) {
             // Parcels
             columnsParcels.retainAll(GetColumns(db, PARCELS_TABLE));
-            String parcelCols = StringUtil.join(columnsParcels, ",");
+            String parcelCols = join(columnsParcels, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", PARCELS_TABLE, parcelCols, parcelCols, PARCELS_TABLE));
             db.execSQL("DROP TABLE TEMP_" + PARCELS_TABLE);
             // Tracking data
             columnsEventsData.retainAll(GetColumns(db, EVENTS_TABLE));
-            String trackingCols = StringUtil.join(columnsEventsData, ",");
+            String trackingCols = join(columnsEventsData, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", EVENTS_TABLE, trackingCols, trackingCols, EVENTS_TABLE));
             db.execSQL("DROP TABLE TEMP_" + EVENTS_TABLE);
             // Images data
             columnsImages.retainAll(GetColumns(db, IMAGES_TABLE));
-            String imagesCols = StringUtil.join(columnsImages, ",");
+            String imagesCols = join(columnsImages, ",");
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM TEMP_%s", IMAGES_TABLE, imagesCols, imagesCols, IMAGES_TABLE));
             db.execSQL("DROP TABLE TEMP_" + IMAGES_TABLE);
         }
