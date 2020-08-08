@@ -285,7 +285,7 @@
     <string name="no_parcels">No parcels added</string>
     <string name="guide_part_one">Press</string>
     <string name="guide_part_two">to add</string>
-    <string name="reference_to_database_is_null_cannot_add_items">Reference to database is null, cannot add items!</string>
+    <string name="reference_to_database_is_null_cannot_add_items">Reference to database is missing, cannot add items!</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
