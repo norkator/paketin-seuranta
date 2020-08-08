@@ -94,7 +94,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lockerCodeTitleTV"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -113,7 +112,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/parcelEventsTitleTV"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -172,7 +170,6 @@
 
             <!-- Other information -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/otherContentCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -186,7 +183,6 @@
                     android:layout_margin="10dp" >
 
                     <TextView
-                        android:id="@+id/otherInfoTitleTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"

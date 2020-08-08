@@ -24,21 +24,7 @@
     </style>
 
 
-
-    <style name="AppTheme.actionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="background">?attr/colorPrimary</item>
-        <item name="contentInsetStart">72dp</item>
-        <item name="contentInsetLeft">72dp</item>
-    </style>
-
     <!-- Dialog styles -->
-    <style name="fullScreeDialog">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-    </style>
 
     <style name="carrierDetectorDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>

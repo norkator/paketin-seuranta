@@ -12,9 +12,7 @@
     <!-- Not translatable -->
     <string name="app_name">Paketin Seuranta</string>
 
-
     <!-- Application strings -->
-    <string name="action_settings">Asetukset</string>
     <string name="title_activity_parcel">Lähetys</string>
     <string name="title_activity_maps">Sijainti</string>
     <string name="title_activity_settings">Asetukset</string>
@@ -23,18 +21,12 @@
     <string name="package_not_found">Pakettia ei löytynyt!</string>
     <string name="delivered_in">TOIMITETTU</string>
     <string name="delivered_only">TOIMITETTU</string>
-    <string name="menu_menu_update_tracking_details">Päivitä seurantatiedot</string>
-    <string name="menu_menu_rate_application">Arvioi sovellus</string>
     <string name="menu_menu_barcode_list">Viivakoodilista</string>
     <string name="menu_menu_archive">Arkistoidut</string>
     <string name="menu_menu_user_manual">Käyttöohje</string>
     <string name="menu_menu_settings">Asetukset</string>
-    <string name="menu_menu_destroy_process">Tuhoa prosessi</string>
-    <string name="menu_menu_watch_ad">Katso mainos</string>
-    <string name="menu_menu_contact">Ota yhteyttä</string>
     <string name="menu_menu_about">Tietoja</string>
     <string name="menu_menu_backup">Varmuuskopio</string>
-    <string name="menu_archive_update_list">Päivitä lista</string>
     <string name="menu_archive_hints">Vinkkejä</string>
     <string name="menu_parcel_edit_information">Muokkaa tietoja</string>
     <string name="menu_parcel_copy_to_clipboard">Koodi leikepöydälle</string>
@@ -43,15 +35,9 @@
     <string name="activity_barcode_list_list_only_ready_for_pickup">Listaa vain haettavissa olevat</string>
     <string name="activity_barcode_lists_spaces_minus_button">Välit -</string>
     <string name="activity_barcode_list_spaces_plus_button">Välit +</string>
-    <string name="activity_main_menu_add_without_tracking_code_button">Lisää seurattava toimitus</string>
-    <string name="activity_main_menu_archive_button">Arkisto</string>
-    <string name="activity_main_menu_scan_code_button">Skannaa viivakoodi</string>
-    <string name="activity_main_menu_add_tracking_codes_button">Lisää monta seurantanumeroa</string>
-    <string name="add_code_dialog_add_tracking_codes">Lisää seurantanumerot</string>
     <string name="add_code_dialog_add_tracking_codes_here">Liitä seurantanumerot tähän. Yksi per rivi!</string>
     <string name="add_code_dialog_add_tracking_codes_hint">Huomioi että seurantanumeroiden perässä ei saa olla välejä.</string>
     <string name="add_code_dialog_paste_button">Liitä</string>
-    <string name="add_code_dialog_add_button">LISÄÄ</string>
     <string name="content_parcel_tracking_code_title">Lähetystunnus</string>
     <string name="content_parcel_locker_code_title">Lokerokoodi</string>
     <string name="content_parcel_parcel_events_title">Lähetyksen tapahtumat</string>
@@ -76,7 +62,6 @@
     <string name="swipe_right_return_return_button">Palauta</string>
     <string name="widget_status_title">Tilanne</string>
     <string name="main_menu_snackbar_message_updated">päivitetty</string>
-    <string name="main_menu_add_tracking_codes_title">Lisää koodit</string>
     <string name="main_menu_add_tracking_codes_your_clipboard_is_empty">Leikepöytäsi on tyhjä!</string>
     <string name="main_menu_scanned_text">Skannasin:</string>
     <string name="main_menu_update_in_progress_try_again_later">Haku käynnissä, yritä pian uudelleen!</string>
@@ -85,16 +70,11 @@
     <string name="main_menu_did_not_get_event_statuses_try_again_later">En saanut tilannetietoja. Yritä uudelleen!</string>
     <string name="main_menu_field_is_empty">Kenttä on tyhjä!</string>
     <string name="main_menu_item_not_added_because_it_already_existed_on_list">ei lisätty, koska se on jo listalla tai arkistossa</string>
-    <string name="main_menu_item_not_updated_because_it_already_existed_on_list">seurantanumero on jo olemassa</string>
     <string name="main_menu_cannot_delete_updating_packages_data">Tietojen päivitys käynnissä, en voi poistaa!</string>
     <string name="main_menu_deletion_title">Poisto</string>
     <string name="main_menu_you_are_about_to_delete_following_package_from_list">Olet poistamassa seurattavan paketin listalta. Haluatko jatkaa?\n\nHuom: Voit myös halutessasi arkistoida paketin pyyhkäisemällä vasemalta oikealle.</string>
     <string name="main_menu_you_are_about_to_delete_following_package_from_list_shorter">Olet poistamassa seurattavan paketin listalta. Haluatko jatkaa?</string>
-    <string name="main_menu_give_package_name_dialog">Anna paketin nimi</string>
-    <string name="main_menu_accept">Hyväksy</string>
     <string name="main_menu_error">Virhe</string>
-    <string name="main_menu_you_did_not_input_anything">Et syöttänyt kenttään mitään.</string>
-    <string name="main_menu_return">Takaisin</string>
     <string name="main_menu_list_is_empty_nothing_to_update">Lista on tyhjä, ei päivitettävää!</string>
     <string name="main_menu_updating">Päivitetään…</string>
     <string name="main_menu_your_list_is_empty">Listasi on tyhjä.</string>
@@ -119,24 +99,17 @@
     <string name="main_menu_about_sub_title">Paketin Seuranta</string>
     <string name="main_menu_about_body">Suomalainen yksinkertainen paketin seurantasovellus, jolla seuraat kätevästi eri kuriirien paketteja.</string>
     <string name="main_menu_body_part_two">Sovellus on tarkoitettu Suomen sisäiseen ja Suomeen tulevaan liikenteeseen.</string>
-    <string name="main_menu_user_manual_title">Käyttöohje</string>
-    <string name="main_menu_kill_process_message_part_one">Tämä toiminto tuhoaa kaikki sovelluksen palvelut ja sulkee kokonaan käyttöliittymän.</string>
-    <string name="main_menu_kill_process_message_part_two">Tämä toiminto on tarkoitettu tilanteeseen, jossa halutaan sammuuttaa kaikki sovelluksen taustalla olevat päivityspalvelut.</string>
-    <string name="main_menu_kill_process_button">TUHOA</string>
     <string name="arhive_hint_message_part_one">• Pyyhkäise vasemalta oikealle palauttaaksesi paketin seurantalistalle.</string>
     <string name="arhive_hint_message_part_two">• Pyyhkäise oikealta vasemalle poistaaksesi paketin vallan.</string>
     <string name="arhive_hint_message_part_three">• Paina pohjaan pakettia asettaaksesi paketin toimitettu tilaan sillä joskus paketit tulevat perille ilman että tiedot päivittyvät oikein tai valmiiksi.</string>
     <string name="barcode_list_space_cannot_be_made_smaller">Väliä ei voi pienentää enempää</string>
     <string name="custom_parcels_adapter_package_not_found_check_courier_company">Pakettia ei löytynyt, tarkista kuljetusyhtiö!</string>
-    <string name="my_preferences_activity_theme_change_takes_effect_after_restart">Teeman muutos tulee voimaan sovelluksen uudelleen käynnistämisen jälkeen</string>
     <string name="parcel_pick_up_destination_on_map_title">Noutopaikka kartalla</string>
     <string name="parcel_no_pick_up_destination_coordinates">Ei sijaintitietoja!</string>
     <string name="parcel_changing_to">Vaihdan</string>
     <string name="parcel_chaging_to_next">seuraavaan</string>
     <string name="parcel_changing_to_earlier">edelliseen</string>
     <string name="parcel_pick_up_address">Hakuosoite:</string>
-    <string name="parcel_parcel_type_unknown">Lähetyksen tyyppi ei tiedossa!</string>
-    <string name="parcel_type">Tyyppi:</string>
     <string name="parcel_sender">Lähettäjä:</string>
     <string name="parcel_locker_code">Lokerokoodi:</string>
     <string name="parcel_service">Palvelu:</string>
@@ -190,7 +163,6 @@
     <string name="preferences_settings_title">Asetukset</string>
     <string name="preferences_override_language_title">Vaihda kieltä</string>
     <string name="preferences_override_language_summary">Sovelluksen kieli muuttuu laitteen pääkielen mukaan. Tällä asetuksella voi yliajaa normaali logiikan ja asettaa staattisesti tietyn kielen</string>
-    <string name="my_preferences_application_language_override_change_takes_effect_after_restart">Kielen vaihto tulee voimaan sovelluksen uudelleen käynnistyksen jälkeen</string>
     <string name="parcel_parcel_added_time_stamp">Lisätty sovellukseen:</string>
     <string name="menu_archive_csv_export">CSV vienti</string>
     <string name="csv_export_layout_export_button">Vie</string>
@@ -227,7 +199,6 @@
     <string name="parcel_additional_notes">Lisätietoja:</string>
     <string name="intro_start_button">ALOITA KÄYTTÖ</string>
     <string name="intro_next_button">SEURAAVA</string>
-    <string name="intro_button_skip">OHITA</string>
     <string name="activity_intro_one_welcome_text">Tervetuloa</string>
     <string name="activity_intro_one_fast_introduction_text">Pikaohje sovelluksen käyttöön</string>
     <string name="activity_intro_one_new_tracked_delivery_tutorial">Uuden seurattavan toimituksen voi lisätä tästä painikkeesta. Tämän takaa löytyvät eri tavat lisätä seurattavia toimituksia.</string>

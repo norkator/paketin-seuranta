@@ -37,7 +37,6 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/imageView5"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/timestamp"
@@ -64,7 +63,6 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/imageView6"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/locationcodename"
