@@ -32,15 +32,15 @@ pipeline {
         bat './gradlew compileDebugSources'
       }
     }
-    // stage('Unit test') {
-    //   steps {
-    //     // Compile and run the unit tests for the app and its dependencies
-    //     bat './gradlew testDebugUnitTest testDebugUnitTest'
+    stage('Unit test') {
+      steps {
+        // Compile and run the unit tests for the app and its dependencies
+        bat './gradlew testDebugUnitTest testDebugUnitTest'
 
-    //     // Analyse the test results and update the build result as appropriate
-    //     junit '**/TEST-*.xml'
-    //   }
-    // }
+        // Analyse the test results and update the build result as appropriate
+        junit '**/TEST-*.xml'
+      }
+    }
     stage('Build APK') {
       steps {
         // Finish building and packaging the APK
@@ -50,13 +50,13 @@ pipeline {
         // archiveArtifacts '**/*.apk'
       }
     }
-    // stage('Static analysis') {
-    //   steps {
-    //     // Run Lint and analyse the results
-    //     bat './gradlew lintDebug'
-    //     androidLint pattern: '**/lint-results-*.xml'
-    //   }
-    // }
+    stage('Static analysis') {
+      steps {
+        // Run Lint and analyse the results
+        bat './gradlew lintDebug'
+        androidLint pattern: '**/lint-results-*.xml'
+      }
+    }
     stage('Deploy') {
       when {
         // Only execute this stage when building from the `master` branch
