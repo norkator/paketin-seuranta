@@ -32,7 +32,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="m"
         android:requestLegacyExternalStorage="true">
 
         <uses-library
