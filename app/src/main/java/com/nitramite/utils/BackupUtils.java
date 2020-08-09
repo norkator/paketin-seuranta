@@ -39,22 +39,32 @@ public class BackupUtils {
     public static Backup backupDatabase(Context context) {
         Backup backup = new Backup();
         try {
+
             FileInputStream dbFileInputStream = getDBFileInputStream(context, backup);
             OutputStream dbFileOutputStream = getDBOutputStream(context, backup);
 
-            // Write new file out
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = dbFileInputStream.read(buffer)) > 0) {
-                dbFileOutputStream.write(buffer, 0, length);
-            }
-            dbFileOutputStream.flush();
-            dbFileOutputStream.close();
-            dbFileInputStream.close();
+            if (dbFileOutputStream != null) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = dbFileInputStream.read(buffer)) > 0) {
+                    dbFileOutputStream.write(buffer, 0, length);
+                }
+                dbFileOutputStream.flush();
+                dbFileOutputStream.close();
+                dbFileInputStream.close();
 
-            backup.setSuccess(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    backup.getContentValues().clear();
+                    backup.getContentValues().put(MediaStore.MediaColumns.IS_PENDING, 0);
+                    backup.getContentResolver().update(backup.getUri(), backup.getContentValues(), null, null);
+                }
+
+                backup.setSuccess(true);
+            }
+
             return backup;
         } catch (IOException e) {
+            backup.setExceptionString(e.toString());
             return backup;
         }
     }
@@ -88,7 +98,7 @@ public class BackupUtils {
             backup.setSuccess(true);
             return backup;
         } catch (IOException e) {
-            Log.i(TAG, e.toString());
+            backup.setExceptionString(e.toString());
             return backup;
         }
     }
@@ -114,26 +124,34 @@ public class BackupUtils {
      *
      * @param context Context
      * @return file output stream
-     * @throws FileNotFoundException todo: document uri not found?
+     * @throws FileNotFoundException not found
      */
     private static OutputStream getDBOutputStream(Context context, Backup backup) throws FileNotFoundException, NullPointerException {
-        OutputStream outputStream = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContentResolver resolver = context.getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, DATABASE_NAME);
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/x-sqlite3");
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+            contentValues.put(MediaStore.MediaColumns.IS_PENDING, 1);
             Uri documentUri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
-            outputStream = resolver.openOutputStream(Objects.requireNonNull(documentUri));
             backup.setLocation(context.getString(R.string.backup_location_external_storage_downloads_dir));
+            if (documentUri != null) {
+                backup.setContentResolver(resolver);
+                backup.setContentValues(contentValues);
+                backup.setUri(documentUri);
+                return resolver.openOutputStream(documentUri);
+            } else {
+                return null;
+            }
         } else {
+
             @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
             File file = new File(downloadsDir, DATABASE_NAME);
-            outputStream = new FileOutputStream(file);
+            OutputStream outputStream = new FileOutputStream(file);
             backup.setLocation(context.getString(R.string.backup_location_external_storage_downloads_dir));
+            return outputStream;
         }
-        return outputStream;
     }
 
 

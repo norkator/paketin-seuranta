@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.nitramite.utils.Backup;
 import com.nitramite.utils.BackupUtils;
+import com.nitramite.utils.DialogUtils;
 import com.nitramite.utils.SharedPreferencesUtils;
-import com.nitramite.utils.dialogUtils;
 
 import org.jetbrains.annotations.NonNls;
+
+import java.util.Objects;
 
 public class BackupManager extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class BackupManager extends AppCompatActivity {
     private static final String TAG = "BackupManager";
 
     // Variables
+    private DialogUtils dialogUtils = new DialogUtils();
     private static final int OPEN_DIRECTORY_REQUEST_CODE = 1;
 
 
@@ -63,27 +66,29 @@ public class BackupManager extends AppCompatActivity {
 
         takeBackupBtn.setOnClickListener(view -> {
 
+            /*
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 
             startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE);
+            */
 
-            /*
+
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Backup backup = BackupUtils.backupDatabase(BackupManager.this);
                 if (backup.isSuccess()) {
-                    dialogUtils.genericErrorDialog(
-                            getApplicationContext(),
-                            this.isFinishing(),
+                    dialogUtils.genericErrorDialog(this, this.isFinishing(),
                             getString(R.string.main_menu_result),
                             getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation() + " " + backup.getFileName()
                     );
                 } else {
-                    dialogUtils.genericErrorDialog(getApplicationContext(), this.isFinishing(), getString(R.string.main_menu_error), getString(R.string.main_menu_taking_backup_failed));
+                    dialogUtils.genericErrorDialog(this, this.isFinishing(),
+                            getString(R.string.main_menu_error),
+                            getString(R.string.main_menu_taking_backup_failed) + " " + backup.getExceptionString());
                 }
             }
-            */
+
 
         });
 
@@ -94,7 +99,8 @@ public class BackupManager extends AppCompatActivity {
                     Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
                     BackupManager.this.finish();
                 } else {
-                    dialogUtils.genericErrorDialog(getApplicationContext(), this.isFinishing(), getString(R.string.main_menu_error), getString(R.string.main_menu_restore_un_successfull));
+                    dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
+                            getString(R.string.main_menu_restore_un_successfull)  + " " + backup.getExceptionString());
                 }
             }
         });
@@ -130,8 +136,9 @@ public class BackupManager extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Log.i(TAG, "${data.data}");
+            Log.i(TAG, Objects.requireNonNull(data.getDataString()));
         }
     }
+
 
 }
