@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
+
 /**
  * Created by Martin on 11.1.2016.
  * Database handler, creates tables Parcels, Events, Image data.
@@ -54,10 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // 14 = v1.8.0 added parcel additional note field
     // 15 = v1.9.2 added parcel product_page field
     // 16 = v1.9.8 added parcel order_date, manual_delivered_date fields
-
-
-    // DATABASE NAME
-    public static final String DATABASE_NAME = "PARCELS.db";
 
     // TABLE NAME'S
     private static final String PARCELS_TABLE = "Parcels";

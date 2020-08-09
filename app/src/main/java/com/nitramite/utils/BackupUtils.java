@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-import static com.nitramite.paketinseuranta.DatabaseHelper.DATABASE_NAME;
+import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 
 public class BackupUtils {
 
