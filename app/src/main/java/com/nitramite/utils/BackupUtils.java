@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Objects;
 
 import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 
@@ -60,6 +59,8 @@ public class BackupUtils {
                 }
 
                 backup.setSuccess(true);
+            } else {
+                backup.setExceptionString("dbFileOutputStream is undefined");
             }
 
             return backup;
@@ -128,13 +129,17 @@ public class BackupUtils {
      */
     private static OutputStream getDBOutputStream(Context context, Backup backup) throws FileNotFoundException, NullPointerException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
             ContentResolver resolver = context.getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, DATABASE_NAME);
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/x-sqlite3");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
             contentValues.put(MediaStore.MediaColumns.IS_PENDING, 1);
-            Uri documentUri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
+
+            Uri uri = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL);
+            Uri documentUri = resolver.insert(uri, contentValues);
+
+
             backup.setLocation(context.getString(R.string.backup_location_external_storage_downloads_dir));
             if (documentUri != null) {
                 backup.setContentResolver(resolver);
@@ -144,6 +149,8 @@ public class BackupUtils {
             } else {
                 return null;
             }
+
+
         } else {
 
             @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();

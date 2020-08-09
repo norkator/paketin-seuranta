@@ -49,6 +49,7 @@ public class BackupManager extends AppCompatActivity {
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
+        Button allowAccess = findViewById(R.id.allowAccess);
 
 
         timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
@@ -64,16 +65,17 @@ public class BackupManager extends AppCompatActivity {
             }
         });
 
-        takeBackupBtn.setOnClickListener(view -> {
 
-            /*
+        allowAccess.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 
             startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE);
-            */
+        });
 
+
+        takeBackupBtn.setOnClickListener(view -> {
 
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Backup backup = BackupUtils.backupDatabase(BackupManager.this);
