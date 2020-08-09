@@ -257,9 +257,9 @@
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
 	<string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
-    <string name="main_menu_taking_backup_success">Varmuuskopion otto onnistui. Tiedosto löytyy sijainnista:</string>
-    <string name="main_menu_taking_backup_failed">Varmuuskopion otto epäonnistui. Yritä kerran uudelleen. Jos varmuuskopion otto epäonnistuu uudelleen, ota yhteys kehittäjään.</string>
-    <string name="backup_location_external_storage_downloads_dir">ulkoisen muistin lataukset kansio, tiedosto nimeltä </string>
+    <string name="main_menu_taking_backup_success">Varmuuskopiointi onnistui. Tiedosto löytyy polusta:</string>
+    <string name="main_menu_taking_backup_failed">Varmuuskopiointi epäonnistui, yritä uudelleen. Jos varmuuskopiointi edelleen epäonnistuu, ota yhteys kehittäjään.</string>
+    <string name="backup_location_external_storage_downloads_dir">ulkoisen tallennustilan latauskansio, tiedosto </string>
 
 
     <!-- Strings related to Settings -->

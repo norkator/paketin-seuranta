@@ -29,7 +29,13 @@ public class BackupUtils {
     @NonNls
     private static final String TAG = "BackupUtils";
 
-    // Backup database
+
+    /**
+     * Backup database
+     *
+     * @param context view context
+     * @return Backup object
+     */
     public static Backup backupDatabase(Context context) {
         Backup backup = new Backup();
         try {
@@ -54,7 +60,12 @@ public class BackupUtils {
     }
 
 
-    // Restore database
+    /**
+     * Restore database
+     *
+     * @param context view context
+     * @return Backup object
+     */
     public static Backup restoreDatabase(Context context) {
         Backup backup = new Backup();
         try {
@@ -70,7 +81,6 @@ public class BackupUtils {
                 output.write(buffer, 0, length);
             }
 
-            // Flush & Close
             output.flush();
             output.close();
             fileInputStream.close();
@@ -139,8 +149,8 @@ public class BackupUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
             // TODO: Wrong implementation because Google's documentation sucks with this subject.
-            // TODO: currently using android:requestLegacyExternalStorage="true" at manifest.
-            // TODO: research proper solution!
+            //  currently using android:requestLegacyExternalStorage="true" at manifest.
+            //  research proper solution!
             @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStorageDirectory() + "/Download/";
             File file = new File(downloadsDir, DATABASE_NAME);
             fileInputStream = new FileInputStream(file);
