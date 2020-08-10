@@ -71,7 +71,7 @@ public class UPSStrategy implements CourierStrategy {
             parcelObject.setProduct(additionalInformation.optJSONObject("serviceInformation").optString("serviceName").replace("&#174;", "®"));
             parcelObject.setWeight(additionalInformation.optString("weight"));
             parseAccessPointDetails(parcelDetails, parcelObject);
-
+            parseRecipientSignature(parcelDetails, parcelObject);
 
             // Parse events
             if (eventsArray.length() > 0) {
@@ -152,6 +152,16 @@ public class UPSStrategy implements CourierStrategy {
         } catch (NullPointerException e) {
             Log.e(TAG, e.toString());
         }
+    }
+
+    /**
+     * Parse and save recipient signature, in this case name
+     *
+     * @param trackDetails parcel details json
+     * @param parcelObject parcel object
+     */
+    private void parseRecipientSignature(JSONObject trackDetails, ParcelObject parcelObject) {
+        parcelObject.setRecipientSignature(trackDetails.optString("receivedBy"));
     }
 
 
