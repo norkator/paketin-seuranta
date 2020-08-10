@@ -57,14 +57,6 @@
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/allowAccess"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="API Q ACCESS"
-                        android:textSize="15sp" />
-
-                    <Button
                         android:id="@+id/takeBackupBtn"
                         style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="wrap_content"

@@ -49,7 +49,6 @@ public class BackupManager extends AppCompatActivity {
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
-        Button allowAccess = findViewById(R.id.allowAccess);
 
 
         timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
@@ -66,15 +65,6 @@ public class BackupManager extends AppCompatActivity {
         });
 
 
-        allowAccess.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-
-            startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE);
-        });
-
-
         takeBackupBtn.setOnClickListener(view -> {
 
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -82,7 +72,7 @@ public class BackupManager extends AppCompatActivity {
                 if (backup.isSuccess()) {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(),
                             getString(R.string.main_menu_result),
-                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation() + " " + backup.getFileName()
+                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation()
                     );
                 } else {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(),
@@ -102,7 +92,7 @@ public class BackupManager extends AppCompatActivity {
                     BackupManager.this.finish();
                 } else {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
-                            getString(R.string.main_menu_restore_un_successfull)  + " " + backup.getExceptionString());
+                            getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
                 }
             }
         });

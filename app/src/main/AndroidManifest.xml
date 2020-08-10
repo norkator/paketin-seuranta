@@ -19,7 +19,6 @@
         android:icon="@mipmap/ps_logo_square"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ps_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
