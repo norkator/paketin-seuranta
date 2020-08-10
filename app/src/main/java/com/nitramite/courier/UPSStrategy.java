@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -69,6 +70,8 @@ public class UPSStrategy implements CourierStrategy {
             // Get service "product"
             parcelObject.setProduct(additionalInformation.optJSONObject("serviceInformation").optString("serviceName").replace("&#174;", "®"));
             parcelObject.setWeight(additionalInformation.optString("weight"));
+            parseAccessPointDetails(parcelDetails, parcelObject);
+
 
             // Parse events
             if (eventsArray.length() > 0) {
@@ -122,6 +125,33 @@ public class UPSStrategy implements CourierStrategy {
             e.printStackTrace();
         }
         return parcelObject;
+    }
+
+
+    /**
+     * Parse pick up location from details
+     *
+     * @param trackDetails parcel details json
+     * @param parcelObject parcel object
+     */
+    private void parseAccessPointDetails(JSONObject trackDetails, ParcelObject parcelObject) {
+        try {
+            JSONObject location =
+                    Objects.requireNonNull(trackDetails.optJSONObject("upsAccessPoint"))
+                            .optJSONObject("location");
+            assert location != null;
+            parcelObject.setPickupAddress(
+                    location.optString("attentionName"),
+                    location.optString("streetAddress1"),
+                    location.optString("zipCode"),
+                    location.optString("city"),
+                    location.optString(""),
+                    location.optString(""),
+                    location.optString("")
+            );
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
 
