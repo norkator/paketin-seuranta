@@ -259,6 +259,8 @@
     <string name="main_menu_taking_backup_success">Backup was successful. Backup file can be found from: </string>
     <string name="main_menu_taking_backup_failed">Backup failed, please try again. Please contact the developer if backup still fails.</string>
     <string name="backup_location_external_storage_downloads_dir">external storage downloads directory named </string>
+    <string name="no_timed_backups_taken">No timed backups taken</string>
+    <string name="last_backup">Last backup: </string>
 
 
     <!-- Strings related to Settings -->

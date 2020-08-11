@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nitramite.utils.Backup;
@@ -49,6 +50,11 @@ public class BackupManager extends AppCompatActivity {
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
+        TextView lastBackupDate = findViewById(R.id.lastBackupDate);
+
+
+        final String lastBackupDateStr = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
+        lastBackupDate.setText(lastBackupDateStr == null ? getString(R.string.no_timed_backups_taken) : getString(R.string.last_backup) + lastBackupDateStr);
 
 
         timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
