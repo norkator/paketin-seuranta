@@ -81,6 +81,8 @@ public class PostNordStrategy implements CourierStrategy {
                 }
 
                 parseSizingDetails(item, parcelObject);
+                parseConsignorDetails(jsonShipmentObj, parcelObject);
+                parseConsigneeDetails(jsonShipmentObj, parcelObject);
 
 
                 @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
@@ -126,6 +128,12 @@ public class PostNordStrategy implements CourierStrategy {
     }
 
 
+    /**
+     * Parses sizing details from item
+     *
+     * @param item         item object
+     * @param parcelObject parcel object for saving
+     */
     private void parseSizingDetails(JSONObject item, ParcelObject parcelObject) {
         try {
             JSONObject statedMeasurement = item.optJSONObject("statedMeasurement");
@@ -150,11 +158,64 @@ public class PostNordStrategy implements CourierStrategy {
     }
 
 
+    /**
+     * Converts meters to centimeters if exists
+     *
+     * @param value string value
+     * @param unit  value unit
+     * @return string with unit string
+     */
     private String getMetersToCentimeters(String value, String unit) {
         if (unit.equals("m")) {
             return String.valueOf(Double.parseDouble(value) * 100) + " cm";
         } else {
             return "- cm";
+        }
+    }
+
+
+    /**
+     * Set sender name and address details
+     *
+     * @param jsonShipmentObj item object
+     * @param parcelObject    parcel object for saving
+     */
+    private void parseConsignorDetails(JSONObject jsonShipmentObj, ParcelObject parcelObject) {
+        try {
+            JSONObject consignor = jsonShipmentObj.optJSONObject("consignor");
+            assert consignor != null;
+            JSONObject address = consignor.optJSONObject("address");
+            assert address != null;
+            parcelObject.setSender(
+                    consignor.optString("name") + ", " +
+                            address.optString("postCode") + ", " +
+                            address.optString("country")
+            );
+
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+
+    /**
+     * Set receiver address details
+     *
+     * @param jsonShipmentObj item object
+     * @param parcelObject    parcel object for saving
+     */
+    private void parseConsigneeDetails(JSONObject jsonShipmentObj, ParcelObject parcelObject) {
+        try {
+            JSONObject consignee = jsonShipmentObj.optJSONObject("consignee");
+            assert consignee != null;
+            JSONObject address = consignee.optJSONObject("address");
+            assert address != null;
+            parcelObject.setDestinationCity(address.optString("city"));
+            parcelObject.setDestinationPostcode(address.optString("postCode"));
+            parcelObject.setDestinationCountry(address.optString("country"));
+
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
         }
     }
 
