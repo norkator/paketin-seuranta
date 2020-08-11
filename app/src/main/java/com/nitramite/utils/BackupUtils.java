@@ -2,9 +2,12 @@ package com.nitramite.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import com.nitramite.paketinseuranta.R;
 
@@ -124,9 +127,9 @@ public class BackupUtils {
                 //noinspection ResultOfMethodCallIgnored
                 dbFile.createNewFile();
             }
-            backup.setLocation("" + filepath);
+            backup.setLocation(filepath);
+            backup.setUri(Uri.parse(filepath));
             return new FileOutputStream(dbFile);
-
         } else {
 
             @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();

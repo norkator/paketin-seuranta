@@ -8,8 +8,8 @@ public class Backup {
 
     private boolean success = false;
     private String exceptionString = "N/A";
-    private String location = "N/A";
-    private String fileName = "N/A";
+    private String location = "";
+    private String fileName = "";
 
     private ContentResolver contentResolver;
     private ContentValues contentValues;

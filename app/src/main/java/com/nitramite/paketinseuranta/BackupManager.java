@@ -6,13 +6,17 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -76,9 +80,10 @@ public class BackupManager extends AppCompatActivity {
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Backup backup = BackupUtils.backupDatabase(BackupManager.this);
                 if (backup.isSuccess()) {
-                    dialogUtils.genericErrorDialog(this, this.isFinishing(),
+                    backupSuccessDialog(this, this.isFinishing(),
                             getString(R.string.main_menu_result),
-                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation()
+                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation(),
+                            backup
                     );
                 } else {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(),
@@ -95,7 +100,7 @@ public class BackupManager extends AppCompatActivity {
                 Backup backup = BackupUtils.restoreDatabase(BackupManager.this);
                 if (backup.isSuccess()) {
                     Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
-                    BackupManager.this.finish();
+                    terminateApp();
                 } else {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
                             getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
@@ -138,5 +143,54 @@ public class BackupManager extends AppCompatActivity {
         }
     }
 
+
+    public void backupSuccessDialog(Context context, boolean isFinishing, final String title, final String description, Backup backup) {
+        try {
+            if (!isFinishing) {
+                new AlertDialog.Builder(context)
+                        .setTitle(title)
+                        .setMessage(description)
+                        .setPositiveButton(R.string.main_menu_close, (dialog, which) -> {
+                        })
+                        .setNeutralButton("Open location", (dialog, which) -> {
+                            openFolderLocation(backup);
+                        })
+                        .setIcon(R.mipmap.ps_logo_round)
+                        .show();
+            }
+        } catch (WindowManager.BadTokenException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Open file browser for backup file location
+     *
+     * @param backup object
+     */
+    public void openFolderLocation(Backup backup) {
+        try {
+            Intent intent = new Intent();
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setDataAndType(backup.getUri(), "application/x-sqlite3");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error), e.toString());
+        }
+    }
+
+
+    /**
+     * Shut down app
+     */
+    private void terminateApp() {
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            finishAffinity();
+            System.exit(0);
+        }, 2000);
+    }
 
 }
