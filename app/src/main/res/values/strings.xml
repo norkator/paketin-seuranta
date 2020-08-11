@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2020
   ~ Paketin Seuranta
   ~
@@ -261,6 +262,7 @@
     <string name="backup_location_external_storage_downloads_dir">external storage downloads directory named </string>
     <string name="no_timed_backups_taken">No timed backups taken</string>
     <string name="last_backup">Last backup: </string>
+    <string name="open_bu_location">Open location</string>
 
 
     <!-- Strings related to Settings -->

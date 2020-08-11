@@ -262,6 +262,7 @@
     <string name="backup_location_external_storage_downloads_dir">ulkoisen tallennustilan latauskansio, tiedosto </string>
     <string name="no_timed_backups_taken">Ei otettuja ajoitettuja varmuuskopioita</string>
     <string name="last_backup">Viimeisin varmuuskopio: </string>
+    <string name="open_bu_location">Avaa sijainti</string>
 
 
     <!-- Strings related to Settings -->
