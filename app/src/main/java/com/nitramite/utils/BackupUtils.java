@@ -135,7 +135,7 @@ public class BackupUtils {
             @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
             File file = new File(downloadsDir, DATABASE_NAME);
             OutputStream outputStream = new FileOutputStream(file);
-            backup.setLocation(context.getString(R.string.backup_location_external_storage_downloads_dir) + DATABASE_NAME);
+            backup.setLocation(context.getString(R.string.backup_location_external_storage_downloads_dir) + " " + DATABASE_NAME);
             return outputStream;
         }
     }
