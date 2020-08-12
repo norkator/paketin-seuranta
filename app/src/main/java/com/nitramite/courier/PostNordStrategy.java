@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -72,14 +73,17 @@ public class PostNordStrategy implements CourierStrategy {
                 JSONObject item = jsonShipmentObj.optJSONArray("items").getJSONObject(0); // Get item information
                 JSONArray eventsArray = item.optJSONArray("events"); // Get item events
 
-                //Log.i(TAG, eventsArray.toString());
-
                 // Parcel phase handling
-                final String itemStatus = item.optString("status");
+                String itemStatus = item.optString("status");
                 Log.i(TAG, "Postnord package status: " + itemStatus);
                 if (itemStatus.equals("EN_ROUTE") || itemStatus.equals("INFORMED")) {
                     parcelObject.setPhase("TRANSIT"); // Phase
                 }
+
+                parseSizingDetails(item, parcelObject);
+                parseConsignorDetails(jsonShipmentObj, parcelObject);
+                parseConsigneeDetails(jsonShipmentObj, parcelObject);
+
 
                 @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -90,11 +94,8 @@ public class PostNordStrategy implements CourierStrategy {
                     String timeStamp = event.optString("eventTime");
                     Date parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp));
 
-                    final String parsedDate = showingDateFormat.format(parseTimeDate);
-                    final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
-
-                    // Log.i(TAG, "After parsing date format is: " + parsedDate);
-                    // Log.i(TAG, "After parsing SQLite date format is: " + parsedDateSQLiteFormat);
+                    String parsedDate = showingDateFormat.format(parseTimeDate);
+                    String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
 
                     // Get event description
                     String eventDescription = event.optString("eventDescription");
@@ -124,6 +125,98 @@ public class PostNordStrategy implements CourierStrategy {
             e.printStackTrace();
         }
         return parcelObject;
+    }
+
+
+    /**
+     * Parses sizing details from item
+     *
+     * @param item         item object
+     * @param parcelObject parcel object for saving
+     */
+    private void parseSizingDetails(JSONObject item, ParcelObject parcelObject) {
+        try {
+            JSONObject statedMeasurement = item.optJSONObject("statedMeasurement");
+
+            assert statedMeasurement != null;
+            parcelObject.setDepth(getMetersToCentimeters(
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("length")).optString("value"),
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("length")).optString("unit")
+            ));
+            parcelObject.setHeight(getMetersToCentimeters(
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("height")).optString("value"),
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("height")).optString("unit")
+            ));
+            parcelObject.setWidth(getMetersToCentimeters(
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("width")).optString("value"),
+                    Objects.requireNonNull(statedMeasurement.optJSONObject("width")).optString("unit")
+            ));
+
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+
+    /**
+     * Converts meters to centimeters if exists
+     *
+     * @param value string value
+     * @param unit  value unit
+     * @return string with unit string
+     */
+    private String getMetersToCentimeters(String value, String unit) {
+        if (unit.equals("m")) {
+            return String.valueOf(Double.parseDouble(value) * 100) + " cm";
+        } else {
+            return "- cm";
+        }
+    }
+
+
+    /**
+     * Set sender name and address details
+     *
+     * @param jsonShipmentObj item object
+     * @param parcelObject    parcel object for saving
+     */
+    private void parseConsignorDetails(JSONObject jsonShipmentObj, ParcelObject parcelObject) {
+        try {
+            JSONObject consignor = jsonShipmentObj.optJSONObject("consignor");
+            assert consignor != null;
+            JSONObject address = consignor.optJSONObject("address");
+            assert address != null;
+            parcelObject.setSender(
+                    consignor.optString("name") + ", " +
+                            address.optString("postCode") + ", " +
+                            address.optString("country")
+            );
+
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+
+    /**
+     * Set receiver address details
+     *
+     * @param jsonShipmentObj item object
+     * @param parcelObject    parcel object for saving
+     */
+    private void parseConsigneeDetails(JSONObject jsonShipmentObj, ParcelObject parcelObject) {
+        try {
+            JSONObject consignee = jsonShipmentObj.optJSONObject("consignee");
+            assert consignee != null;
+            JSONObject address = consignee.optJSONObject("address");
+            assert address != null;
+            parcelObject.setDestinationCity(address.optString("city"));
+            parcelObject.setDestinationPostcode(address.optString("postCode"));
+            parcelObject.setDestinationCountry(address.optString("country"));
+
+        } catch (NullPointerException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
 

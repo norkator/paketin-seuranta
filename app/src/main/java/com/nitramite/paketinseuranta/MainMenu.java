@@ -94,6 +94,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private View emptyView;
     private SharedPreferences sharedPreferences;
     private Boolean SP_UPDATE_FAILED_FIRST = false;
+    private boolean lastUpdate = false;
 
     // Activity request codes
     private static final int ACTIVITY_RESULT_PARCEL = 1;  // The request code
@@ -232,6 +233,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         // Shared preferences
         boolean SP_UPDATE_PARCELS_ON_STARTUP = sharedPreferences.getBoolean(Constants.SP_UPDATE_PARCELS_ON_STARTUP, true);
         SP_UPDATE_FAILED_FIRST = sharedPreferences.getBoolean(Constants.SP_UPDATE_FAILED_FIRST, false);
+        lastUpdate = sharedPreferences.getBoolean(Constants.SP_PACKAGE_LAST_CHANGE, false);
         boolean autoParcelUpdates = sharedPreferences.getBoolean("parcels_automatic_update", true);
         // If automatic background updating is disabled ensure that service is not running
         boolean SP_PARCELS_AUTOMATIC_UPDATE = sharedPreferences.getBoolean(Constants.SP_PARCELS_AUTOMATIC_UPDATE, true);
@@ -472,8 +474,10 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     res.getString(9),
                     res.getString(10),
                     res.getString(11),
-                    res.getString(12)       // Last pickup date
+                    res.getString(12),       // Last pickup date
+                    databaseHelper.getLatestParcelEventDate(res.getString(0)) // Last event date
             ));
+            Log.e(TAG, "Item led: " + parcelItems.get(parcelItems.size() - 1).getLastEventDate());
         }
         updateListView();
     }
@@ -484,7 +488,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     // Update list view
     public void updateListView() {
         if (adapter == null) {
-            adapter = new CustomParcelsAdapterV2(MainMenu.this, parcelItems, true);
+            adapter = new CustomParcelsAdapterV2(MainMenu.this, parcelItems, true, lastUpdate);
             mAdapter = new SwipeActionAdapter(adapter);
             mAdapter.setSwipeActionListener(this)
                     .setDimBackgrounds(true)

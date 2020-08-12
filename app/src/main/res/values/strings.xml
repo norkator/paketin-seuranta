@@ -263,8 +263,11 @@
     <string name="no_timed_backups_taken">No timed backups taken</string>
     <string name="last_backup">Last backup: </string>
     <string name="open_bu_location">Open location</string>
+    <string name="last_change">Last change: %1$s</string>
+    <string name="preferences_last_change_summary">Shows the date when last event occurred. Last refresh date will be hidden</string>
+    <string name="preferences_last_change_title">Show \"Last change\"</string>
 
-
+  
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
         <item>Load events</item>
