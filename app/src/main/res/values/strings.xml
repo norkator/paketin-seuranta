@@ -266,6 +266,11 @@
     <string name="last_change">Last change: %1$s</string>
     <string name="preferences_last_change_summary">Shows the date when last event occurred. Last refresh date will be hidden</string>
     <string name="preferences_last_change_title">Show \"Last change\"</string>
+    <string name="thank_you_for_donation">Thank you for your donation!</string>
+    <string name="purchase_acknowledged">Purchase acknowledged!</string>
+    <string name="billing_service">Billing service</string>
+    <string name="billing_service_not_initialized_error">Billing service is not initialized yet. Please try again.</string>
+    <string name="support_development">Donate</string>
 
   
     <!-- Strings related to Settings -->

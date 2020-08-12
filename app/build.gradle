@@ -73,7 +73,7 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.5'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
-
+    implementation 'com.android.billingclient:billing:3.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

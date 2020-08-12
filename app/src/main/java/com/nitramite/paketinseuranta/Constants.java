@@ -11,6 +11,9 @@ package com.nitramite.paketinseuranta;
 @SuppressWarnings("HardCodedStringLiteral")
 public class Constants {
 
+    // In app billing keys
+    static final String ITEM_SKU_DONATE = "donatemedium";
+  
     // DATABASE NAME
     public static final String DATABASE_NAME = "PARCELS.db";
 

@@ -30,4 +30,11 @@
         android:title="@string/menu_menu_backup"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_support_development"
+        android:title="@string/support_development"
+        app:showAsAction="never" />
+
+
+
 </menu>
