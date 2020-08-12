@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Timed backup"
+                    android:text="@string/timed_back_up_toggle"
                     android:textSize="18sp" />
 
                 <LinearLayout
