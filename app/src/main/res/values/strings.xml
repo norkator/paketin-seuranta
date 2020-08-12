@@ -263,6 +263,7 @@
     <string name="purchase_acknowledged">Purchase acknowledged!</string>
     <string name="billing_service">Billing service</string>
     <string name="billing_service_not_initialized_error">Billing service is not initialized yet. Please try again.</string>
+    <string name="support_development">Donate</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

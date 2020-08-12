@@ -259,6 +259,11 @@
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
     <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
+    <string name="thank_you_for_donation">Kiitos lahjoituksestasi!</string>
+    <string name="purchase_acknowledged">Osto varmistettu!</string>
+    <string name="billing_service">Ostopalvelu</string>
+    <string name="billing_service_not_initialized_error">Ostopalvelu ei ole vielä valmis luomaan tapahtumaa. Yritä uudelleen!</string>
+    <string name="support_development">Lahjoita</string>
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

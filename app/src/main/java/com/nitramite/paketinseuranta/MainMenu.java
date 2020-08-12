@@ -723,6 +723,10 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             databaseBackupDialog();
             return true;
         }
+        if (id == R.id.action_support_development) {
+            inAppPurchase(Constants.ITEM_SKU_DONATE);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
