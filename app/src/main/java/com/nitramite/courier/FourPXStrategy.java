@@ -158,7 +158,7 @@ public class FourPXStrategy implements CourierStrategy {
         }
         // This part is tricky. I didn't find any list of what different TkCodes mean. I am waiting my parcel to be delivered, and possibly extracting info from that
         if (!hasArrivedAtDestCountry && parcel.getDestinationCode().equals("FI")) {
-            parcelObject.setPhase("INTRANSPORT_NOTINFINLAND");
+            parcelObject.setPhase("IN_TRANSPORT_NOT_IN_FINLAND");
         }
         if (parcel.getStatus() == 2) {
             parcelObject.setPhase("DELIVERED");

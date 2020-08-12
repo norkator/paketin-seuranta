@@ -78,6 +78,8 @@ public class PostNordStrategy implements CourierStrategy {
                 Log.i(TAG, "Postnord package status: " + itemStatus);
                 if (itemStatus.equals("EN_ROUTE") || itemStatus.equals("INFORMED")) {
                     parcelObject.setPhase("TRANSIT"); // Phase
+                } else {
+                    parcelObject.setPhase(itemStatus);
                 }
 
                 parseSizingDetails(item, parcelObject);
