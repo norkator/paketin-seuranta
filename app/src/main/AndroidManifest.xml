@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2020
-  ~ Paketin Seuranta
-  ~
-  ~ @author developerfromjokela
-  ~ @author norkator
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nitramite.paketinseuranta">
@@ -30,9 +22,7 @@
         android:roundIcon="@mipmap/ps_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="m">
+        tools:ignore="GoogleAppIndexingWarning">
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -103,7 +93,9 @@
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".BarcodeList" android:label="@string/menu_menu_barcode_list"/>
+        <activity
+            android:name=".BarcodeList"
+            android:label="@string/menu_menu_barcode_list" />
 
         <receiver android:name=".Widget">
             <intent-filter>
@@ -118,9 +110,8 @@
         <activity
             android:name=".Archive"
             android:screenOrientation="fullSensor" />
-
         <activity android:name=".ParcelEditor" />
-
+        <activity android:name=".BackupManager" />
     </application>
 
 </manifest>

@@ -87,8 +87,6 @@
     <string name="main_menu_take_backup_with_this_tool_text">Tällä työkalulla voit ottaa sovelluksen sisäisestä kannasta varmuuskopion ja myös palauttaa varmuuskopion tarpeen vaatiessa. Toiminto vaatii pääsyn tallennustilaan, jotta varmuuskopio voidaan tallentaa ulos sovelluksen omasta sisäisestä kansiosta. Tallennustila oikeuden annon jälkeen aja tämä uudelleen.</string>
     <string name="main_menu_take_backup">Ota varmuuskopio</string>
     <string name="main_menu_result">Tulos</string>
-    <string name="main_menu_taking_backup_was_successfull_for_following_directory">Varmuuskopion otto onnistui. Tiedosto on tallennettu sijaintiin:</string>
-    <string name="main_menu_taking_backup_failed">Varmuuskopion otto epäonnistui. Tämä tapahtuu joskus kun sovellus ei ilmeisesti ehdi luomaan kansioita. Yritä uudelleen niin toiminnon pitäisi onnistua.</string>
     <string name="archive_title">Arkisto</string>
     <string name="archive_delete_title">Poisto</string>
     <string name="archive_delete_description">Olet poistamassa arkistoidun paketin listalta. Haluatko jatkaa?</string>
@@ -259,6 +257,13 @@
     <string name="description">Selite</string>
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
+	  <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
+    <string name="main_menu_taking_backup_success">Varmuuskopiointi onnistui. Tiedosto löytyy polusta:</string>
+    <string name="main_menu_taking_backup_failed">Varmuuskopiointi epäonnistui, yritä uudelleen. Jos varmuuskopiointi edelleen epäonnistuu, ota yhteys kehittäjään.</string>
+    <string name="backup_location_external_storage_downloads_dir">ulkoisen tallennustilan latauskansio, tiedosto </string>
+    <string name="no_timed_backups_taken">Ei otettuja ajoitettuja varmuuskopioita</string>
+    <string name="last_backup">Viimeisin varmuuskopio: </string>
+    <string name="open_bu_location">Avaa sijainti</string>
     <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
     <string name="preferences_last_change_summary">Näyttää päivämäärän milloin paketille viimeksi tapahtui jotain</string>
     <string name="preferences_last_change_title">Näytä \"Viimeisin muutos\"</string>
