@@ -11,6 +11,8 @@ package com.nitramite.paketinseuranta;
 @SuppressWarnings("HardCodedStringLiteral")
 public class Constants {
 
+    // DATABASE NAME
+    public static final String DATABASE_NAME = "PARCELS.db";
 
     // Shared preferences keys
     final static String SP_INTRO_IS_SHOWN = "SP_INTRO_IS_SHOWN";
