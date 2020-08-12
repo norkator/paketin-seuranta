@@ -11,6 +11,8 @@ package com.nitramite.paketinseuranta;
 @SuppressWarnings("HardCodedStringLiteral")
 public class Constants {
 
+    // In app billing keys
+    static final String ITEM_SKU_DONATE = "donatemedium";
 
     // Shared preferences keys
     final static String SP_INTRO_IS_SHOWN = "SP_INTRO_IS_SHOWN";

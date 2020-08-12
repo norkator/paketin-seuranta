@@ -54,6 +54,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
@@ -69,20 +80,26 @@ import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
 
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener, PurchasesUpdatedListener {
 
     //  Logging
     @NonNls
     private static final String TAG = "MainMenu";
+
+    // In app billing
+    private BillingClient mBillingClient;
 
     // Main items
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -294,6 +311,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         // Backup feature
         checkForAutomaticBackup();
 
+        // Init in app billing
+        initInAppBilling();
 
         Log.i(TAG, "-------------- SERVICE CHECK --------------"); //NON-NLS
         Log.i(TAG, "ParcelServiceTimer.class running: " + isMyServiceRunning(ParcelServiceTimer.class)); //NON-NLS
@@ -852,5 +871,85 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
 
     // ---------------------------------------------------------------------------------------------
+    // In app billing
+
+    // Initialize in app billing feature
+    private void initInAppBilling() {
+        // In app billing
+        mBillingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(this).build();
+        mBillingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NotNull BillingResult billingResult) {
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+            }
+        });
+    }
+
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getSku().equals(Constants.ITEM_SKU_DONATE)) {
+                    Toast.makeText(MainMenu.this, R.string.thank_you_for_donation, Toast.LENGTH_LONG).show();
+                    acknowledgePurchase(purchase);
+                }
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (!purchase.isAcknowledged()) {
+                    acknowledgePurchase(purchase);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Acknowledge purchase required by billing lib 2.x++
+     *
+     * @param purchase billing purchase
+     */
+    private void acknowledgePurchase(Purchase purchase) {
+        AcknowledgePurchaseParams acknowledgePurchaseParams =
+                AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.getPurchaseToken())
+                        .build();
+        mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+    }
+
+
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = billingResult -> {
+        // This is required, will otherwise return money back in day or two
+        Toast.makeText(MainMenu.this, R.string.purchase_acknowledged, Toast.LENGTH_SHORT).show();
+    };
+
+
+    public void inAppPurchase(final String IAP_ITEM_SKU) {
+        if (mBillingClient.isReady()) {
+            List<String> skuList = new ArrayList<>();
+            skuList.add(IAP_ITEM_SKU);
+            SkuDetailsParams skuDetailsParams = SkuDetailsParams.newBuilder()
+                    .setSkusList(skuList).setType(BillingClient.SkuType.INAPP).build();
+            mBillingClient.querySkuDetailsAsync(skuDetailsParams, (billingResult, skuDetailsList) -> {
+                try {
+                    assert skuDetailsList != null;
+                    BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                            .setSkuDetails(skuDetailsList.get(0))
+                            .build();
+                    mBillingClient.launchBillingFlow(MainMenu.this, flowParams);
+                } catch (IndexOutOfBoundsException e) {
+                    genericErrorDialog(getString(R.string.main_menu_error), e.toString());
+                }
+            });
+        } else {
+            genericErrorDialog(getString(R.string.billing_service), getString(R.string.billing_service_not_initialized_error));
+            initInAppBilling();
+        }
+    }
+
 
 } // End of class
