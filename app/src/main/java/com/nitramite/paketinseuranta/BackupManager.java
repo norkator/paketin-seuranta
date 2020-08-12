@@ -152,9 +152,11 @@ public class BackupManager extends AppCompatActivity {
                         .setMessage(description)
                         .setPositiveButton(R.string.main_menu_close, (dialog, which) -> {
                         })
+                        /*
                         .setNeutralButton(R.string.open_bu_location, (dialog, which) -> {
                             openFolderLocation(backup);
                         })
+                        */
                         .setIcon(R.mipmap.ps_logo_round)
                         .show();
             }
