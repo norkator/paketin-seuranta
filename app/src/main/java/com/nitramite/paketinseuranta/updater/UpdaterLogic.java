@@ -236,7 +236,7 @@ public class UpdaterLogic {
                                     }
                                     // Change phase based on last event (used for ordering properly in the end)
                                     final String eventString = databaseHelper.getLatestParcelEvent(ID); // Get last event string
-                                    final PhaseNumberString phaseNumberString = PhaseNumber.phaseToNumber(eventString); // Turn event string into number and corresponding phase string
+                                    final PhaseNumberString phaseNumberString = PhaseNumber.phaseToNumber(parcelObject.getPhase(), eventString); // Turn event string into number and corresponding phase string
                                     if (!phaseNumberString.getPhaseString().equals("")) { // Verify
                                         databaseHelper.updatePhaseNumberAndPhaseString(ID, phaseNumberString); // Update parcel details with new phase
                                     }

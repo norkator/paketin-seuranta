@@ -74,7 +74,7 @@ public class ParcelObject {
     }
 
     public String getPhaseToNumber() {
-        return PhaseNumber.phaseToNumber(this.phase).getPhaseNumber();
+        return PhaseNumber.phaseToNumber(this.phase, "").getPhaseNumber();
     }
 
     public String getEstimatedDeliveryTime() {
