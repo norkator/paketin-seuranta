@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 import android.annotation.SuppressLint;
@@ -852,6 +860,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1", null);
         res.moveToFirst();
         final String latestParcelEvent = res.getString(0);
+        res.close();
+        db.close();
+        return latestParcelEvent;
+    }
+
+    // Return parcel latest event for parcel id
+    public String getLatestParcelEventDate(String parcelID) {
+        Log.e(TAG, parcelID);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT " + TIMESTAMP + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1", null);
+        res.moveToFirst();
+        if (res.getCount() < 1) {
+            res.close();
+            db.close();
+            return null;
+        }
+        final String latestParcelEvent = res.getString(0);
+        Log.e(TAG, latestParcelEvent);
         res.close();
         db.close();
         return latestParcelEvent;

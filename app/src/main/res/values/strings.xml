@@ -259,6 +259,10 @@
     <string name="carrier_detector_tool">Carrier detector tool</string>
     <string name="carrier_detector_tool_description">This tool tries to find possible carriers for given tracking code. If tool gives options, you can select one via clicking carrier image.</string>
     <string name="reference_to_database_is_null_cannot_add_items">Reference to database is missing, cannot add items!</string>
+    <string name="last_change">Last change: %1$s</string>
+    <string name="preferences_last_change_summary">Shows the date when last event occurred. Last refresh date will be hidden</string>
+    <string name="preferences_last_change_title">Show \"Last change\"</string>
+	
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">

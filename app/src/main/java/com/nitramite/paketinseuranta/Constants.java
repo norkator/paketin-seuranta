@@ -22,6 +22,7 @@ public class Constants {
     final static String SP_MAIN_MENU_LIST_LONG_TAP_ACTION = "SP_MAIN_MENU_LIST_LONG_TAP_ACTION";
     final static String SP_UPDATE_FAILED_FIRST = "SP_UPDATE_FAILED_FIRST";
     public final static String SP_THEME_SELECTION = "SP_THEME_SELECTION";
+    public final static String SP_PACKAGE_LAST_CHANGE = "SP_PACKAGE_LAST_CHANGE";
     public final static String SP_APPLICATION_LANGUAGE = "SP_APPLICATION_LANGUAGE";
     final static String SP_SHOW_COURIER_ICON_CARD_ON_LIST = "SP_SHOW_COURIER_ICON_CARD_ON_LIST";
     final static String SP_PORTRAIT_ORIENTATION_ONLY = "SP_PORTRAIT_ORIENTATION_ONLY";
