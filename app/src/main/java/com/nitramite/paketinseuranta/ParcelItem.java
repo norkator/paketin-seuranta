@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2020
+ * Paketin Seuranta
+ *
+ * @author developerfromjokela
+ * @author norkator
+ */
+
 package com.nitramite.paketinseuranta;
 
 public class ParcelItem {
@@ -20,14 +28,14 @@ public class ParcelItem {
     private String parcelDeliveryMethod = null;
     private String parcelAdditionalNote = null;
     private String parcelCreateDate = null;
-
+    private String lastEventDate = null;
 
 
     // Constructor
     ParcelItem(String parcelId, String parcelCode, String parcelPhase, String parcelType, String parcelTitle,
                String parcelUpdateStatus, String parcelLatestEventDescription, String parcelCarrier,
                String parcelSender, String parcelDeliveryMethod, String parcelAdditionalNote, String parcelCreateDate,
-               String parcelLastPickupDate) {
+               String parcelLastPickupDate, String lastEventDate) {
         this.parcelId = parcelId;
         this.parcelCode = parcelCode;
         this.parcelPhase = parcelPhase;
@@ -41,8 +49,16 @@ public class ParcelItem {
         this.parcelAdditionalNote = parcelAdditionalNote;
         this.parcelCreateDate = parcelCreateDate;
         this.parcelLastPickupDate = parcelLastPickupDate;
+        this.lastEventDate = lastEventDate;
     }
 
+    public String getLastEventDate() {
+        return lastEventDate;
+    }
+
+    public void setLastEventDate(String lastEventDate) {
+        this.lastEventDate = lastEventDate;
+    }
 
     String getParcelId() {
         return this.parcelId;

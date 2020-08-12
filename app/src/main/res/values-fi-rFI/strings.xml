@@ -17,6 +17,7 @@
     <string name="title_activity_maps">Sijainti</string>
     <string name="title_activity_settings">Asetukset</string>
     <string name="last_updated_beginning_part">Tiedot päivitetty:</string>
+    <string name="last_change">Viimeisin muutos: %1$s</string>
     <string name="last_updated_beginning_part_not_found">Tietojen päivitys epäonnistui:</string>
     <string name="package_not_found">Pakettia ei löytynyt!</string>
     <string name="delivered_in">TOIMITETTU</string>
@@ -259,11 +260,14 @@
     <string name="carrier_detector_tool">Kuljetusyhtiön tunnistustyökalu</string>
     <string name="carrier_detector_tool_description">Tämä työkalu yrittää tunnistaa pakettia eri toimitusyhtiöistä koodia hakemalla. Voit lopuksi valita sopivan yhtiön jos alle ilmestyy valintoja.</string>
     <string name="reference_to_database_is_null_cannot_add_items">Referenssi tietokantaan puuttuu, pakettien lisäys ei onnistu!</string>
+    <string name="preferences_last_change_summary">Näyttää päivämäärän milloin paketille viimeksi tapahtui jotain</string>
+    <string name="preferences_last_change_title">Näytä \"Viimeisin muutos\"</string>
     <string name="thank_you_for_donation">Kiitos lahjoituksestasi!</string>
     <string name="purchase_acknowledged">Osto varmistettu!</string>
     <string name="billing_service">Ostopalvelu</string>
     <string name="billing_service_not_initialized_error">Ostopalvelu ei ole vielä valmis luomaan tapahtumaa. Yritä uudelleen!</string>
     <string name="support_development">Lahjoita</string>
+  
 
     <!-- Strings related to Settings -->
     <string-array name="pref_long_tap_values">
