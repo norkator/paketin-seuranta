@@ -23,7 +23,7 @@ public class YanwenStrategy implements CourierStrategy {
     private static final String TAG = "YanwenStrategy";
 
     // Api url
-    private static final String url = "http://track.yw56.com.cn/en-US/";
+    private static final String url = "https://track.yw56.com.cn/home/index?aspxerrorpath=/en-US";
 
 
     @Override
@@ -37,25 +37,19 @@ public class YanwenStrategy implements CourierStrategy {
                     .timeout(0)
                     .post();
 
-            // Log.i(TAG, document.toString());
-
-
             // Parse current status from html
-            Elements deliveryStatusElements = document.getElementsByClass("media-middle");
-            for (Element dElement : deliveryStatusElements) {
-                // Log.i(TAG, dElement.toString());
-                if (dElement.select("i.btn-success").size() > 0) {
-                    // Log.i(TAG, dElement.select("i.btn-success").html());
-                    if (dElement.select("i.btn-success").text().contains("In transport")) {
-                        parcelObject.setIsFound(true);
-                        parcelObject.setPhase("IN_TRANSPORT");
-                    } else if (dElement.select("i.btn-success").text().contains("Track End")) {
-                        parcelObject.setIsFound(true);
-                        parcelObject.setPhase("IN_TRANSPORT");
-                    } else if (dElement.select("i.btn-success").text().contains("Delivered")) {
-                        parcelObject.setIsFound(true);
-                        parcelObject.setPhase("DELIVERED");
-                    }
+            Elements elements = document.select("#accordion > div > div.panel-heading > div:nth-child(1) > div.col-md-9 > div > a");
+            if (elements.size() > 0) {
+                String lastEventHtml = elements.first().html();
+                if (lastEventHtml.contains("In transport") || lastEventHtml.contains("has arrived in the country of destination")) {
+                    parcelObject.setIsFound(true);
+                    parcelObject.setPhase("IN_TRANSPORT");
+                } else if (lastEventHtml.contains("Track End")) {
+                    parcelObject.setIsFound(true);
+                    parcelObject.setPhase("IN_TRANSPORT");
+                } else if (lastEventHtml.contains("Delivered")) {
+                    parcelObject.setIsFound(true);
+                    parcelObject.setPhase("DELIVERED");
                 }
             }
 
@@ -66,8 +60,7 @@ public class YanwenStrategy implements CourierStrategy {
             @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
-            Elements tableElements = document.getElementsByClass("table-hover");
+            Elements tableElements = document.getElementsByClass("table table-hover");
             for (Element tableElement : tableElements) {
                 Elements trElement = tableElement.select("tr");
                 for (Element tdElement : trElement) {
