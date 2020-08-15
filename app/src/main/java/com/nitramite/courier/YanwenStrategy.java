@@ -29,81 +29,117 @@ public class YanwenStrategy implements CourierStrategy {
     @Override
     public ParcelObject execute(String parcelCode) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
-        ArrayList<EventObject> eventObjects = new ArrayList<>();
-
         try {
-            Document document = Jsoup.connect(url)
-                    .data("InputTrackNumbers", parcelCode)
-                    .timeout(0)
-                    .post();
+            // Get website with tracking info
+            Document webPage = getSiteData(parcelCode);
 
-            // Parse current status from html
-            Elements elements = document.select("#accordion > div > div.panel-heading > div:nth-child(1) > div.col-md-9 > div > a");
-            if (elements.size() > 0) {
-                String lastEventHtml = elements.first().html();
-                if (lastEventHtml.contains("In transport") || lastEventHtml.contains("has arrived in the country of destination")) {
-                    parcelObject.setIsFound(true);
-                    parcelObject.setPhase("IN_TRANSPORT");
-                } else if (lastEventHtml.contains("Track End")) {
-                    parcelObject.setIsFound(true);
-                    parcelObject.setPhase("IN_TRANSPORT");
-                } else if (lastEventHtml.contains("Delivered")) {
-                    parcelObject.setIsFound(true);
-                    parcelObject.setPhase("DELIVERED");
-                }
-            }
-
+            // Parse status
+            parseStatus(webPage, parcelObject);
 
             // Parse events
-            @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            @SuppressLint("SimpleDateFormat") DateFormat apiDateFormatNoTime = new SimpleDateFormat("yyyy-MM-dd");
-            @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            parseEvents(webPage, parcelObject);
 
-            Elements tableElements = document.getElementsByClass("table table-hover");
-            for (Element tableElement : tableElements) {
-                Elements trElement = tableElement.select("tr");
-                for (Element tdElement : trElement) {
-                    Elements tdElements = tdElement.select("td");
-                    if (tdElements.size() == 2) {
-
-                        // Parse time
-                        String timeContent = tdElements.get(0).text();
-                        // Log.i(TAG, timeContent);
-
-                        Date parseTimeDate = null;
-                        try {
-                            parseTimeDate = apiDateFormat.parse(timeContent);
-                        } catch (ParseException e) {
-                            try {
-                                parseTimeDate = apiDateFormatNoTime.parse(timeContent);
-                            } catch (ParseException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-
-                        String finalTimeStamp = showingDateFormat.format(parseTimeDate);
-                        String sqliteTimeStamp = SQLiteDateFormat.format(parseTimeDate);
-
-                        // Parse description
-                        String description = tdElements.get(1).text();
-                        // Log.i(TAG, description);
-
-                        // Add event
-                        EventObject eventObject = new EventObject(
-                                description, finalTimeStamp, sqliteTimeStamp, "", ""
-                        );
-                        eventObjects.add(eventObject);
-                    }
-                }
-            }
-
-            // Add to stack
-            parcelObject.setEventObjects(eventObjects);
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
         return parcelObject;
+    }
+
+
+    /**
+     * Load Yanwen website
+     *
+     * @param parcelCode parcel code
+     * @return html document
+     * @throws IOException throw exception if loading fails
+     */
+    private Document getSiteData(String parcelCode) throws IOException {
+        return Jsoup.connect(url)
+                .data("InputTrackNumbers", parcelCode)
+                .timeout(0)
+                .post();
+    }
+
+
+    /**
+     * Parses last status of parcel
+     *
+     * @param webPage      html content
+     * @param parcelObject parcel object
+     */
+    private void parseStatus(Document webPage, ParcelObject parcelObject) {
+        // Parse current status from html
+        Elements elements = webPage.select("#accordion > div > div.panel-heading > div:nth-child(1) > div.col-md-9 > div > a");
+        if (elements.size() > 0) {
+            String lastEventHtml = elements.first().html();
+            if (lastEventHtml.contains("In transport") || lastEventHtml.contains("has arrived in the country of destination")) {
+                parcelObject.setIsFound(true);
+                parcelObject.setPhase("IN_TRANSPORT");
+            } else if (lastEventHtml.contains("Track End")) {
+                parcelObject.setIsFound(true);
+                parcelObject.setPhase("IN_TRANSPORT");
+            } else if (lastEventHtml.contains("Delivered")) {
+                parcelObject.setIsFound(true);
+                parcelObject.setPhase("DELIVERED");
+            }
+        }
+    }
+
+
+    /**
+     * Parse events
+     *
+     * @param webPage      html content
+     * @param parcelObject parcel object
+     */
+    private void parseEvents(Document webPage, ParcelObject parcelObject) {
+        ArrayList<EventObject> eventObjects = new ArrayList<>();
+
+        @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        @SuppressLint("SimpleDateFormat") DateFormat apiDateFormatNoTime = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Elements tableElements = webPage.getElementsByClass("table table-hover");
+        for (Element tableElement : tableElements) {
+            Elements trElement = tableElement.select("tr");
+            for (Element tdElement : trElement) {
+                Elements tdElements = tdElement.select("td");
+                if (tdElements.size() == 2) {
+
+                    // Parse time
+                    String timeContent = tdElements.get(0).text();
+                    // Log.i(TAG, timeContent);
+
+                    Date parseTimeDate = null;
+                    try {
+                        parseTimeDate = apiDateFormat.parse(timeContent);
+                    } catch (ParseException e) {
+                        try {
+                            parseTimeDate = apiDateFormatNoTime.parse(timeContent);
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+
+                    String finalTimeStamp = showingDateFormat.format(parseTimeDate);
+                    String sqliteTimeStamp = SQLiteDateFormat.format(parseTimeDate);
+
+                    // Parse description
+                    String description = tdElements.get(1).text();
+                    // Log.i(TAG, description);
+
+                    // Add event
+                    EventObject eventObject = new EventObject(
+                            description, finalTimeStamp, sqliteTimeStamp, "", ""
+                    );
+                    eventObjects.add(eventObject);
+                }
+            }
+        }
+
+        // Add to stack
+        parcelObject.setEventObjects(eventObjects);
     }
 
 
