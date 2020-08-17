@@ -86,6 +86,7 @@ public class FragmentNumberList extends Fragment {
 
                             ParcelObject parcelObject = new ParcelObject(parcelLine);
                             parcelObject.setCarrier(carrierCode);
+                            parcelObject.setTrackingCode(parcelLine);
                             parcelObject.setCarrierStatus("0");
                             parcelObject.setOriginalTrackingCode(parcelLine);
 
