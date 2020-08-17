@@ -83,11 +83,10 @@ public class FragmentNumberList extends Fragment {
                         }
                         if (write) {
                             String carrierCode = String.valueOf(CarrierUtils.detectCarrier(parcelLine));
-                            String carrierStatus = String.valueOf(CarrierUtils.carrierStatus(parcelLine));
 
                             ParcelObject parcelObject = new ParcelObject(parcelLine);
                             parcelObject.setCarrier(carrierCode);
-                            parcelObject.setCarrierStatus(carrierStatus);
+                            parcelObject.setCarrierStatus("0");
                             parcelObject.setOriginalTrackingCode(parcelLine);
 
                             ((ParcelEditor) getActivity()).databaseHelper.insertData(parcelObject);

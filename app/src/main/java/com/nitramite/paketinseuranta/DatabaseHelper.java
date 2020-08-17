@@ -261,8 +261,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(CODCURRENCY, parcelObject.getCodCurrency());
         contentValues.put(TITLE, parcelObject.getTitle());
         contentValues.put(LAST_UPDATE_STATUS, parcelObject.getLastUpdateStatus());
-        contentValues.put(ORIGINAL_TRACKING_CODE, parcelObject.getOriginalTrackingCode());
         contentValues.put(CREATE_DATE, dateFormat.format(date)); // Insert datetime
+        contentValues.put(SENDER_TEXT, parcelObject.getSenderText());
+        contentValues.put(DELIVERY_METHOD, parcelObject.getDeliveryMethod());
+        contentValues.put(ADDITIONAL_NOTE, parcelObject.getAdditionalNote());
+        if (!parcelObject.getOriginalTrackingCode().equals("")) {
+            contentValues.put(ORIGINAL_TRACKING_CODE, parcelObject.getOriginalTrackingCode());
+        }
+        if (!parcelObject.getOrderDate().equals("")) {
+            contentValues.put(ORDER_DATE, parcelObject.getOrderDate());
+        }
+        if (!parcelObject.getDeliveryDate().equals("")) {
+            contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
+        }
+        contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
         return db.insert(PARCELS_TABLE, null, contentValues);
     }
 

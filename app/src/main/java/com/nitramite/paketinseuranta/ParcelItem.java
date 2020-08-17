@@ -8,6 +8,8 @@
 
 package com.nitramite.paketinseuranta;
 
+import com.nitramite.utils.CarrierUtils;
+
 public class ParcelItem {
 
 
@@ -93,7 +95,11 @@ public class ParcelItem {
     }
 
     public Integer getParcelCarrierNumber() {
-        return Integer.parseInt(parcelCarrier);
+        try {
+            return Integer.parseInt(parcelCarrier);
+        } catch (NumberFormatException e) {
+            return CarrierUtils.CARRIER_POSTI;
+        }
     }
 
     public String getParcelSender() {

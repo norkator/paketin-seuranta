@@ -316,13 +316,7 @@ public class UpdaterLogic {
                 } catch (IndexOutOfBoundsException e) {
                     Log.i(TAG, e.toString());
                     e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    Log.i(TAG, e.toString());
-                } catch (ConcurrentModificationException e) { // Todo: remember to collapse
-                    Log.i(TAG, e.toString());
-                } catch (InterruptedException e) { // Todo: remember to collapse
-                    Log.i(TAG, e.toString());
-                } catch (ClassCastException e) { // Todo: remember to collapse
+                } catch (IllegalStateException | ConcurrentModificationException | InterruptedException | ClassCastException | NumberFormatException e) {
                     Log.i(TAG, e.toString());
                 }
 

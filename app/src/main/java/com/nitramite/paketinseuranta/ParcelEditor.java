@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.nitramite.courier.ParcelObject;
 import com.nitramite.utils.LocaleUtils;
 
 import org.jetbrains.annotations.NonNls;
@@ -35,6 +36,7 @@ public class ParcelEditor extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 1;
 
     // Components
+    public ParcelObject parcelObject;
     public FragmentTrackedDeliveryInterface fragmentTrackedDeliveryInterface;
     public ClipboardManager clipboard;
     private LocaleUtils localeUtils = new LocaleUtils();
@@ -68,10 +70,12 @@ public class ParcelEditor extends AppCompatActivity {
         parcelId = intent.getStringExtra("PARCEL_ID");
         if (isNewParcel()) {
             setTitle(R.string.add_tracked_delivery);
+            parcelObject = new ParcelObject(null);
         } else {
             setTitle(R.string.edit_tracked_delivery);
             trackedDeliveryType = FragmentTrackedDelivery.TrackedDeliveryType.EXISTING_PACKAGE;
             tabs.setVisibility(View.GONE);
+            parcelObject = new ParcelObject(null);
         }
 
         // Init adapters
