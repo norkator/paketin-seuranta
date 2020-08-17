@@ -318,11 +318,11 @@ public class UpdaterLogic {
                     e.printStackTrace();
                 } catch (IllegalStateException e) {
                     Log.i(TAG, e.toString());
-                } catch (ConcurrentModificationException e) {
+                } catch (ConcurrentModificationException e) { // Todo: remember to collapse
                     Log.i(TAG, e.toString());
-                } catch (InterruptedException e) {
+                } catch (InterruptedException e) { // Todo: remember to collapse
                     Log.i(TAG, e.toString());
-                } catch (ClassCastException e) {
+                } catch (ClassCastException e) { // Todo: remember to collapse
                     Log.i(TAG, e.toString());
                 }
 

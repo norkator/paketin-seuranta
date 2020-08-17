@@ -2,12 +2,17 @@ package com.nitramite.courier;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.paketinseuranta.PhaseNumber;
+
 import java.util.ArrayList;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ParcelObject {
 
     // Variables of this object
     private Boolean isFound = false;        // Master boolean is parcel information found
+    //
+    private String carrier = "";            // Carrier number as string
+    private String title = "";
     //
     private String parcelCode = "null";
     private String parcelCode2 = "null";
@@ -40,6 +45,12 @@ public class ParcelObject {
     private String codAmount = "null";
     private String codCurrency = "null";
 
+    private String carrierStatus = "";
+    private String trackingCode = "";
+    private String trackingCode2 = "";
+    private String lastUpdateStatus = "";
+    private String originalTrackingCode = "";
+
     private Boolean updateFailed = false;
 
     // Events
@@ -55,6 +66,14 @@ public class ParcelObject {
 
     public Boolean getIsFound() {
         return this.isFound;
+    }
+
+    public String getCarrier() {
+        return carrier;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getParcelCode() {
@@ -181,11 +200,39 @@ public class ParcelObject {
         return updateFailed;
     }
 
+    public String getLastUpdateStatus() {
+        return lastUpdateStatus;
+    }
+
+    public String getOriginalTrackingCode() {
+        return originalTrackingCode;
+    }
+
+    public String getCarrierStatus() {
+        return carrierStatus;
+    }
+
+    public String getTrackingCode() {
+        return trackingCode;
+    }
+
+    public String getTrackingCode2() {
+        return trackingCode2;
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Set methods
 
     public void setIsFound(Boolean isFound) {
         this.isFound = isFound;
+    }
+
+    public void setCarrier(String carrier) {
+        this.carrier = carrier;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setParcelCode2(String parcelCode2) {
@@ -285,6 +332,26 @@ public class ParcelObject {
 
     public void setUpdateFailed(Boolean updateFailed) {
         this.updateFailed = updateFailed;
+    }
+
+    public void setLastUpdateStatus(String lastUpdateStatus) {
+        this.lastUpdateStatus = lastUpdateStatus;
+    }
+
+    public void setOriginalTrackingCode(String originalTrackingCode) {
+        this.originalTrackingCode = originalTrackingCode;
+    }
+
+    public void setCarrierStatus(String carrierStatus) {
+        this.carrierStatus = carrierStatus;
+    }
+
+    public void setTrackingCode(String trackingCode) {
+        this.trackingCode = trackingCode;
+    }
+
+    public void setTrackingCode2(String trackingCode2) {
+        this.trackingCode2 = trackingCode2;
     }
 
     // ---------------------------------------------------------------------------------------------

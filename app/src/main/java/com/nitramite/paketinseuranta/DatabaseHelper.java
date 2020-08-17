@@ -221,50 +221,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     // INSERT DATA
-    @SuppressWarnings({"SameParameterValue", "UnusedReturnValue", "RedundantIfStatement"})
-    Long insertData(String carrier, String carrierstatus, String trackingcode, String trackingcode2, String errandcode, String phase, String estimateddeliverytime, String name, String street, String postcode,
-                    String city, String latitude, String longitude, String availability, String lastpickupdate, String fi, String sender, String lockercode,
-                    String extraservices, String weight, String height, String width, String depth, String volume, String destinationpostcode, String destinationcity,
-                    String destinationcountry, String recipientsignature, String codamount, String codcurrency, String title, String lastUpdateStatus, String original_tracking_code) {
+    @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
+    Long insertData(ParcelObject parcelObject) {
         SQLiteDatabase db = this.getWritableDatabase();
         // Get datetime for insert
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         // Fetch insert clause
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CARRIER, carrier);
-        contentValues.put(CARRIERSTATUS, carrierstatus);
-        contentValues.put(TRACKINGCODE, trackingcode);
-        contentValues.put(TRACKINGCODE2, trackingcode2);
-        contentValues.put(ERRANDCODE, errandcode);
-        contentValues.put(PHASE, phase);
-        contentValues.put(ESTIMATEDDELIVERYTIME, estimateddeliverytime);
-        contentValues.put(NAME, name);
-        contentValues.put(STREET, street);
-        contentValues.put(POSTCODE, postcode);
-        contentValues.put(CITY, city);
-        contentValues.put(LATITUDE, latitude);
-        contentValues.put(LONGITUDE, longitude);
-        contentValues.put(AVAILABILITY, availability);
-        contentValues.put(LASTPICKUPDATE, lastpickupdate);
-        contentValues.put(FI, fi);
-        contentValues.put(SENDER, sender);
-        contentValues.put(LOCKERCODE, lockercode);
-        contentValues.put(EXTRASERVICES, extraservices);
-        contentValues.put(WEIGHT, weight);
-        contentValues.put(HEIGHT, height);
-        contentValues.put(WIDTH, width);
-        contentValues.put(DEPTH, depth);
-        contentValues.put(VOLUME, volume);
-        contentValues.put(DESTINATIONPOSTCODE, destinationpostcode);
-        contentValues.put(DESTINATIONCITY, destinationcity);
-        contentValues.put(DESTINATIONCOUNTRY, destinationcountry);
-        contentValues.put(RECIPIENTSIGNATURE, recipientsignature);
-        contentValues.put(CODAMOUNT, codamount);
-        contentValues.put(CODCURRENCY, codcurrency);
-        contentValues.put(TITLE, title);
-        contentValues.put(LAST_UPDATE_STATUS, lastUpdateStatus);
-        contentValues.put(ORIGINAL_TRACKING_CODE, original_tracking_code);
+        contentValues.put(CARRIER, parcelObject.getCarrier());
+        contentValues.put(CARRIERSTATUS, parcelObject.getCarrierStatus());
+        contentValues.put(TRACKINGCODE, parcelObject.getTrackingCode());
+        contentValues.put(TRACKINGCODE2, parcelObject.getTrackingCode2());
+        contentValues.put(ERRANDCODE, parcelObject.getErrandCode());
+        contentValues.put(PHASE, parcelObject.getPhase());
+        contentValues.put(ESTIMATEDDELIVERYTIME, parcelObject.getEstimatedDeliveryTime());
+        contentValues.put(NAME, parcelObject.getPickupAddressName());
+        contentValues.put(STREET, parcelObject.getPickupAddressStreet());
+        contentValues.put(POSTCODE, parcelObject.getPickupAddressPostcode());
+        contentValues.put(CITY, parcelObject.getPickupAddressCity());
+        contentValues.put(LATITUDE, parcelObject.getPickupAddressLatitude());
+        contentValues.put(LONGITUDE, parcelObject.getPickupAddressLongitude());
+        contentValues.put(AVAILABILITY, parcelObject.getPickupAddressAvailability());
+        contentValues.put(LASTPICKUPDATE, parcelObject.getLastPickupDate());
+        contentValues.put(FI, ""); // No idea what this is/was
+        contentValues.put(SENDER, parcelObject.getSender());
+        contentValues.put(LOCKERCODE, parcelObject.getLockerCode());
+        contentValues.put(EXTRASERVICES, parcelObject.getExtraServices());
+        contentValues.put(WEIGHT, parcelObject.getWeight());
+        contentValues.put(HEIGHT, parcelObject.getHeight());
+        contentValues.put(WIDTH, parcelObject.getWidth());
+        contentValues.put(DEPTH, parcelObject.getDepth());
+        contentValues.put(VOLUME, parcelObject.getVolume());
+        contentValues.put(DESTINATIONPOSTCODE, parcelObject.getDestinationPostcode());
+        contentValues.put(DESTINATIONCITY, parcelObject.getDestinationCity());
+        contentValues.put(DESTINATIONCOUNTRY, parcelObject.getDestinationCountry());
+        contentValues.put(RECIPIENTSIGNATURE, parcelObject.getRecipientSignature());
+        contentValues.put(CODAMOUNT, parcelObject.getCodAmount());
+        contentValues.put(CODCURRENCY, parcelObject.getCodCurrency());
+        contentValues.put(TITLE, parcelObject.getTitle());
+        contentValues.put(LAST_UPDATE_STATUS, parcelObject.getLastUpdateStatus());
+        contentValues.put(ORIGINAL_TRACKING_CODE, parcelObject.getOriginalTrackingCode());
         contentValues.put(CREATE_DATE, dateFormat.format(date)); // Insert datetime
         return db.insert(PARCELS_TABLE, null, contentValues);
     }
