@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ParcelObject {
 
     // Variables of this object
+    private String id = "-1";
     private Boolean isFound = false;        // Master boolean is parcel information found
     //
     private String carrier = "";            // Carrier number as string
@@ -44,12 +45,17 @@ public class ParcelObject {
     private String recipientSignature = "null";
     private String codAmount = "null";
     private String codCurrency = "null";
-
     private String carrierStatus = "";
     private String trackingCode = "";
     private String trackingCode2 = "";
     private String lastUpdateStatus = "";
     private String originalTrackingCode = "";
+    private String senderText = "";
+    private String deliveryMethod = "";
+    private String additionalNote = "";
+    private String orderDate = "";
+    private String deliveryDate = "";
+    private String productPage = "";
 
     private Boolean updateFailed = false;
 
@@ -64,8 +70,17 @@ public class ParcelObject {
     // ---------------------------------------------------------------------------------------------
     // Get methods
 
+
+    public String getId() {
+        return id;
+    }
+
     public Boolean getIsFound() {
         return this.isFound;
+    }
+
+    public Boolean getFound() {
+        return isFound;
     }
 
     public String getCarrier() {
@@ -220,11 +235,44 @@ public class ParcelObject {
         return trackingCode2;
     }
 
+    public String getSenderText() {
+        return senderText;
+    }
+
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public String getAdditionalNote() {
+        return additionalNote;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public String getProductPage() {
+        return productPage;
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Set methods
 
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setIsFound(Boolean isFound) {
         this.isFound = isFound;
+    }
+
+    public void setFound(Boolean found) {
+        isFound = found;
     }
 
     public void setCarrier(String carrier) {
@@ -314,6 +362,38 @@ public class ParcelObject {
         this.destinationCountry = destinationCountry;
     }
 
+    public void setParcelCode(String parcelCode) {
+        this.parcelCode = parcelCode;
+    }
+
+    public void setPickupAddressAvailability(String pickupAddressAvailability) {
+        this.pickupAddressAvailability = pickupAddressAvailability;
+    }
+
+    public void setPickupAddressCity(String pickupAddressCity) {
+        this.pickupAddressCity = pickupAddressCity;
+    }
+
+    public void setPickupAddressLatitude(String pickupAddressLatitude) {
+        this.pickupAddressLatitude = pickupAddressLatitude;
+    }
+
+    public void setPickupAddressLongitude(String pickupAddressLongitude) {
+        this.pickupAddressLongitude = pickupAddressLongitude;
+    }
+
+    public void setPickupAddressName(String pickupAddressName) {
+        this.pickupAddressName = pickupAddressName;
+    }
+
+    public void setPickupAddressPostcode(String pickupAddressPostcode) {
+        this.pickupAddressPostcode = pickupAddressPostcode;
+    }
+
+    public void setPickupAddressStreet(String pickupAddressStreet) {
+        this.pickupAddressStreet = pickupAddressStreet;
+    }
+
     public void setRecipientSignature(String recipientSignature) {
         this.recipientSignature = recipientSignature;
     }
@@ -352,6 +432,30 @@ public class ParcelObject {
 
     public void setTrackingCode2(String trackingCode2) {
         this.trackingCode2 = trackingCode2;
+    }
+
+    public void setSenderText(String senderText) {
+        this.senderText = senderText;
+    }
+
+    public void setDeliveryMethod(String deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    public void setAdditionalNote(String additionalNote) {
+        this.additionalNote = additionalNote;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public void setProductPage(String productPage) {
+        this.productPage = productPage;
     }
 
     // ---------------------------------------------------------------------------------------------

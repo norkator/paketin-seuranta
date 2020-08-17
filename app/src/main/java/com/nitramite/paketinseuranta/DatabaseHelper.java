@@ -660,29 +660,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Update data
-    public boolean updateEditPackageData(String id, String title, String lockerCode, String trackingCode,
-                                         String senderText, String deliveryMethod, String additionalNote,
-                                         String originalTrackingCode, String productPage, String orderDate,
-                                         String deliveryDate) {
+    public boolean updateEditPackageData(ParcelObject parcelObject) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TITLE, title);
-        contentValues.put(LOCKERCODE, lockerCode);
-        contentValues.put(TRACKINGCODE, trackingCode);
-        contentValues.put(SENDER_TEXT, senderText);
-        contentValues.put(DELIVERY_METHOD, deliveryMethod);
-        contentValues.put(ADDITIONAL_NOTE, additionalNote);
-        if (originalTrackingCode != null) {
-            contentValues.put(ORIGINAL_TRACKING_CODE, originalTrackingCode);
+        contentValues.put(TITLE, parcelObject.getTitle());
+        contentValues.put(LOCKERCODE, parcelObject.getLockerCode());
+        contentValues.put(TRACKINGCODE, parcelObject.getTrackingCode());
+        contentValues.put(SENDER_TEXT, parcelObject.getSenderText());
+        contentValues.put(DELIVERY_METHOD, parcelObject.getDeliveryMethod());
+        contentValues.put(ADDITIONAL_NOTE, parcelObject.getAdditionalNote());
+        if (!parcelObject.getOriginalTrackingCode().equals("")) {
+            contentValues.put(ORIGINAL_TRACKING_CODE, parcelObject.getOriginalTrackingCode());
         }
-        if (orderDate != null) {
-            contentValues.put(ORDER_DATE, orderDate);
+        if (!parcelObject.getOrderDate().equals("")) {
+            contentValues.put(ORDER_DATE, parcelObject.getOrderDate());
         }
-        if (deliveryDate != null) {
-            contentValues.put(MANUAL_DELIVERED_DATE, deliveryDate);
+        if (!parcelObject.getDeliveryDate().equals("")) {
+            contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
         }
-        contentValues.put(PRODUCT_PAGE, productPage);
-        db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{id});
+        contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
+        db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{parcelObject.getId()});
         db.close();
         return true;
     }
