@@ -73,6 +73,8 @@ public class ParcelEditor extends AppCompatActivity {
             tabs.setVisibility(View.GONE);
         } else {
             setTitle(R.string.add_tracked_delivery);
+
+            /*
             // Create base package
             final Long insertedId = databaseHelper.insertData(
                     String.valueOf(CarrierUtils.CARRIER_POSTI), "0", "", "", "", "",
@@ -81,6 +83,7 @@ public class ParcelEditor extends AppCompatActivity {
                     "", "", "", "", "", "", "",
                     "", "", "", "", "", "");
             this.parcelId = String.valueOf(insertedId);
+             */
         }
 
         // Init adapters
