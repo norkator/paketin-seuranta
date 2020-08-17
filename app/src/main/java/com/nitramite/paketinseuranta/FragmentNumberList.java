@@ -2,8 +2,6 @@ package com.nitramite.paketinseuranta;
 
 import android.content.ClipboardManager;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nitramite.utils.CarrierUtils;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import java.util.Objects;
+import com.nitramite.courier.ParcelObject;
+import com.nitramite.utils.CarrierUtils;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -76,54 +76,27 @@ public class FragmentNumberList extends Fragment {
                 } else {
                     String delimiter = "\n";
                     final String[] parcelLines = multiLines.split(delimiter);
-                    for (int i = 0; i < parcelLines.length; i++) {
+                    for (String parcelLine : parcelLines) {
                         boolean write = true;
-                        if (((ParcelEditor) getActivity()).databaseHelper.checkForPackageExistence(parcelLines[i])) {
+                        if (((ParcelEditor) getActivity()).databaseHelper.checkForPackageExistence(parcelLine)) {
                             write = false;
                         }
                         if (write) {
-                            String carrierCode = String.valueOf(CarrierUtils.detectCarrier(parcelLines[i]));
-                            String carrierStatus = String.valueOf(CarrierUtils.carrierStatus(parcelLines[i]));
-                            ((ParcelEditor) getActivity()).databaseHelper.insertData(
-                                    carrierCode,
-                                    carrierStatus,
-                                    parcelLines[i],
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    parcelLines[i] // Original tracking code
-                            );
+                            String carrierCode = String.valueOf(CarrierUtils.detectCarrier(parcelLine));
+                            String carrierStatus = String.valueOf(CarrierUtils.carrierStatus(parcelLine));
+
+                            ParcelObject parcelObject = new ParcelObject(parcelLine);
+                            parcelObject.setCarrier(carrierCode);
+                            parcelObject.setCarrierStatus(carrierStatus);
+                            parcelObject.setOriginalTrackingCode(parcelLine);
+
+                            ((ParcelEditor) getActivity()).databaseHelper.insertData(parcelObject);
+
                         } else {
-                            Toast.makeText(getContext(), parcelLines[i] + " " + getString(R.string.main_menu_item_not_added_because_it_already_existed_on_list), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), parcelLine + " " + getString(R.string.main_menu_item_not_added_because_it_already_existed_on_list), Toast.LENGTH_LONG).show();
                         }
                     }
-                    getActivity().finish(); // Finish this activity
+                    getActivity().finish();
                 }
             } else {
                 Toast.makeText(getContext(), R.string.reference_to_database_is_null_cannot_add_items, Toast.LENGTH_LONG).show();
