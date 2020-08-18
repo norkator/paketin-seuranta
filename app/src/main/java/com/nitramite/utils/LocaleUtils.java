@@ -110,7 +110,7 @@ public class LocaleUtils {
     }
 
 
-    public void setActivityLanguage(Context context) {
+    public void setApplicationLanguage(Context context) {
         String localeStr = getLocaleString(context);
         Locale locale = new Locale(localeStr.toLowerCase(Locale.getDefault()), localeStr.toUpperCase(Locale.getDefault()));
         Resources activityRes = context.getResources();

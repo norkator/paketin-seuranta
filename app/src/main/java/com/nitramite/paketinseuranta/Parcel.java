@@ -217,9 +217,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onCreate(savedInstanceState);
-
-        localeUtils.setActivityLanguage(this);
-
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_parcel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

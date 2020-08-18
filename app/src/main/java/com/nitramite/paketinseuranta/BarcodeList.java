@@ -47,6 +47,7 @@ public class BarcodeList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_barcode_list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
