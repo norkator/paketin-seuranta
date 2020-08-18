@@ -30,8 +30,7 @@ public class LocaleUtils {
      * @return custom app context with locale
      */
     public Context updateBaseContextLocale(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        final String localeStr = sharedPreferences.getString(Constants.SP_APPLICATION_LANGUAGE, null);
+        String localeStr = getLocaleString(context);
         if (localeStr != null) {
             // Override language with selected one
             Log.i(TAG, localeStr);
@@ -102,6 +101,26 @@ public class LocaleUtils {
         configuration.locale = locale;
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
         return context;
+    }
+
+
+    private String getLocaleString(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(Constants.SP_APPLICATION_LANGUAGE, null);
+    }
+
+
+    public void setActivityLanguage(Context context) {
+        String localeStr = getLocaleString(context);
+        Locale locale = new Locale(localeStr.toLowerCase(Locale.getDefault()), localeStr.toUpperCase(Locale.getDefault()));
+        Resources activityRes = context.getResources();
+        Configuration activityConf = activityRes.getConfiguration();
+        activityConf.setLocale(locale);
+        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
+        Resources applicationRes = context.getApplicationContext().getResources();
+        Configuration applicationConf = applicationRes.getConfiguration();
+        applicationConf.setLocale(locale);
+        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
     }
 
 
