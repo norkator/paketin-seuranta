@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -127,7 +128,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         super.attachBaseContext(localeUtils.updateBaseContextLocale(base));
         MultiDex.install(this);
     }
-
 
     // Parcel service finish broad cast receiver
     private BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
