@@ -80,8 +80,8 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
     private EditText productPageET;
     private AutoCompleteTextView senderET;
     private AutoCompleteTextView deliveryMethodET;
-    private String orderDateSqliteFormatStr = null;
-    private String manualDeliveryDateSqliteFormatStr = null;
+    private String orderDateSqliteFormatStr = "";
+    private String manualDeliveryDateSqliteFormatStr = "";
 
 
     // Variables
@@ -125,31 +125,37 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
 
 
         // Set data into views
-        Cursor res = ((ParcelEditor) getActivity()).databaseHelper.getEditPackageData(((ParcelEditor) getActivity()).parcelId);
-        res.moveToFirst();
-        packageNameET.setText(res.getString(0));
-        lockerCodeET.setText((res.getString(1).equals("null") ? "" : res.getString(1)));
-        final int carrierNumber = res.getInt(2);
-        trackingCodeET.setText(res.getString(3));
-        senderET.setText(res.getString(4));
-        deliveryMethodET.setText(res.getString(5));
-        additionalNoteET.setText(res.getString(6));
-        productPageET.setText(res.getString(7));
-        if (res.getString(8) == null) {
-            orderDateTV.setText(getContext().getString(R.string.add_edit_dialog_order_date_not_selected));
-        } else {
-            orderDateSqliteFormatStr = res.getString(8);
-            orderDateTV.setText(formatSqLiteDateToShowingDate(res.getString(8)));
-        }
-        if (res.getString(9) == null) {
-            manualDeliveryDateTV.setText(getContext().getString(R.string.add_edit_dialog_order_date_not_selected));
-        } else {
-            manualDeliveryDateSqliteFormatStr = res.getString(9);
-            manualDeliveryDateTV.setText(formatSqLiteDateToShowingDate(res.getString(9)));
-        }
+        if (!((ParcelEditor) getActivity()).isNewParcel()) {
+            Cursor res = ((ParcelEditor) getActivity()).databaseHelper.getEditPackageData(((ParcelEditor) getActivity()).parcelId);
+            res.moveToFirst();
+            packageNameET.setText(res.getString(0));
+            lockerCodeET.setText((res.getString(1).equals("null") ? "" : res.getString(1)));
+            int carrierNumber = res.getInt(2);
+            trackingCodeET.setText(res.getString(3));
+            senderET.setText(res.getString(4));
+            deliveryMethodET.setText(res.getString(5));
+            additionalNoteET.setText(res.getString(6));
+            productPageET.setText(res.getString(7));
+            if (res.getString(8) == null) {
+                orderDateTV.setText(getContext().getString(R.string.add_edit_dialog_order_date_not_selected));
+            } else {
+                orderDateSqliteFormatStr = res.getString(8);
+                orderDateTV.setText(formatSqLiteDateToShowingDate(res.getString(8)));
+            }
+            if (res.getString(9) == null) {
+                manualDeliveryDateTV.setText(getContext().getString(R.string.add_edit_dialog_order_date_not_selected));
+            } else {
+                manualDeliveryDateSqliteFormatStr = res.getString(9);
+                manualDeliveryDateTV.setText(formatSqLiteDateToShowingDate(res.getString(9)));
+            }
 
-        // Set carrier spinner, carrier changing adapter
-        setCarrierSpinnerData(getActivity(), selectCarrierSpinner, carrierNumber, ((ParcelEditor) getActivity()).databaseHelper, ((ParcelEditor) getActivity()).parcelId);
+            setCarrierSpinnerData(getActivity(), selectCarrierSpinner, carrierNumber, ((ParcelEditor) getActivity()).databaseHelper, ((ParcelEditor) getActivity()).parcelId);
+
+            res.close();
+        } else {
+            // Set default carrier
+            setCarrierSpinnerData(getActivity(), selectCarrierSpinner, CarrierUtils.CARRIER_POSTI, ((ParcelEditor) getActivity()).databaseHelper, ((ParcelEditor) getActivity()).parcelId);
+        }
 
         // Construct auto complete word list for sender field
         CustomAutoCompleteAdapter senderAutoCompleteAdapter = new CustomAutoCompleteAdapter(getActivity(), ((ParcelEditor) getActivity()).databaseHelper, AutoCompleteScenario.SENDER);
@@ -240,9 +246,6 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
             ((ParcelEditor) getActivity()).saveBtnMenuItemVisibility = true;
         }
 
-        res.close();
-
-
         positiveBtn.setOnClickListener(v -> {
             onPositiveBtnClick();
         });
@@ -289,10 +292,21 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         switch (((ParcelEditor) getActivity()).trackedDeliveryType) {
             case EXISTING_PACKAGE:
                 // Update
-                if (((ParcelEditor) getActivity()).databaseHelper.updateEditPackageData(((ParcelEditor) getActivity()).parcelId, packageNameET.getText().toString(), lockerCodeET.getText().toString(),
-                        trackingCodeET.getText().toString(), senderET.getText().toString(), deliveryMethodET.getText().toString(), additionalNoteET.getText().toString(),
-                        null, productPageET.getText().toString(), orderDateSqliteFormatStr, manualDeliveryDateSqliteFormatStr)) {
+                ((ParcelEditor) getActivity()).parcelObject.setTrackingCode(trackingCodeET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setId(((ParcelEditor) getActivity()).parcelId);
+
+                ((ParcelEditor) getActivity()).parcelObject.setTitle(packageNameET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setLockerCode(lockerCodeET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setSenderText(senderET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setDeliveryMethod(deliveryMethodET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setAdditionalNote(additionalNoteET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setProductPage(productPageET.getText().toString());
+                ((ParcelEditor) getActivity()).parcelObject.setOrderDate(orderDateSqliteFormatStr);
+                ((ParcelEditor) getActivity()).parcelObject.setDeliveryDate(manualDeliveryDateSqliteFormatStr);
+
+                if (((ParcelEditor) getActivity()).databaseHelper.updateEditPackageData(((ParcelEditor) getActivity()).parcelObject)) {
                     Toast.makeText(getActivity(), R.string.edit_package_utils_changes_saved, Toast.LENGTH_SHORT).show();
+                    //noinspection AccessStaticViaInstance
                     getActivity().setResult(getActivity().RESULT_OK);
                     getActivity().finish();
                     break;
@@ -304,12 +318,24 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 if (((ParcelEditor) getActivity()).databaseHelper.checkForPackageExistence(givenTrackingCode) && givenTrackingCode.length() != 0) {
                     Toast.makeText(getActivity(), trackingCodeET.getText().toString() + " " + getActivity().getString(R.string.main_menu_item_not_added_because_it_already_existed_on_list), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (((ParcelEditor) getActivity()).databaseHelper.updateEditPackageData(((ParcelEditor) getActivity()).parcelId, packageNameET.getText().toString(), lockerCodeET.getText().toString(),
-                            trackingCodeET.getText().toString(), senderET.getText().toString(), deliveryMethodET.getText().toString(), additionalNoteET.getText().toString(),
-                            trackingCodeET.getText().toString(), productPageET.getText().toString(), orderDateSqliteFormatStr, manualDeliveryDateSqliteFormatStr)) {
+                    ((ParcelEditor) getActivity()).parcelObject.setTrackingCode(trackingCodeET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setCarrierStatus("0");
+
+                    ((ParcelEditor) getActivity()).parcelObject.setTitle(packageNameET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setLockerCode(lockerCodeET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setSenderText(senderET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setDeliveryMethod(deliveryMethodET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setAdditionalNote(additionalNoteET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setOriginalTrackingCode(trackingCodeET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setProductPage(productPageET.getText().toString());
+                    ((ParcelEditor) getActivity()).parcelObject.setOrderDate(orderDateSqliteFormatStr);
+                    ((ParcelEditor) getActivity()).parcelObject.setDeliveryDate(manualDeliveryDateSqliteFormatStr);
+
+                    long insertedId = ((ParcelEditor) getActivity()).databaseHelper.insertData(((ParcelEditor) getActivity()).parcelObject);
+                    if (insertedId > 0) {
                         Toast.makeText(getActivity(), R.string.edit_package_utils_tracked_delivery_created, Toast.LENGTH_SHORT).show();
                         Intent returnIntent = new Intent();
-                        returnIntent.putExtra("PARCEL_ID", ((ParcelEditor) getActivity()).parcelId);
+                        returnIntent.putExtra("PARCEL_ID", String.valueOf(insertedId));
                         getActivity().setResult(Activity.RESULT_OK, returnIntent);
                         getActivity().finish();
                         break;
@@ -325,7 +351,6 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         // Parcel carries (User can change this if incorrect)
         String[] carriers = {
                 CarrierUtils.CARRIER_POSTI_STR,
-                //CarrierUtils.CARRIER_POSTI_CHINA_STR,
                 CarrierUtils.CARRIER_MATKAHUOLTO_STR,
                 CarrierUtils.CARRIER_DHL_EXPRESS_STR,
                 CarrierUtils.CARRIER_DHL_AMAZON_STR,
@@ -339,7 +364,6 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_GLS_STR,
                 CarrierUtils.CARRIER_CAINIAO_STR,
                 CarrierUtils.CARRIER_4PX_STR,
-                // CarrierUtils.CARRIER_CPRAM_STR,
                 CarrierUtils.CARRIER_BRING_STR,
                 CarrierUtils.CARRIER_OTHER_STR
         };
@@ -359,7 +383,6 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_GLS,
                 CarrierUtils.CARRIER_CAINIAO,
                 CarrierUtils.CARRIER_4PX,
-                // CarrierUtils.CARRIER_CPRAM,
                 CarrierUtils.CARRIER_BRING,
                 CarrierUtils.CARRIER_OTHER
         };
@@ -369,11 +392,6 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
             case CarrierUtils.CARRIER_POSTI:
                 selectCarrierSpinner.setSelection(0);
                 break;
-                /*
-            case CarrierUtils.CARRIER_CHINA:
-                selectCarrierSpinner.setSelection(1);
-                break;
-                */
             case CarrierUtils.CARRIER_MATKAHUOLTO:
                 selectCarrierSpinner.setSelection(1);
                 break;
@@ -413,16 +431,9 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
             case CarrierUtils.CARRIER_4PX:
                 selectCarrierSpinner.setSelection(13);
                 break;
-
             case CarrierUtils.CARRIER_BRING:
                 selectCarrierSpinner.setSelection(14);
                 break;
-
-                           /*
-            case CarrierUtils.CARRIER_CPRAM:
-                selectCarrierSpinner.setSelection(13);
-                break;
-                */
             case CarrierUtils.CARRIER_OTHER:
                 selectCarrierSpinner.setSelection(15);
                 break;
@@ -430,8 +441,12 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         selectCarrierSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (!databaseHelper.updateCarrierCode(parcelDatabaseId, carrierCodes[i])) {
-                    Toast.makeText(activityContext, R.string.edit_package_utils_changing_courier_failed, Toast.LENGTH_LONG).show();
+                if (parcelDatabaseId != null) {
+                    if (!databaseHelper.updateCarrierCode(parcelDatabaseId, carrierCodes[i])) {
+                        Toast.makeText(activityContext, R.string.edit_package_utils_changing_courier_failed, Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    ((ParcelEditor) getActivity()).parcelObject.setCarrier(String.valueOf(carrierCodes[i]));
                 }
             }
 

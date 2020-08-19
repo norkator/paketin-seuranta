@@ -55,14 +55,15 @@ public class CarrierUtils {
     public static final String CARRIER_OTHER_STR = "Muu (ei kohdistu hakua)";
 
 
-    /* Detect Carrier */
+    /**
+     * Detect Carrier
+     *
+     * @param parcelCode parcel tracking code
+     * @return carrier code int
+     */
     public static int detectCarrier(String parcelCode) {
         int carrierCode = CARRIER_POSTI; // Posti as default
 
-        // China package (Asia/China --> Posti)
-        if (parcelCode.length() < 14) {
-            carrierCode = CARRIER_CHINA;
-        }
         // Matkahuolto detection
         if (parcelCode.subSequence(0, 2).equals("MA") || parcelCode.subSequence(0, 2).equals("MH")) {
             carrierCode = CARRIER_MATKAHUOLTO;
@@ -70,7 +71,6 @@ public class CarrierUtils {
 
         return carrierCode;
     }
-
 
 
     // *** CARRIER SYSTEM CHECK PATH DETECTION ***
@@ -89,9 +89,9 @@ public class CarrierUtils {
     }
 
 
-
     /**
      * Return carrier icon resource for carrier string
+     *
      * @param carrierStr string like Posti
      * @return carrier icon resource id
      */
@@ -158,6 +158,7 @@ public class CarrierUtils {
 
     /**
      * Return carrier icon resource for carrier number
+     *
      * @param carrierNumber number like 0
      * @return carrier icon resource id
      */
@@ -220,7 +221,6 @@ public class CarrierUtils {
 
         return R.mipmap.muu_logo; // default return other icon
     }
-
 
 
 } // End of class

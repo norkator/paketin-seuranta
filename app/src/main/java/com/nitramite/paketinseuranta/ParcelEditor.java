@@ -8,20 +8,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.tabs.TabLayout;
-import androidx.multidex.MultiDex;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.multidex.MultiDex;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.nitramite.utils.CarrierUtils;
+import com.nitramite.courier.ParcelObject;
 import com.nitramite.utils.LocaleUtils;
 
 import org.jetbrains.annotations.NonNls;
@@ -36,6 +36,7 @@ public class ParcelEditor extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 1;
 
     // Components
+    public ParcelObject parcelObject;
     public FragmentTrackedDeliveryInterface fragmentTrackedDeliveryInterface;
     public ClipboardManager clipboard;
     private LocaleUtils localeUtils = new LocaleUtils();
@@ -68,20 +69,14 @@ public class ParcelEditor extends AppCompatActivity {
         // New or existing package
         @NonNls Intent intent = getIntent();
         parcelId = intent.getStringExtra("PARCEL_ID");
-        if (parcelId != null) {
+        if (isNewParcel()) {
+            setTitle(R.string.add_tracked_delivery);
+            parcelObject = new ParcelObject(null);
+        } else {
             setTitle(R.string.edit_tracked_delivery);
             trackedDeliveryType = FragmentTrackedDelivery.TrackedDeliveryType.EXISTING_PACKAGE;
             tabs.setVisibility(View.GONE);
-        } else {
-            setTitle(R.string.add_tracked_delivery);
-            // Create base package
-            final Long insertedId = databaseHelper.insertData(
-                    String.valueOf(CarrierUtils.CARRIER_POSTI), "0", "", "", "", "",
-                    "", "", "", "", "", "", "",
-                    "", "", "", "", "", "", "",
-                    "", "", "", "", "", "", "",
-                    "", "", "", "", "", "");
-            this.parcelId = String.valueOf(insertedId);
+            parcelObject = new ParcelObject(null);
         }
 
         // Init adapters
@@ -181,12 +176,23 @@ public class ParcelEditor extends AppCompatActivity {
 
     /**
      * Control visibility from fragment
+     *
      * @param visible boolean
      */
     public void toggleSaveActionBtnVisibility(boolean visible) {
         if (saveBtnMenuItem != null) {
             saveBtnMenuItem.setVisible(visible);
         }
+    }
+
+
+    /**
+     * Is new parcel or editing existing one
+     *
+     * @return boolean
+     */
+    public boolean isNewParcel() {
+        return this.parcelId == null;
     }
 
 
