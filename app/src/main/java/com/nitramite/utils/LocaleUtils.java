@@ -111,16 +111,18 @@ public class LocaleUtils {
 
 
     public void setApplicationLanguage(Context context) {
-        String localeStr = getLocaleString(context);
-        Locale locale = new Locale(localeStr.toLowerCase(Locale.getDefault()), localeStr.toUpperCase(Locale.getDefault()));
-        Resources activityRes = context.getResources();
-        Configuration activityConf = activityRes.getConfiguration();
-        activityConf.setLocale(locale);
-        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
-        Resources applicationRes = context.getApplicationContext().getResources();
-        Configuration applicationConf = applicationRes.getConfiguration();
-        applicationConf.setLocale(locale);
-        applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            String localeStr = getLocaleString(context);
+            Locale locale = new Locale(localeStr.toLowerCase(Locale.getDefault()), localeStr.toUpperCase(Locale.getDefault()));
+            Resources activityRes = context.getResources();
+            Configuration activityConf = activityRes.getConfiguration();
+            activityConf.setLocale(locale);
+            activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
+            Resources applicationRes = context.getApplicationContext().getResources();
+            Configuration applicationConf = applicationRes.getConfiguration();
+            applicationConf.setLocale(locale);
+            applicationRes.updateConfiguration(applicationConf, applicationRes.getDisplayMetrics());
+        }
     }
 
 
