@@ -115,6 +115,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_archive);
         setTitle(R.string.archive_title);
 
