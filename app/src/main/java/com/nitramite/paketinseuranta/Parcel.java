@@ -87,7 +87,6 @@ import com.nitramite.utils.CarrierUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
 import com.nitramite.utils.Utils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -161,10 +160,17 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         }
     };
 
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(localeUtils.updateBaseContextLocale(base));
         MultiDex.install(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -180,6 +186,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         IntentFilter intentFilter = new IntentFilter("service_broadcast");
         LocalBroadcastManager.getInstance(this).registerReceiver(dataChangeReceiver, intentFilter);
     }
+
 
     @Override
     protected void onPause() {
@@ -210,6 +217,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         super.onCreate(savedInstanceState);
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_parcel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

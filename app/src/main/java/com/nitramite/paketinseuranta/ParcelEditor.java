@@ -56,6 +56,7 @@ public class ParcelEditor extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_parcel_editor);
 
         // Get services

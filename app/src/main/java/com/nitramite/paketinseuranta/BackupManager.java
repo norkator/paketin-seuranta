@@ -3,6 +3,7 @@ package com.nitramite.paketinseuranta;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.multidex.MultiDex;
 
 import android.Manifest;
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.nitramite.utils.Backup;
 import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.DialogUtils;
+import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.SharedPreferencesUtils;
 
 import org.jetbrains.annotations.NonNls;
@@ -39,13 +41,20 @@ public class BackupManager extends AppCompatActivity {
     private static final String TAG = "BackupManager";
 
     // Variables
+    private LocaleUtils localeUtils = new LocaleUtils();
     private DialogUtils dialogUtils = new DialogUtils();
     private static final int OPEN_DIRECTORY_REQUEST_CODE = 1;
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(localeUtils.updateBaseContextLocale(base));
+        MultiDex.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_backup_manager);
 
         SharedPreferences sharedPreferences = SharedPreferencesUtils.getSharedPreferences(getApplicationContext());
