@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -418,23 +419,27 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         ArrayList<ParcelItem> parcelItems = new ArrayList<>();
         Cursor res = databaseHelper.getAllDataWithLatestEvent();
         String date = databaseHelper.getLatestParcelEventDate(res.getString(0));
-        while (res.moveToNext()) {
-            parcelItems.add(new ParcelItem(
-                    res.getString(0),
-                    res.getString(1),
-                    res.getString(2),
-                    res.getString(3),
-                    res.getString(4),
-                    res.getString(5),   // Last update status
-                    res.getString(6),   // Latest event description
-                    res.getString(7),   // Carrier
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    date
-            ));
+        try {
+            while (res.moveToNext()) {
+                parcelItems.add(new ParcelItem(
+                        res.getString(0),
+                        res.getString(1),
+                        res.getString(2),
+                        res.getString(3),
+                        res.getString(4),
+                        res.getString(5),   // Last update status
+                        res.getString(6),   // Latest event description
+                        res.getString(7),   // Carrier
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        date
+                ));
+            }
+        } catch (CursorIndexOutOfBoundsException e) {
+            Log.e(TAG, e.toString());
         }
         return parcelItems;
     }

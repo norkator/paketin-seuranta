@@ -23,6 +23,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -478,24 +479,28 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private void readItems() {
         parcelItems.clear();
         Cursor res = databaseHelper.getAllDataWithLatestEvent();
-        while (res.moveToNext()) {
-            parcelItems.add(new ParcelItem(
-                    res.getString(0),
-                    res.getString(1),
-                    res.getString(2),
-                    res.getString(3),
-                    res.getString(4),
-                    res.getString(5),       // Last update status
-                    res.getString(6),       // Latest event description
-                    res.getString(7),       // Parcel carrier
-                    res.getString(8),
-                    res.getString(9),
-                    res.getString(10),
-                    res.getString(11),
-                    res.getString(12),       // Last pickup date
-                    databaseHelper.getLatestParcelEventDate(res.getString(0)) // Last event date
-            ));
-            Log.e(TAG, "Item led: " + parcelItems.get(parcelItems.size() - 1).getLastEventDate());
+        try {
+            while (res.moveToNext()) {
+                parcelItems.add(new ParcelItem(
+                        res.getString(0),
+                        res.getString(1),
+                        res.getString(2),
+                        res.getString(3),
+                        res.getString(4),
+                        res.getString(5),       // Last update status
+                        res.getString(6),       // Latest event description
+                        res.getString(7),       // Parcel carrier
+                        res.getString(8),
+                        res.getString(9),
+                        res.getString(10),
+                        res.getString(11),
+                        res.getString(12),       // Last pickup date
+                        databaseHelper.getLatestParcelEventDate(res.getString(0)) // Last event date
+                ));
+                Log.e(TAG, "Item led: " + parcelItems.get(parcelItems.size() - 1).getLastEventDate());
+            }
+        } catch (CursorIndexOutOfBoundsException e) {
+            Log.e(TAG, e.toString());
         }
         updateListView();
     }
