@@ -16,8 +16,8 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 29
 
-        versionCode 125
-        versionName "2.1.8"
+        versionCode 126
+        versionName "2.1.9"
         multiDexEnabled true // Enabling multi dex support.
         vectorDrawables.useSupportLibrary = true
     }
