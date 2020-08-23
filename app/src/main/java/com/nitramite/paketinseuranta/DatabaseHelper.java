@@ -310,14 +310,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get all package data
     public Cursor getAllDataWithLatestEvent() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
+        String query = "SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
                 "p." + PHASE + ", " + "p." + FI + ", " + "p." + TITLE + ", " + "p." + LAST_UPDATE_STATUS + ", " +
                 "(SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + DESCRIPTION +
                 ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE + ", " + "p." + CREATE_DATE +
-                ", " + "p." + LASTPICKUPDATE +
+                ", " + "p." + LASTPICKUPDATE + ", " +
+                "(SELECT " + TIMESTAMP + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + "latestParcelEvent" +
                 " FROM " + PARCELS_TABLE + " AS p " +
-                " WHERE " + "p." + IS_ARCHIVED + " = '0'" + " ORDER BY " + "p." + PHASE_NUMBER + " DESC", null);
-        return res;
+                " WHERE " + "p." + IS_ARCHIVED + " = '0'" + " ORDER BY " + "p." + PHASE_NUMBER + " DESC";
+        Log.i(TAG, query);
+        return db.rawQuery(query, null);
     }
 
 
@@ -784,24 +786,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1", null);
         res.moveToFirst();
         final String latestParcelEvent = res.getString(0);
-        res.close();
-        db.close();
-        return latestParcelEvent;
-    }
-
-    // Return parcel latest event for parcel id
-    public String getLatestParcelEventDate(String parcelID) {
-        Log.e(TAG, parcelID);
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + TIMESTAMP + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1", null);
-        res.moveToFirst();
-        if (res.getCount() < 1) {
-            res.close();
-            db.close();
-            return null;
-        }
-        final String latestParcelEvent = res.getString(0);
-        Log.e(TAG, latestParcelEvent);
         res.close();
         db.close();
         return latestParcelEvent;
