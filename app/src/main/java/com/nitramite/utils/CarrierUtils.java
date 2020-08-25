@@ -44,7 +44,7 @@ public class CarrierUtils {
     public static final String CARRIER_UPS_STR = "UPS";
     public static final String CARRIER_FEDEX_STR = "FedEx";
     public static final String CARRIER_POSTNORD_STR = "PostNord (normaali)";
-    public static final String CARRIER_ARRA_PAKETTI_STR = "Ärrä paketti";
+    public static final String CARRIER_ARRA_PAKETTI_STR = "Ärräpaketti";
     public static final String CARRIER_USPS_STR = "USPS";
     public static final String CARRIER_YANWEN_STR = "Yanwen";
     public static final String CARRIER_GLS_STR = "GLS";
