@@ -73,8 +73,19 @@ according to rules pr will be merged. Otherwise I ask changes. Just give me time
 
 Versioning
 ============
-Currently I just increment build number and version number itself doesn't have any logic in it.
-Maybe in the future will use Semver or similar. Not mandatory yet because haven't have need for breaking changes.
+We use [Semver versioning](https://semver.org/)
+
+```
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+MAJOR version when you make incompatible API changes,
+MINOR version when you add functionality in a backwards compatible manner, and
+PATCH version when you make backwards compatible bug fixes.
+```
+
+Author **Norkator** is responsible for incrementing versioning when merging pull requests, so 
+contributors don't need to manage it. If author fails on hes duties, contributors should inform 
+about it.
 
 
 Author
