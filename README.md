@@ -78,14 +78,13 @@ We use [Semver versioning](https://semver.org/)
 ```
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
-MAJOR version when you make incompatible API changes,
-MINOR version when you add functionality in a backwards compatible manner, and
-PATCH version when you make backwards compatible bug fixes.
+MAJOR version when incompatible API changes are made,
+MINOR version when backwards incompatible features are added,
+PATCH version when backwards compatible changes are made.
 ```
 
-Author **Norkator** is responsible for incrementing versioning when merging pull requests, so 
-contributors don't need to manage it. If author fails on hes duties, contributors should inform 
-about it.
+Note that as a contributor you do not need to take versioning into account 
+as the author **Norkator** is responsible of that.
 
 
 Author
