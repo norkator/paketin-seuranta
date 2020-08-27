@@ -38,7 +38,7 @@ pipeline {
         bat './gradlew testDebugUnitTest testDebugUnitTest'
 
         // Analyse the test results and update the build result as appropriate
-        // junit '**/TEST-*.xml' // Enable later when having unit tests to report
+        junit '**/TEST-*.xml'
       }
     }
     stage('Build APK') {
