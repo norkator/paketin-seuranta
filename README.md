@@ -73,8 +73,18 @@ according to rules pr will be merged. Otherwise I ask changes. Just give me time
 
 Versioning
 ============
-Currently I just increment build number and version number itself doesn't have any logic in it.
-Maybe in the future will use Semver or similar. Not mandatory yet because haven't have need for breaking changes.
+We use [Semver versioning](https://semver.org/)
+
+```
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+MAJOR version when incompatible API changes are made,
+MINOR version when backwards incompatible features are added,
+PATCH version when backwards compatible changes are made.
+```
+
+Note that as a contributor you do not need to take versioning into account 
+as the author **Norkator** is responsible of that.
 
 
 Author
