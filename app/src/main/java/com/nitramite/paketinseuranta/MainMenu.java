@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -272,6 +273,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         emptyView = findViewById(R.id.emptyView);
         trackItemsList = findViewById(R.id.trackItemsList);
         trackItemsList.setEmptyView(emptyView);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -512,6 +514,17 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
                     .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
             trackItemsList.setAdapter(mAdapter);
+            trackItemsList.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    swipeRefreshLayout.setEnabled(firstVisibleItem == 0);
+                }
+
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                }
+            });
+
         } else {
             adapter.notifyDataSetChanged();
         }
