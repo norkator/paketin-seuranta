@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.multidex.MultiDex;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

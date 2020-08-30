@@ -11,10 +11,12 @@ package com.nitramite.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.Constants;
+
+import java.util.Objects;
 
 import static android.content.res.Configuration.UI_MODE_NIGHT_YES;
 
@@ -35,7 +37,7 @@ public class ThemeUtils {
 
         public static Theme getCurrentTheme(Context context) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            int theme = Integer.valueOf(preferences.getString(Constants.SP_THEME_SELECTION, "3"));
+            int theme = Integer.parseInt(Objects.requireNonNull(preferences.getString(Constants.SP_THEME_SELECTION, "3")));
             for (Theme b : Theme.values()) {
                 if (b.num == theme) {
 
