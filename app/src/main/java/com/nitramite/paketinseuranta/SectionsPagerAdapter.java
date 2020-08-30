@@ -1,6 +1,7 @@
 package com.nitramite.paketinseuranta;
 
 import android.content.Context;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     // Fragments
     private FragmentTrackedDelivery fragmentTrackedDelivery = new FragmentTrackedDelivery();
     private FragmentNumberList fragmentNumberList = new FragmentNumberList();
+
 
     // Constructor
     SectionsPagerAdapter(Context context, FragmentManager fm, FragmentTrackedDelivery.TrackedDeliveryType trackedDeliveryType) {

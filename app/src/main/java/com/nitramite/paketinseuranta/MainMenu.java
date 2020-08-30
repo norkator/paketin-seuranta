@@ -315,21 +315,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     // ---------------------------------------------------------------------------------------------
 
-    // Status bar tinting
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
-
-
     @Override
     protected void onStop() {
         super.onStop();

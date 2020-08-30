@@ -10,7 +10,6 @@ package com.nitramite.paketinseuranta;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -37,7 +36,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.os.Vibrator;
-import androidx.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -68,6 +66,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -322,22 +321,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         readParcelDataFromSqlite();
         createParcelImageDirectory();
     } // END OF onCreate()
-
-
-    // API 19 KITKAT STATUS BAR TINTING
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
-
+    
 
     // Swipe action switch package
     private void swipeSwitchPackage(final boolean nextPackage) {

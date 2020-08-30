@@ -1,26 +1,23 @@
 package com.nitramite.paketinseuranta;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.os.Build;
-import androidx.preference.PreferenceManager;
-import androidx.multidex.MultiDex;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
+
 import com.nitramite.adapters.CustomBarcodeListAdapter;
 import com.nitramite.utils.LocaleUtils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.ArrayList;
 
@@ -44,12 +41,14 @@ public class BarcodeList extends AppCompatActivity {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_barcode_list);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
@@ -123,20 +122,6 @@ public class BarcodeList extends AppCompatActivity {
         editor.apply();
     }
 
-
-    // API 19 KITKAT STATUS BAR TINTING
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

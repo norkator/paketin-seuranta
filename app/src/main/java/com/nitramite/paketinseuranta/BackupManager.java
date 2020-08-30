@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -197,7 +198,7 @@ public class BackupManager extends AppCompatActivity {
      * Shut down app
      */
     private void terminateApp() {
-        Handler handler = new Handler();
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             finishAffinity();
             System.exit(0);
