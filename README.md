@@ -79,8 +79,8 @@ We use [Semver versioning](https://semver.org/)
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
 MAJOR version when incompatible API changes are made,
-MINOR version when backwards incompatible features are added,
-PATCH version when backwards compatible changes are made.
+MINOR version when backwards compatible features are added,
+PATCH version when backwards compatible bug fixes are made.
 ```
 
 Note that as a contributor you do not need to take versioning into account 
