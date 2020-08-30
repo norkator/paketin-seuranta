@@ -10,7 +10,6 @@ package com.nitramite.paketinseuranta;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,10 +23,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,12 +44,12 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
 
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
 
@@ -100,6 +97,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         MultiDex.install(this);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -119,6 +117,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         setContentView(R.layout.activity_archive);
         setTitle(R.string.archive_title);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
@@ -178,9 +177,6 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
             setDeliveredConfirmationDialog(i);
             return true;
         });
-
-
-
 
 
         // Activity results set
@@ -330,21 +326,6 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
                 })
                 .setIcon(R.mipmap.ps_logo_round)
                 .show();
-    }
-
-
-    // API 19 KITKAT STATUS BAR TINTING
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
 
