@@ -3,7 +3,7 @@
 # Paketin Seuranta
 
 Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
-tarkoitettu Android sovellus. Sovelluksen kohdeyleisö on Suomessa mutta pidetään repo 
+tarkoitettu Android sovellus. Sovelluksen kohdeyleisö on Suomessa mutta pidetään repositorio 
 yleisesti Englannin kielellä.
 
 Paketin Seuranta is free application, no ads or paid content ever!
@@ -30,7 +30,11 @@ Help required
 I am looking for help to develop this application further. If you are interested let me know,
 contact me via email: nitramite@outlook.com
 
-Development areas are: bug fixes, user interface, more tracking methods, better cleaner code and basic maintenance. Somebody with material design ui experience is especially welcome!
+Development areas are: bug fixes, user interface, more tracking methods, better cleaner code and basic maintenance. 
+Somebody with material design ui experience is especially welcome.
+
+<b>Anyone with less or more coding experience is welcome. **Norkator** moderates that any contribution 
+will be respected so no need to be scared to contribute.</b>
 
 Android app: https://play.google.com/store/apps/details?id=com.nitramite.paketinseuranta
 
