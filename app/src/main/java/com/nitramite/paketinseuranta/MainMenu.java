@@ -571,7 +571,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     @Override
     public void onSwipeEnded(ListView listView, int position, SwipeDirection direction) {
-        swipeRefreshLayout.setEnabled(true);
+        if (position == 0) {
+            swipeRefreshLayout.setEnabled(true);
+        }
     }
 
 
