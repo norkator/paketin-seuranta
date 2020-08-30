@@ -1,3 +1,5 @@
+![Paketin-Seuranta-title-promo](./graphics/paketin_seuranta_promo.png) 
+
 # Paketin Seuranta
 
 Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
