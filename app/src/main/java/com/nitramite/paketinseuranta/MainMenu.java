@@ -599,12 +599,12 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         new AlertDialog.Builder(MainMenu.this)
                 .setTitle(R.string.main_menu_deletion_title)
                 .setMessage(R.string.main_menu_you_are_about_to_delete_following_package_from_list)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(onSwipePosition).getParcelId();
                     databaseHelper.deletePackageData(codeId);
                     readItems();
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)

@@ -1001,12 +1001,12 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         new AlertDialog.Builder(Parcel.this)
                 .setTitle(R.string.clear_events)
                 .setMessage(R.string.clear_current_events_for_this_parcel)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     if (databaseHelper.clearParcelEventsData(ID)) {
                         readParcelDataFromSqlite();
                     }
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
@@ -1021,13 +1021,13 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         new AlertDialog.Builder(Parcel.this)
                 .setTitle(R.string.main_menu_deletion_title)
                 .setMessage(R.string.main_menu_you_are_about_to_delete_following_package_from_list_shorter)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     ArrayList<ParcelItem> parcelItems = getParcelItems();
                     if (databaseHelper.deletePackageData(ID)) {
                         switchToNextPackageFromCurrent(parcelItems);
                     }
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)

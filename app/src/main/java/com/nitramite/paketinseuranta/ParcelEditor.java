@@ -106,7 +106,7 @@ public class ParcelEditor extends AppCompatActivity {
         new AlertDialog.Builder(ParcelEditor.this)
                 .setTitle(R.string.note)
                 .setMessage(R.string.leave_without_saving_changes)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     switch (trackedDeliveryType) {
                         case NEW_PACKAGE:
                             databaseHelper.deletePackageData(parcelId);
@@ -117,7 +117,7 @@ public class ParcelEditor extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                 })
                 .setIcon(R.mipmap.logo)
                 .show();

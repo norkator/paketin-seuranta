@@ -303,12 +303,12 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         new AlertDialog.Builder(Archive.this)
                 .setTitle(R.string.archive_delete_title)
                 .setMessage(R.string.archive_delete_description)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(onSwipePosition).getParcelId();
                     databaseHelper.deletePackageData(codeId);
                     readItems(null);
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
@@ -320,12 +320,12 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         new AlertDialog.Builder(Archive.this)
                 .setTitle(R.string.archive_delivered_status_set_title)
                 .setMessage(R.string.archive_delivered_status_set_description)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(position).getParcelId();
                     databaseHelper.updatePackageAsDelivered(codeId);
                     readItems(null);
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
