@@ -45,11 +45,11 @@ class PostiStrategy : CourierStrategy {
             // Log.i(TAG, jsonChildNode.toString());
 
             if (jsonChildNode.length() > 0) {
-                parcelObject.isFound = true // Parcel is found
+                parcelObject.setIsFound(true) // Parcel is found
 
-                parcelObject.parcelCode2 = jsonChildNode.optString("trackingCode")
-                parcelObject.errandCode = jsonChildNode.optString("errandCode")
-                parcelObject.phase = jsonChildNode.optString("phase")
+                parcelObject.setParcelCode2(jsonChildNode.optString("trackingCode"))
+                parcelObject.setErrandCode(jsonChildNode.optString("errandCode"))
+                parcelObject.setPhase(jsonChildNode.optString("phase"))
 
 
                 // Parse estimate delivery time
@@ -59,7 +59,7 @@ class PostiStrategy : CourierStrategy {
                     val timeStamp = jsonChildNode.optString("estimatedDeliveryTime")
                     val parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp))
                     val parsedDate = showingDateFormat.format(parseTimeDate)
-                    parcelObject.estimatedDeliveryTime = parsedDate
+                    parcelObject.setEstimatedDeliveryTime(parsedDate)
                 } catch (e: Exception) {
                     Log.i(TAG, e.toString())
                 }
@@ -88,39 +88,39 @@ class PostiStrategy : CourierStrategy {
                     val timeStamp = jsonChildNode.optString("lastPickupDate")
                     val parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp))
                     val parsedDate = showingDateFormat.format(parseTimeDate)
-                    parcelObject.lastPickupDate = parsedDate
+                    parcelObject.setLastPickupDate(parsedDate)
                 } catch (e: Exception) {
                     Log.i(TAG, e.toString())
                 }
 
                 if (jsonChildNode.getJSONObject("product").has("name")) {
                     if (!jsonChildNode.getJSONObject("product").getString("name").contains("null")) {
-                        parcelObject.product = jsonChildNode.getJSONObject("product").getJSONObject("name").optString("fi")
+                        parcelObject.setProduct(jsonChildNode.getJSONObject("product").getJSONObject("name").optString("fi"))
                     }
                 }
-                parcelObject.sender = jsonChildNode.optString("sender")
-                parcelObject.lockerCode = jsonChildNode.optString("lockerCode")
+                parcelObject.setSender(jsonChildNode.optString("sender"))
+                parcelObject.setLockerCode(jsonChildNode.optString("lockerCode"))
                 val extraServicesArray = jsonChildNode.getJSONArray("extraServices")
                 if (extraServicesArray.length() > 0) {
                     val extraServiceObj = extraServicesArray.getJSONObject(0) // Get only first
                     if (extraServiceObj != null) {
                         val extraServiceNameObj = extraServiceObj.optJSONObject("name")
                         if (extraServiceNameObj != null) {
-                            parcelObject.extraServices = extraServiceNameObj.optString("fi")
+                            parcelObject.setExtraServices(extraServiceNameObj.optString("fi"))
                         }
                     }
                 }
-                parcelObject.weight = jsonChildNode.optString("weight")
-                parcelObject.height = jsonChildNode.optString("height")
-                parcelObject.width = jsonChildNode.optString("width")
-                parcelObject.depth = jsonChildNode.optString("depth")
-                parcelObject.volume = jsonChildNode.optString("volume")
-                parcelObject.destinationPostcode = jsonChildNode.optString("destinationPostcode")
-                parcelObject.destinationCity = jsonChildNode.optString("destinationCity")
-                parcelObject.destinationCountry = jsonChildNode.optString("destinationCountry")
-                parcelObject.recipientSignature = jsonChildNode.optString("recipientSignature")
-                parcelObject.codAmount = jsonChildNode.optString("codAmount")
-                parcelObject.codCurrency = jsonChildNode.optString("codCurrency")
+                parcelObject.setWeight(jsonChildNode.optString("weight"))
+                parcelObject.setHeight(jsonChildNode.optString("height"))
+                parcelObject.setWidth(jsonChildNode.optString("width"))
+                parcelObject.setDepth(jsonChildNode.optString("depth"))
+                parcelObject.setVolume(jsonChildNode.optString("volume"))
+                parcelObject.setDestinationPostcode(jsonChildNode.optString("destinationPostcode"))
+                parcelObject.setDestinationCity(jsonChildNode.optString("destinationCity"))
+                parcelObject.setDestinationCountry(jsonChildNode.optString("destinationCountry"))
+                parcelObject.setRecipientSignature(jsonChildNode.optString("recipientSignature"))
+                parcelObject.setCodAmount(jsonChildNode.optString("codAmount"))
+                parcelObject.setCodCurrency(jsonChildNode.optString("codCurrency"))
 
 
                 // Parse events
@@ -152,17 +152,17 @@ class PostiStrategy : CourierStrategy {
                     // Add object
                     eventObjects.add(eventObject)
                 }
-                parcelObject.eventObjects = eventObjects // Set event object into parcel object for later fetching
+                parcelObject.setEventObjects(eventObjects) // Set event object into parcel object for later fetching
             } else {
                 Log.i(TAG, "Posti shipment not found")
-                parcelObject.isFound = false // Parcel not found
+                parcelObject.setIsFound(false) // Parcel not found
             }
         } catch (e: JSONException) {
             e.printStackTrace()
             Log.i(TAG, e.toString())
         } catch (e: SSLException) {
             Log.i(TAG, "RESET BY PEER FOR $parcelCode")
-            parcelObject.updateFailed = true
+            parcelObject.setUpdateFailed(true)
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
