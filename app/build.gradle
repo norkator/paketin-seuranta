@@ -17,7 +17,7 @@ android {
         targetSdkVersion 29
 
         versionCode 129
-        versionName "2.2.11"
+        versionName "2.2.13"
         multiDexEnabled true // Enabling multi dex support.
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
