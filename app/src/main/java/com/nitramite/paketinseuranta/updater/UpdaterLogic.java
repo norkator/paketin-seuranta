@@ -40,6 +40,7 @@ import com.nitramite.courier.PostiStrategy;
 import com.nitramite.courier.UPSStrategy;
 import com.nitramite.courier.USPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
+import com.nitramite.courier.DpdStrategy;
 import com.nitramite.paketinseuranta.DatabaseHelper;
 import com.nitramite.paketinseuranta.MainMenu;
 import com.nitramite.paketinseuranta.ParcelService;
@@ -202,6 +203,12 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_BRING:
                                     Log.i(TAG, "# Running Bring #");
                                     courier.setCourierStrategy(new BringStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    break;
+                                // DPD
+                                case CarrierUtils.CARRIER_DPD:
+                                    Log.i(TAG, "# Running Dpd #");
+                                    courier.setCourierStrategy(new DpdStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
                                     break;
 
