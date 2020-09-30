@@ -136,7 +136,7 @@ public class DHLExpressStrategy implements CourierStrategy {
         } catch (JSONException e) {
             e.printStackTrace();
             Log.i(TAG, e.toString());
-        } catch (IOException | ParseException | NullPointerException e) {
+        } catch (IOException | ParseException | NullPointerException | IllegalArgumentException e) {
             e.printStackTrace();
         }
         return parcelObject;
