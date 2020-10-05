@@ -110,7 +110,10 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         phaseTextFix = context.getString(R.string.package_not_found);
 
         // Check for item in transit
-        if (phase.equals(PhaseNumber.PHASE_WAITING_FOR_PICKUP)) {
+        if (phase.length() == 9) {
+            pos = 5;
+            phaseTextFix = context.getString(R.string.status_delivered);
+        } else if (phase.equals(PhaseNumber.PHASE_WAITING_FOR_PICKUP)) {
             // TODO made new icon. if it's good, let's use that in upcoming ones, as it's SVG not png
             pos = 9;
             phaseTextFix = context.getString(R.string.status_waiting_for_pickup);
@@ -123,9 +126,6 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         } else if (phase.length() == 16 || latestEventDescription.contains("ilmoitus tekstiviestillä") || latestEventDescription.contains("toimitettu noutopisteeseen")) {
             pos = 4;
             phaseTextFix = context.getString(R.string.status_ready);
-        } else if (phase.length() == 9) {
-            pos = 5;
-            phaseTextFix = context.getString(R.string.status_delivered);
         } else if (phase.length() == 8 || phase.equals("RETURNED_TO_SENDER")) {
             pos = 7;
             phaseTextFix = context.getString(R.string.status_returned);
