@@ -103,10 +103,10 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
 
 
         String phase = parcelItem.getParcelPhase();
-
         int pos = 1;
         final String latestEventDescription = (parcelItem.getParcelLatestEventDescription() != null ?
-                parcelItem.getParcelLatestEventDescription() : ""); // Latest event
+                parcelItem.getParcelLatestEventDescription() : "");
+
         phaseTextFix = context.getString(R.string.package_not_found);
 
         // Check for item in transit
@@ -123,28 +123,24 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         } else if (phase.length() == 12) {
             pos = 3;
             phaseTextFix = context.getString(R.string.status_in_transit);
-        } else if (phase.length() == 16 || latestEventDescription.contains("ilmoitus tekstiviestillä") || latestEventDescription.contains("toimitettu noutopisteeseen")) {
+        } else if (phase.length() == 16) {
             pos = 4;
             phaseTextFix = context.getString(R.string.status_ready);
         } else if (phase.length() == 8 || phase.equals("RETURNED_TO_SENDER")) {
             pos = 7;
             phaseTextFix = context.getString(R.string.status_returned);
-        } else //noinspection ConstantConditions
-            if (phase.length() == 7 || phase.equals("CUSTOMS")) {
-                pos = 8;
-                phaseTextFix = context.getString(R.string.status_customs);
-            }
-            // Not inside Finland
-            else if (phase.length() == 24 || latestEventDescription.equals("Lähetys ei ole vielä saapunut Postille, odotathan") ||
-                    latestEventDescription.equals("Lähetys on saapunut varastolle") || latestEventDescription.equals("Lähetys on lähtenyt varastolta")
-                    || latestEventDescription.equals("Lähetys on rekisteröity.") || latestEventDescription.equals("Lähetys on matkalla kohdemaahan")
-            ) {
-                pos = 2;
-                phaseTextFix = context.getString(R.string.status_in_transit);
-            } else if (parcelItem.getParcelCarrier().equals("99") && phase.equals("")) {
-                pos = 6;
-                phaseTextFix = "";
-            }
+        } else if (phase.length() == 7) {
+            pos = 8;
+            phaseTextFix = context.getString(R.string.status_customs);
+        }
+        // Not inside Finland
+        else if (phase.length() == 24) {
+            pos = 2;
+            phaseTextFix = context.getString(R.string.status_in_transit);
+        } else if (parcelItem.getParcelCarrier().equals("99") && phase.equals("")) {
+            pos = 6;
+            phaseTextFix = "";
+        }
 
         // -----------------------------------------------------------------------------------------
         /* Set values */

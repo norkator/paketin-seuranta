@@ -27,7 +27,13 @@ public class PhaseNumber {
     // Returns number equivalent for phase string
     public static PhaseNumberString phaseToNumber(final String phase, final String lastEventStr) {
 
-        if (phase.equals("IN_TRANSPORT_NOT_IN_FINLAND")) {
+        if (phase.equals("IN_TRANSPORT_NOT_IN_FINLAND")
+                || lastEventStr.equals("Lähetys on matkalla kohdemaahan")
+                || lastEventStr.equals("Lähetys on rekisteröity.")
+                || lastEventStr.equals("Lähetys on lähtenyt varastolta")
+                || lastEventStr.equals("Lähetys on saapunut varastolle")
+                || lastEventStr.equals("Lähetys ei ole vielä saapunut Postille, odotathan")
+        ) {
             return new PhaseNumberString("1", "IN_TRANSPORT_NOT_IN_FINLAND");
 
 
@@ -58,6 +64,7 @@ public class PhaseNumber {
                 || (lastEventStr.contains("UPS Access Point") && !lastEventStr.contains("toimipaikkaan odottaa"))
                 || lastEventStr.contains("Lähetys on noudettavissa")
                 || lastEventStr.contains("Lähetimme vastaanottajalle viestin lähetyksen saapumisesta")
+                || lastEventStr.contains("toimitettu noutopisteeseen")
         )) {
             return new PhaseNumberString("3", "READY_FOR_PICKUP");
 
