@@ -481,7 +481,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
                 // Package estimate delivery
-                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED_STRING) && !res.getString(7).equals("null") && res.getString(7).length() > 4) {
+                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) && !res.getString(7).equals("null") && res.getString(7).length() > 4) {
                     estimateDeliveryOrLastPickupDateView.setVisibility(View.VISIBLE);
                     final String deliveryTimeString = getString(R.string.parcel_estimate_delivery) + " " + res.getString(7);
                     estimateDeliveryOrLastPickupDateTV.setText(deliveryTimeString);
@@ -491,7 +491,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
                 // Package estimate delivery
-                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED_STRING) && !res.getString(15).equals("null") && res.getString(15).length() > 4) {
+                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) && !res.getString(15).equals("null") && res.getString(15).length() > 4) {
                     estimateDeliveryOrLastPickupDateView.setVisibility(View.VISIBLE);
                     final String deliveryTimeString = getString(R.string.parcel_last_pickup_date) + " " + res.getString(15);
                     estimateDeliveryOrLastPickupDateTV.setText(deliveryTimeString);
@@ -501,7 +501,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
 
                 // Package delivered
-                if (res.getString(6).equals(PhaseNumber.PHASE_DELIVERED_STRING)) {
+                if (res.getString(6).equals(PhaseNumber.PHASE_DELIVERED)) {
                     deliveredView.setVisibility(View.VISIBLE);
                 } else {
                     deliveredView.setVisibility(View.GONE);
