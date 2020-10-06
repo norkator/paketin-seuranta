@@ -377,6 +377,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
                 CSVExporter csvExporter = new CSVExporter();
                 try {
                     final String exportFileName = csvExporter.exportCSV(
+                            this,
                             databaseHelper,
                             nameCB.isChecked(),
                             trackingCodeCB.isChecked(),
