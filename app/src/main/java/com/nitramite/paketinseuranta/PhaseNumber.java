@@ -11,40 +11,51 @@ package com.nitramite.paketinseuranta;
 @SuppressWarnings("HardCodedStringLiteral")
 public class PhaseNumber {
 
-    // Status variable names
-    final static String PHASE_DELIVERED_STRING = "DELIVERED";
+    // Phase variable names
+    public final static String PHASE_EMPTY = "";
+    public final static String PHASE_IN_TRANSPORT_NOT_IN_FINLAND = "IN_TRANSPORT_NOT_IN_FINLAND";
+    public final static String PHASE_IN_TRANSPORT = "IN_TRANSPORT";
+    public final static String PHASE_TRANSIT = "TRANSIT";
+    public final static String PHASE_WAITING = "WAITING";
+    public final static String PHASE_DELIVERED = "DELIVERED";
     public final static String PHASE_WAITING_FOR_PICKUP = "WAIT4PICKUP";
+    public final static String PHASE_READY_FOR_PICKUP = "READY_FOR_PICKUP";
+    public final static String PHASE_RETURNED = "RETURNED";
+    public final static String PHASE_RETURNED_TO_SENDER = "RETURNED_TO_SENDER";
+    public final static String PHASE_CUSTOMS = "CUSTOMS";
 
-    // Status variables integers
-    public final static Integer PHASE_IN_TRANSPORT = 2;
-    final static Integer PHASE_READY_FOR_PICKUP = 3;
-
-    // Status variables strings
-    final static String PHASE_IN_TRANSPORT_STR = "2";
-    public final static String PHASE_READY_FOR_PICKUP_STR = "3";
+    // Phase variables integers
+    public final static Integer PHASE_INT_EMPTY = 0;
+    public final static Integer PHASE_INT_IN_TRANSPORT_NOT_IN_FINLAND = 1;
+    public final static Integer PHASE_INT_IN_TRANSPORT = 2;
+    public final static Integer PHASE_INT_READY_FOR_PICKUP = 3;
+    public final static Integer PHASE_INT_DELIVERED = 4;
+    public final static Integer PHASE_INT_RETURNED = 5;
+    public final static Integer PHASE_INT_CUSTOMS = 6;
+    public final static Integer PHASE_INT_WAITING_FOR_PICKUP = 9;
 
 
     // Returns number equivalent for phase string
     public static PhaseNumberString phaseToNumber(final String phase, final String lastEventStr) {
 
-        if (phase.equals("IN_TRANSPORT_NOT_IN_FINLAND")
+        if (phase.equals(PHASE_IN_TRANSPORT_NOT_IN_FINLAND)
                 || lastEventStr.equals("Lähetys on matkalla kohdemaahan")
                 || lastEventStr.equals("Lähetys on rekisteröity.")
                 || lastEventStr.equals("Lähetys on lähtenyt varastolta")
                 || lastEventStr.equals("Lähetys on saapunut varastolle")
                 || lastEventStr.equals("Lähetys ei ole vielä saapunut Postille, odotathan")
         ) {
-            return new PhaseNumberString("1", "IN_TRANSPORT_NOT_IN_FINLAND");
+            return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT_NOT_IN_FINLAND), PHASE_IN_TRANSPORT_NOT_IN_FINLAND);
 
 
-        } else if (phase.equals("IN_TRANSPORT") || phase.equals("TRANSIT") || phase.equals("WAITING")
+        } else if (phase.equals(PHASE_IN_TRANSPORT) || phase.equals(PHASE_TRANSIT) || phase.equals(PHASE_WAITING)
                 || lastEventStr.equals("Lähetys on saapunut kohdemaahan.")
                 || lastEventStr.equals("Lähetys on lajiteltu.")
         ) {
-            return new PhaseNumberString("2", "IN_TRANSPORT");
+            return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT), PHASE_IN_TRANSPORT);
 
 
-        } else if (phase.equals("DELIVERED")
+        } else if (phase.equals(PHASE_DELIVERED)
                 || lastEventStr.contains("Luovutettu vastaanottajalle")
                 || lastEventStr.contains("Lähetys on toimitettu")
                 || lastEventStr.contains("successfully delivered")
@@ -52,10 +63,10 @@ public class PhaseNumber {
                 || lastEventStr.contains("Asiakas noutanut")
                 || lastEventStr.contains("Lähetys on nyt noudettu. Kiitos")
         ) {
-            return new PhaseNumberString("4", "DELIVERED");
+            return new PhaseNumberString(intToString(PHASE_INT_DELIVERED), PHASE_DELIVERED);
 
 
-        } else if ((phase.equals("READY_FOR_PICKUP")
+        } else if ((phase.equals(PHASE_READY_FOR_PICKUP)
                 || lastEventStr.equals("Noudettavissa")
                 || lastEventStr.contains("ilmoitus tekstiviestillä")
                 || lastEventStr.contains("ilmoitus sähköpostitse")
@@ -66,26 +77,31 @@ public class PhaseNumber {
                 || lastEventStr.contains("Lähetimme vastaanottajalle viestin lähetyksen saapumisesta")
                 || lastEventStr.contains("toimitettu noutopisteeseen")
         )) {
-            return new PhaseNumberString("3", "READY_FOR_PICKUP");
+            return new PhaseNumberString(intToString(PHASE_INT_READY_FOR_PICKUP), PHASE_READY_FOR_PICKUP);
 
 
-        } else if (phase.equals("RETURNED") || phase.equals("RETURNED_TO_SENDER")) {
-            return new PhaseNumberString("5", "RETURNED");
+        } else if (phase.equals(PHASE_RETURNED) || phase.equals(PHASE_RETURNED_TO_SENDER)) {
+            return new PhaseNumberString(intToString(PHASE_INT_RETURNED), PHASE_RETURNED);
 
 
-        } else if (phase.equals("CUSTOMS")
+        } else if (phase.equals(PHASE_CUSTOMS)
                 || lastEventStr.contains("odottaa tullaustasi")
                 || lastEventStr.contains("tullaus")
         ) {
-            return new PhaseNumberString("6", "CUSTOMS");
+            return new PhaseNumberString(intToString(PHASE_INT_CUSTOMS), PHASE_CUSTOMS);
 
 
         } else if (phase.equals(PHASE_WAITING_FOR_PICKUP)) {
-            return new PhaseNumberString("9", PHASE_WAITING_FOR_PICKUP);
+            return new PhaseNumberString(intToString(PHASE_INT_WAITING_FOR_PICKUP), PHASE_WAITING_FOR_PICKUP);
         }
 
 
-        return new PhaseNumberString("0", "");
+        return new PhaseNumberString(intToString(PHASE_INT_EMPTY), PHASE_EMPTY);
+    }
+
+
+    private static String intToString(int input) {
+        return String.valueOf(input);
     }
 
 
