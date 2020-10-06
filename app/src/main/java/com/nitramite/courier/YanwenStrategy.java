@@ -1,6 +1,7 @@
 package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 
@@ -23,7 +24,7 @@ public class YanwenStrategy implements CourierStrategy {
     private static final String TAG = "YanwenStrategy";
 
     // Api url
-    private static final String url = "https://track.yw56.com.cn/home/index?aspxerrorpath=/en-US";
+    private static final String url = "https://track.yw56.com.cn/home/index?aspxerrorpath=/en-US0&InputTrackNumbers=";
 
 
     @Override
@@ -54,8 +55,8 @@ public class YanwenStrategy implements CourierStrategy {
      * @throws IOException throw exception if loading fails
      */
     private Document getSiteData(String parcelCode) throws IOException {
-        return Jsoup.connect(url)
-                .data("InputTrackNumbers", parcelCode)
+        return Jsoup.connect(url + parcelCode)
+                .header("Content-Type", "text/html")
                 .timeout(0)
                 .post();
     }
@@ -72,13 +73,14 @@ public class YanwenStrategy implements CourierStrategy {
         Elements elements = webPage.select("#accordion > div > div.panel-heading > div:nth-child(1) > div.col-md-9 > div > a");
         if (elements.size() > 0) {
             String lastEventHtml = elements.first().html();
+            Log.i(TAG, lastEventHtml);
             if (lastEventHtml.contains("In transport") || lastEventHtml.contains("has arrived in the country of destination")) {
                 parcelObject.setIsFound(true);
                 parcelObject.setPhase("IN_TRANSPORT");
             } else if (lastEventHtml.contains("Track End")) {
                 parcelObject.setIsFound(true);
                 parcelObject.setPhase("IN_TRANSPORT");
-            } else if (lastEventHtml.contains("Delivered")) {
+            } else if (lastEventHtml.contains("Delivered") || lastEventHtml.contains("delivered to the recipient")) {
                 parcelObject.setIsFound(true);
                 parcelObject.setPhase("DELIVERED");
             }
