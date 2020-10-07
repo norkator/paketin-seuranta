@@ -22,9 +22,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,6 +41,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,12 +55,12 @@ import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirection;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Archive extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener {
 
@@ -178,9 +181,6 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
             setDeliveredConfirmationDialog(i);
             return true;
         });
-
-
-
 
 
         // Activity results set
@@ -357,7 +357,19 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
+        // Better instruction of output folder
+        final TextView csvExportDescription = dialog.findViewById(R.id.csvExportDescription);
+        String outputFolder = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            outputFolder = Objects.requireNonNull(this.getExternalFilesDir(null)).getPath();
+        } else {
+            outputFolder = CSVExporter.CSV_OLD_DIR;
+        }
+        String f = getString(R.string.csv_export_layout_csv_export_properties_summary) + " " + outputFolder + " " + getString(R.string.to_folder);
+        csvExportDescription.setText(f);
+
         // Find action buttons
+        final Button openLocationBtn = dialog.findViewById(R.id.openLocationBtn);
         final Button dismissBtn = dialog.findViewById(R.id.dismissBtn);
         final Button exportBtn = dialog.findViewById(R.id.exportBtn);
 
@@ -401,6 +413,24 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
             }
         });
         dismissBtn.setOnClickListener(view -> dialog.dismiss());
+        // Todo, find out why this approach does not really open folder
+        openLocationBtn.setOnClickListener(v -> openCSVFolder());
+    }
+
+
+    public void openCSVFolder() {
+        String path = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            path = Objects.requireNonNull(this.getExternalFilesDir(null)).getPath();
+        } else {
+            path = CSVExporter.CSV_OLD_DIR;
+        }
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Log.i(TAG, path);
+        Uri uri = Uri.parse(path);
+        intent.setDataAndType(uri, DocumentsContract.Document.MIME_TYPE_DIR);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(intent, "Open folder"));
     }
 
 

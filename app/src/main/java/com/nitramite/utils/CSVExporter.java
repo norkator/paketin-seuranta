@@ -23,6 +23,8 @@ public class CSVExporter {
     //  Logging
     private static final String TAG = "CSVExporter";
 
+    public static final String CSV_OLD_DIR = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/CSV/";
+
     // Export csv
     public String exportCSV(Context context, DatabaseHelper databaseHelper,
                             Boolean nameChecked, Boolean parcelCodeChecked, Boolean senderChecked, Boolean deliveryMethodChecked,
@@ -39,7 +41,7 @@ public class CSVExporter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             csvExportFile = new File(context.getExternalFilesDir(null), fileName);
         } else {
-            File csvDirectory = FileUtils.createDirIfNotExist(Environment.getExternalStorageDirectory() + "/PaketinSeuranta/CSV/");
+            File csvDirectory = FileUtils.createDirIfNotExist(CSV_OLD_DIR);
             csvExportFile = new File(csvDirectory, fileName);
         }
 
