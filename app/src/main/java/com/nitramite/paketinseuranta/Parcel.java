@@ -92,9 +92,12 @@ import org.jetbrains.annotations.NonNls;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
+
+import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Parcel extends AppCompatActivity implements OnMapReadyCallback, SwipeRefreshLayout.OnRefreshListener, CarrierDetectorTaskInterface {
@@ -108,8 +111,6 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
     // Components
     private LocaleUtils localeUtils = new LocaleUtils();
-    private File parcelImageDirectory;
-    private static final int CAMERA_REQUEST = 1888;
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
     private TextView trackingNumberText;
     private ImageView code128Output;
@@ -135,6 +136,11 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     private LayoutInflater layoutInflater;
     private CarrierDetectorTask carrierDetectorTask;
     private Button tryDetectCourierBtn;
+
+    // Parcel image variables
+    private static final int CAMERA_REQUEST = 1888;
+    private File parcelImageTempFile = null;
+    private String imageCaptureTempName = "temp.png";
 
     // Dialogs
     private Dialog carrierDetectorDialog;
@@ -929,7 +935,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             if (hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)) {
                 StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder.build());
-                Uri outputFileUri = Uri.fromFile(parcelImageDirectory);
+                Uri outputFileUri = Uri.fromFile(parcelImageTempFile);
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, CAMERA_REQUEST);
@@ -1098,12 +1104,18 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             try {
-                String photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+                String photoPath = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    photoPath = parcelImageTempFile.getPath();
+                } else {
+                    photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+                }
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
                 saveImageToDB(bitmap);
             } catch (Exception e) {
+                Log.e(TAG, e.toString());
                 e.printStackTrace();
             }
         } else if (requestCode == ACTIVITY_RESULT_PARCEL_EDITOR) {
@@ -1141,7 +1153,8 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 appendParcelImage(imageId, BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
             }
             cur.close();
-        } catch (IllegalStateException ignored) {
+        } catch (IllegalStateException e) {
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -1153,12 +1166,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         layoutParams.setMargins(5, 5, 5, 5);
         parcelImage.setLayoutParams(layoutParams);
         parcelImage.setImageBitmap(bitmap);
-        parcelImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageViewDialog(imageId, bitmap);
-            }
-        });
+        parcelImage.setOnClickListener(view -> imageViewDialog(imageId, bitmap));
         parcelImagesLayout.addView(parcelImage);
     }
 
@@ -1241,9 +1249,13 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     @SuppressWarnings("HardCodedStringLiteral")
     private void createParcelImageDirectory() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            File root = new File(Environment.getExternalStorageDirectory() + File.separator + "PaketinSeuranta" + File.separator + "Kuvat" + File.separator);
-            root.mkdirs();
-            parcelImageDirectory = new File(root, "temp.png");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                parcelImageTempFile = new File(this.getExternalFilesDir(null), imageCaptureTempName);
+            } else {
+                File root = new File(Environment.getExternalStorageDirectory() + File.separator + "PaketinSeuranta" + File.separator + "Kuvat" + File.separator);
+                root.mkdirs();
+                parcelImageTempFile = new File(root, imageCaptureTempName);
+            }
         }
     }
 
