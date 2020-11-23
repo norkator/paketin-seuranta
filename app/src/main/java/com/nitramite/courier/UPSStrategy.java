@@ -60,6 +60,7 @@ public class UPSStrategy implements CourierStrategy {
             Response response = client.newCall(request).execute();
 
             String jsonResult = response.body().string();
+
             Log.i(TAG, jsonResult);
 
             // Parsing got json content
