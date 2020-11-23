@@ -1,7 +1,9 @@
 package com.nitramite.utils;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -21,8 +23,10 @@ public class CSVExporter {
     //  Logging
     private static final String TAG = "CSVExporter";
 
+    public static final String CSV_OLD_DIR = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/CSV/";
+
     // Export csv
-    public String exportCSV(DatabaseHelper databaseHelper,
+    public String exportCSV(Context context, DatabaseHelper databaseHelper,
                             Boolean nameChecked, Boolean parcelCodeChecked, Boolean senderChecked, Boolean deliveryMethodChecked,
                             Boolean parcelAddDateChecked, Boolean parcelLastEventChecked, Boolean readyForPickupDateChecked,
                             Boolean productPageChecked) throws IOException {
@@ -30,12 +34,18 @@ public class CSVExporter {
             throw new IOException("Cannot write to external storage");
         }
 
-        File csvDirectory = FileUtils.createDirIfNotExist(
-                Environment.getExternalStorageDirectory() + "/PaketinSeuranta/CSV/");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
         String fileName = "archive_export_" + sdf.format(new Date()) + ".csv";
+        File csvExportFile = null;
 
-        File csvExportFile = new File(csvDirectory, fileName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            csvExportFile = new File(context.getExternalFilesDir(null), fileName);
+        } else {
+            File csvDirectory = FileUtils.createDirIfNotExist(CSV_OLD_DIR);
+            csvExportFile = new File(csvDirectory, fileName);
+        }
+
+
         boolean success = csvExportFile.createNewFile();
         if (!success) {
             throw new IOException("Failed to create the cvs file");

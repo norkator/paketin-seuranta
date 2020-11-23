@@ -14,11 +14,11 @@ android {
 
     defaultConfig {
         applicationId "com.nitramite.paketinseuranta"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 30
 
-        versionCode 128
-        versionName "2.1.11"
+        versionCode 131
+        versionName "2.4.15"
         multiDexEnabled true // Enabling multi dex support.
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

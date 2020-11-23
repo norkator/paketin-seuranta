@@ -499,17 +499,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
                     .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
             trackItemsList.setAdapter(mAdapter);
-            trackItemsList.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    swipeRefreshLayout.setEnabled(firstVisibleItem == 0);
-                }
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                }
-            });
-
         } else {
             adapter.notifyDataSetChanged();
         }
@@ -556,9 +545,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     @Override
     public void onSwipeEnded(ListView listView, int position, SwipeDirection direction) {
-        if (position == 0) {
-            swipeRefreshLayout.setEnabled(true);
-        }
+        swipeRefreshLayout.setEnabled(true);
     }
 
 

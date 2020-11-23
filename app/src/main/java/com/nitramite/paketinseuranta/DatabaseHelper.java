@@ -446,7 +446,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     String getWidgetStatusInformation() {
         String status = "";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE_NUMBER + " = ?", new String[]{String.valueOf(PhaseNumber.PHASE_READY_FOR_PICKUP)});
+        Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE_NUMBER + " = ?", new String[]{String.valueOf(PhaseNumber.PHASE_INT_READY_FOR_PICKUP)});
         res.moveToFirst();
         if (res.getCount() > 0) {
             if (res.getInt(0) != 0) {
@@ -458,7 +458,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         }
-        res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE + " = " + PhaseNumber.PHASE_IN_TRANSPORT_STR + " AND " + IS_ARCHIVED + " = '0'", null);
+        res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE + " = " + String.valueOf(PhaseNumber.PHASE_INT_IN_TRANSPORT) + " AND " + IS_ARCHIVED + " = '0'", null);
         res.moveToFirst();
         if (res.getCount() > 0) {
             if (res.getInt(0) != 0) {

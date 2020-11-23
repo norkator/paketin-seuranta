@@ -164,7 +164,7 @@
     <string name="menu_archive_csv_export">CSV-vienti</string>
     <string name="csv_export_layout_export_button">Vie</string>
     <string name="csv_export_layout_csv_export_properties_title">CSV-viennin valinnat</string>
-    <string name="csv_export_layout_csv_export_properties_summary">Valitse mitä kenttiä tahdot viedä CSV-viennissä. CSV-tiedosto tallentuu tallennustilasi PaketinSeuranta/CSV kansioon</string>
+    <string name="csv_export_layout_csv_export_properties_summary">Valitse mitä kenttiä tahdot viedä CSV-viennissä. CSV-tiedosto tallentuu tallennustilasi:</string>
     <string name="csv_export_layout_name">Nimi</string>
     <string name="csv_export_layout_tracking_code">Seurantakoodi</string>
     <string name="csv_export_layout_sender">Lähettäjä</string>
@@ -271,6 +271,8 @@
     <string name="support_development">Lahjoita</string>
     <string name="yes_btn">Kyllä</string>
     <string name="no_btn">Ei</string>
+    <string name="open_location">Avaa sijainti</string>
+    <string name="to_folder">kansioon</string>
 
 
     <!-- Strings related to Settings -->

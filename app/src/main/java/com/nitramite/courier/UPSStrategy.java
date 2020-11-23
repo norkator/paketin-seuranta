@@ -48,6 +48,7 @@ public class UPSStrategy implements CourierStrategy {
             OkHttpClient client = new OkHttpClient();
 
             final String json = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}"; // TODO: make proper way
+            Log.i(TAG, json);
             RequestBody body = RequestBody.create(json, JSON);
 
             Request request = new Request.Builder()

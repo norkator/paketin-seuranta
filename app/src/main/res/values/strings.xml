@@ -164,7 +164,7 @@
     <string name="menu_archive_csv_export">CSV export</string>
     <string name="csv_export_layout_export_button">Export</string>
     <string name="csv_export_layout_csv_export_properties_title">CSV export options</string>
-    <string name="csv_export_layout_csv_export_properties_summary">Choose what fields to export on CSV export. CSV file will be exported to your phone storage PaketinSeuranta/CSV folder</string>
+    <string name="csv_export_layout_csv_export_properties_summary">Choose what fields to export on CSV export. CSV file will be exported to your phone storage:</string>
     <string name="csv_export_layout_name">Name</string>
     <string name="csv_export_layout_tracking_code">Tracking code</string>
     <string name="csv_export_layout_sender">Sender</string>
@@ -271,6 +271,9 @@
     <string name="support_development">Donate</string>
     <string name="yes_btn">Yes</string>
     <string name="no_btn">No</string>
+    <string name="open_location">Open location</string>
+    <string name="to_folder">folder</string>
+
 
 
     <!-- Strings related to Settings -->
