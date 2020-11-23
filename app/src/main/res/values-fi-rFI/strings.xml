@@ -173,7 +173,7 @@
     <string name="csv_export_layout_last_status">Viimeinen seurannan tila</string>
     <string name="csv_export_layout_ready_for_pickup_date">Saapumispäivä</string>
     <string name="archive_csv_export_succes_title">CSV-vienti</string>
-    <string name="archive_csv_export_succes_description">CSV-tiedosto viety nimellä:</string>
+    <string name="archive_csv_export_success_description">CVS vienti onnistui. CVS tiedosto löytyy polusta</string>
     <string name="archive_csv_export_failed_description">CSV-tiedoston vienti epäonnistui</string>
     <string name="parcel_title">Paketti</string>
     <string name="menu_parcel_carrier_detector_tool">Kuljetusyhtiön tunnistus</string>
