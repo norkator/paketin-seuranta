@@ -3,6 +3,7 @@ package com.nitramite.courier;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.nitramite.courier.ups.UpsTokenPair;
 import com.nitramite.paketinseuranta.EventObject;
 
 import org.json.JSONArray;
@@ -208,26 +209,5 @@ public class UPSStrategy implements CourierStrategy {
 
         return new UpsTokenPair(X_CSRF_TOKEN, X_XSRF_TOKEN_ST);
     }
-
-
-    private static class UpsTokenPair {
-
-        private String X_CSRF_TOKEN = null;
-        private String X_XSRF_TOKEN_ST = null;
-
-        UpsTokenPair(String X_CSRF_TOKEN_, String X_XSRF_TOKEN_ST_) {
-            X_CSRF_TOKEN = X_CSRF_TOKEN_;
-            X_XSRF_TOKEN_ST = X_XSRF_TOKEN_ST_;
-        }
-
-        public String getX_CSRF_TOKEN() {
-            return X_CSRF_TOKEN != null ? "X-CSRF-TOKEN=" + X_CSRF_TOKEN : null;
-        }
-
-        public String getX_XSRF_TOKEN_ST() {
-            return X_XSRF_TOKEN_ST;
-        }
-    }
-
 
 } // End of class
