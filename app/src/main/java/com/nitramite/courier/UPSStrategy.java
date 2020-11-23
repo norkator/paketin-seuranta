@@ -3,6 +3,7 @@ package com.nitramite.courier;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
 import com.nitramite.courier.ups.UpsTokenPair;
 import com.nitramite.paketinseuranta.EventObject;
 
@@ -11,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,9 +58,15 @@ public class UPSStrategy implements CourierStrategy {
 
             OkHttpClient client = new OkHttpClient();
 
-            final String json = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}"; // TODO: make proper way
-            Log.i(TAG, json);
-            RequestBody body = RequestBody.create(json, JSON);
+            JSONArray trackingNumbers = new JSONArray();
+            trackingNumbers.put(parcelCode);
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("Locale", "fi_FI");
+            requestBody.putOpt("TrackingNumber", (Object) trackingNumbers);
+            
+            Log.i(TAG, requestBody.toString());
+
+            RequestBody body = RequestBody.create(requestBody.toString(), JSON);
 
             Request request = new Request.Builder()
                     .url(url)
