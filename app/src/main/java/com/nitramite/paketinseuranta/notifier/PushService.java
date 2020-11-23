@@ -10,7 +10,7 @@ package com.nitramite.paketinseuranta.notifier;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;

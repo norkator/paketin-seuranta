@@ -10,7 +10,6 @@ package com.nitramite.paketinseuranta;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,11 +24,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +46,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
 
 import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.CSVExporter;
@@ -103,6 +100,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         MultiDex.install(this);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -122,6 +120,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         setContentView(R.layout.activity_archive);
         setTitle(R.string.archive_title);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
@@ -303,12 +302,12 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         new AlertDialog.Builder(Archive.this)
                 .setTitle(R.string.archive_delete_title)
                 .setMessage(R.string.archive_delete_description)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(onSwipePosition).getParcelId();
                     databaseHelper.deletePackageData(codeId);
                     readItems(null);
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
@@ -320,31 +319,16 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         new AlertDialog.Builder(Archive.this)
                 .setTitle(R.string.archive_delivered_status_set_title)
                 .setMessage(R.string.archive_delivered_status_set_description)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(position).getParcelId();
                     databaseHelper.updatePackageAsDelivered(codeId);
                     readItems(null);
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
                 .show();
-    }
-
-
-    // API 19 KITKAT STATUS BAR TINTING
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
 

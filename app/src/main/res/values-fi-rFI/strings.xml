@@ -269,6 +269,8 @@
     <string name="billing_service">Ostopalvelu</string>
     <string name="billing_service_not_initialized_error">Ostopalvelu ei ole vielä valmis luomaan tapahtumaa. Yritä uudelleen!</string>
     <string name="support_development">Lahjoita</string>
+    <string name="yes_btn">Kyllä</string>
+    <string name="no_btn">Ei</string>
     <string name="open_location">Avaa sijainti</string>
     <string name="to_folder">kansioon</string>
 

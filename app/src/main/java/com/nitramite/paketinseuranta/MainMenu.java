@@ -27,7 +27,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -315,21 +315,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     // ---------------------------------------------------------------------------------------------
 
-    // Status bar tinting
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
-
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -586,12 +571,12 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
         new AlertDialog.Builder(MainMenu.this)
                 .setTitle(R.string.main_menu_deletion_title)
                 .setMessage(R.string.main_menu_you_are_about_to_delete_following_package_from_list)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     String codeId = parcelItems.get(onSwipePosition).getParcelId();
                     databaseHelper.deletePackageData(codeId);
                     readItems();
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)

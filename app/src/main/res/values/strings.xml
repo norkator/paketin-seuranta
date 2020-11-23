@@ -269,8 +269,11 @@
     <string name="billing_service">Billing service</string>
     <string name="billing_service_not_initialized_error">Billing service is not initialized yet. Please try again.</string>
     <string name="support_development">Donate</string>
+    <string name="yes_btn">Yes</string>
+    <string name="no_btn">No</string>
     <string name="open_location">Open location</string>
     <string name="to_folder">folder</string>
+
 
 
     <!-- Strings related to Settings -->

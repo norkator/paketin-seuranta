@@ -10,7 +10,6 @@ package com.nitramite.paketinseuranta;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -37,7 +36,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -68,6 +66,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -328,22 +327,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         readParcelDataFromSqlite();
         createParcelImageDirectory();
     } // END OF onCreate()
-
-
-    // API 19 KITKAT STATUS BAR TINTING
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
-
+    
 
     // Swipe action switch package
     private void swipeSwitchPackage(final boolean nextPackage) {
@@ -1007,12 +991,12 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         new AlertDialog.Builder(Parcel.this)
                 .setTitle(R.string.clear_events)
                 .setMessage(R.string.clear_current_events_for_this_parcel)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     if (databaseHelper.clearParcelEventsData(ID)) {
                         readParcelDataFromSqlite();
                     }
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)
@@ -1027,13 +1011,13 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         new AlertDialog.Builder(Parcel.this)
                 .setTitle(R.string.main_menu_deletion_title)
                 .setMessage(R.string.main_menu_you_are_about_to_delete_following_package_from_list_shorter)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
                     ArrayList<ParcelItem> parcelItems = getParcelItems();
                     if (databaseHelper.deletePackageData(ID)) {
                         switchToNextPackageFromCurrent(parcelItems);
                     }
                 })
-                .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
                     // Return
                 })
                 .setIcon(R.mipmap.ps_logo_round)

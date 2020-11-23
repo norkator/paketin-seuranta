@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
+
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
@@ -25,7 +27,7 @@ public class ParcelServiceTimer extends Service {
     public long NOTIFY_INTERVAL = 60 * 60000; // 60 minutes
 
     // Variables
-    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     private Timer mTimer = null;
 
 
