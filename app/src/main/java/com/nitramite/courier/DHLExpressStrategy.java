@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -26,7 +27,7 @@ import okhttp3.Response;
 public class DHLExpressStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "DHLExpressStrategy";
+    private static final String TAG = DHLExpressStrategy.class.getSimpleName();
 
 
     @Override
@@ -50,8 +51,6 @@ public class DHLExpressStrategy implements CourierStrategy {
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
 
-            Log.i(TAG, jsonResult);
-
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
             JSONArray jsonMainNode = jsonResponse.optJSONArray("results");              // Get "results" array
@@ -64,9 +63,13 @@ public class DHLExpressStrategy implements CourierStrategy {
 
                 // Parse all package related normal data found
                 if (jsonChildNode.has("delivery")) {
-                    parcelObject.setPhase(jsonChildNode.getJSONObject("delivery").getString("status").toUpperCase(Locale.getDefault())); // Phase
+                    String phase = jsonChildNode.getJSONObject("delivery").getString("status").toUpperCase(Locale.getDefault());
+                    if (phase.equals(PhaseNumber.PHASE_TRANSIT)) {
+                        phase = PhaseNumber.PHASE_IN_TRANSPORT;
+                    }
+                    parcelObject.setPhase(phase); // Phase
                 } else {
-                    parcelObject.setPhase("TRANSIT"); // Set as transit phase since it's still coming
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT); // Set as in transport phase since it's still coming
                 }
                 parcelObject.setDestinationCountry(jsonChildNode.getJSONObject("destination").getString("value")); // Destination
                 parcelObject.setProduct(jsonChildNode.getString("label"));
@@ -102,12 +105,10 @@ public class DHLExpressStrategy implements CourierStrategy {
                 @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Log.i(TAG, String.valueOf(checkPoints.length()));
                 for (int i = 0; i < checkPoints.length(); i++) {
                     JSONObject checkPointObject = checkPoints.getJSONObject(i);
                     // Description
                     String description = checkPointObject.getString("description");
-                    Log.i(TAG, description);
                     // Date
                     // example: "maanantai, heinäkuu 16, 2018 "
                     String date = checkPointObject.getString("date");
