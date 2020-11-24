@@ -370,6 +370,7 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
         final CheckBox productPageCB = dialog.findViewById(R.id.productPageCB);
 
         // Listeners
+        String finalOutputFolder = outputFolder;
         exportBtn.setOnClickListener(view -> {
             if (hasPermission(Archive.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 CSVExporter csvExporter = new CSVExporter();
@@ -390,7 +391,11 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
                     if (exportFileName == null) {
                         genericTextDialog(getString(R.string.main_menu_error), getString(R.string.archive_csv_export_failed_description));
                     } else {
-                        genericTextDialog(getString(R.string.archive_csv_export_succes_title), getString(R.string.archive_csv_export_succes_description) + " " + exportFileName);
+                        genericTextDialog(
+                                getString(R.string.archive_csv_export_succes_title),
+                                getString(R.string.archive_csv_export_success_description) + ": " +
+                                        finalOutputFolder + exportFileName
+                        );
                     }
                 } catch (IOException e) {
                     genericTextDialog(getString(R.string.main_menu_error), e.toString());

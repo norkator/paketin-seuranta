@@ -173,7 +173,7 @@
     <string name="csv_export_layout_last_status">Last parcel event</string>
     <string name="csv_export_layout_ready_for_pickup_date">Ready for pickup date</string>
     <string name="archive_csv_export_succes_title">CSV export</string>
-    <string name="archive_csv_export_succes_description">CSV file exported with name:</string>
+    <string name="archive_csv_export_success_description">CSV export was successful. CSV file can be found from</string>
     <string name="archive_csv_export_failed_description">CSV export failed</string>
     <string name="parcel_title">Parcel</string>
     <string name="menu_parcel_carrier_detector_tool">Carrier detector</string>
