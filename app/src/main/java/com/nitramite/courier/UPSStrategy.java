@@ -3,6 +3,8 @@ package com.nitramite.courier;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.nitramite.courier.ups.UpsTokenPair;
 import com.nitramite.paketinseuranta.EventObject;
 
 import org.json.JSONArray;
@@ -10,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import kotlin.Pair;
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,11 +32,12 @@ import okhttp3.Response;
 public class UPSStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "UPSStrategy";
+    private static final String TAG = UPSStrategy.class.getSimpleName();
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     // Api url
+    private static final String tokenUrl = "https://www.ups.com/track?loc=en_US";
     private static final String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
 
 
@@ -45,21 +51,35 @@ public class UPSStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
+            UpsTokenPair tokenPair = getXSRFToken();
+            if (tokenPair.getX_CSRF_TOKEN() == null || tokenPair.getX_XSRF_TOKEN_ST() == null) {
+                throw new ParseException("Invalid X-XSRF-TOKEN, got null", 0);
+            }
+
             OkHttpClient client = new OkHttpClient();
 
-            final String json = "{\"Locale\":\"fi_FI\",\"TrackingNumber\":[\"" + parcelCode + "\"]}"; // TODO: make proper way
-            Log.i(TAG, json);
-            RequestBody body = RequestBody.create(json, JSON);
+            JSONArray trackingNumbers = new JSONArray();
+            trackingNumbers.put(parcelCode);
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("Locale", "fi_FI");
+            requestBody.putOpt("TrackingNumber", (Object) trackingNumbers);
+            
+            Log.i(TAG, requestBody.toString());
+
+            RequestBody body = RequestBody.create(requestBody.toString(), JSON);
 
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("User-Agent", Constants.UserAgent)
+                    .addHeader("Cookie", tokenPair.getX_CSRF_TOKEN())
+                    .addHeader("X-XSRF-TOKEN", tokenPair.getX_XSRF_TOKEN_ST())
                     .build();
             Response response = client.newCall(request).execute();
 
             String jsonResult = response.body().string();
+
             Log.i(TAG, jsonResult);
 
             // Parsing got json content
@@ -165,5 +185,37 @@ public class UPSStrategy implements CourierStrategy {
         parcelObject.setRecipientSignature(trackDetails.optString("receivedBy"));
     }
 
+
+    /**
+     * Get and parse token required for api call
+     *
+     * @return X-XSRF-TOKEN-ST token
+     * @throws IOException
+     */
+    private UpsTokenPair getXSRFToken() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(tokenUrl)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("User-Agent", Constants.UserAgent)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        String X_CSRF_TOKEN = null;
+        String X_XSRF_TOKEN_ST = null;
+
+        Headers headerList = response.headers();
+        for (Pair<? extends String, ? extends String> header : headerList) {
+            // Log.i(TAG, header.getSecond());
+            String second = header.getSecond();
+            if (second.contains("X-CSRF-TOKEN") && !second.contains("X-XSRF-TOKEN-ST")) {
+                X_CSRF_TOKEN = second.split(";")[0].replace("X-CSRF-TOKEN=", "");
+            } else if (second.contains("X-XSRF-TOKEN-ST")) {
+                X_XSRF_TOKEN_ST = header.getSecond().split(";")[0].replace("X-XSRF-TOKEN-ST=", "");
+            }
+        }
+
+        return new UpsTokenPair(X_CSRF_TOKEN, X_XSRF_TOKEN_ST);
+    }
 
 } // End of class
