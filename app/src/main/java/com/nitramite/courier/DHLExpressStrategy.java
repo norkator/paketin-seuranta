@@ -26,7 +26,7 @@ import okhttp3.Response;
 public class DHLExpressStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "DHLExpressStrategy";
+    private static final String TAG = DHLExpressStrategy.class.getSimpleName();
 
 
     @Override
@@ -49,8 +49,6 @@ public class DHLExpressStrategy implements CourierStrategy {
                     .build();
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
-
-            Log.i(TAG, jsonResult);
 
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
