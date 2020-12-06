@@ -9,6 +9,7 @@ pipeline {
     JAVA_HOME = "C:/Program Files/Android/Android Studio/jre"
     ANDROID_SDK_ROOT = "C:/Android/Sdk"
     GRADLE_USER_HOME = "C:/gradle-cache"
+    KEYSTORE_LOCATION = credentials('paketin-seuranta-keystore-location')
   }
   options {
     // Stop the build early in case of compile or test failures
@@ -63,19 +64,17 @@ pipeline {
         branch 'master'
       }
       steps {
-        // Build the app in release mode
-        bat './gradlew assembleRelease'
 
-        // Archive the APKs so that they can be downloaded from Jenkins
-        // archiveArtifacts '**/*.apk'
+        // Execute bundle release build
+        bat './gradlew :app:bundleRelease'
 
-        // Sign unsigned apk
-        signAndroidApks (
-            keyStoreId: "paketin-seuranta-signing-key",
-            keyAlias: "Nitramite",
-            apksToSign: "**/*-unsigned.apk",
-            skipZipalign: true
-        )
+        // Sign bundle
+        withCredentials([string(credentialsId: 'paketin-seuranta-signing-password', variable: 'paketin-seuranta-signing-password')]) {
+            bat 'jarsigner -verbose -keystore %KEYSTORE_LOCATION% %WORKSPACE%\\app\\build\\outputs\\bundle\\release\\app-release.aab Nitramite --storepass "%paketin-seuranta-signing-password%"'
+        }
+
+        // Archive the AAB (Android App Bundle) so that it can be downloaded from Jenkins
+        archiveArtifacts '**/bundle/release/*.aab'
 
         // Upload the APK to Google Play (will upload manually from Jenkins Artifacts)
         // androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
