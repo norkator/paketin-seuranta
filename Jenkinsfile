@@ -9,7 +9,7 @@ pipeline {
     JAVA_HOME = "C:/Program Files/Android/Android Studio/jre"
     ANDROID_SDK_ROOT = "C:/Android/Sdk"
     GRADLE_USER_HOME = "C:/gradle-cache"
-    KEYSTORE_LOCATION = "C:/Projects/PaketinSeuranta/nitramite.keystore"
+    KEYSTORE_LOCATION = "C:\\Projects\\PaketinSeuranta\\nitramite.keystore"
   }
   options {
     // Stop the build early in case of compile or test failures
