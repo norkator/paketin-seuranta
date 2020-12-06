@@ -9,6 +9,7 @@ pipeline {
     JAVA_HOME = "C:/Program Files/Android/Android Studio/jre"
     ANDROID_SDK_ROOT = "C:/Android/Sdk"
     GRADLE_USER_HOME = "C:/gradle-cache"
+    KEYSTORE_LOCATION = "C:/Projects/PaketinSeuranta/nitramite.keystore"
   }
   options {
     // Stop the build early in case of compile or test failures
@@ -66,6 +67,11 @@ pipeline {
 
         // Execute bundle release build
         bat './gradlew :app:bundleRelease'
+
+        // Sign bundle
+        withCredentials([string(credentialsId: 'paketin-seuranta-signing-password', variable: 'SECRET')]) {
+            bat 'jarsigner -verbose -keystore %KEYSTORE_LOCATION% %WORKSPACE%\\app\\build\\outputs\\bundle\\release\\app-release.aab Nitramite --storepass "${SECRET}"'
+        }
 
         // Archive the AAB (Android App Bundle) so that it can be downloaded from Jenkins
         archiveArtifacts '**/bundle/release/*.aab'
