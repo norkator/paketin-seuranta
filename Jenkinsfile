@@ -57,6 +57,15 @@ pipeline {
         androidLint pattern: '**/lint-results-*.xml'
       }
     }
+    stage('AAB Test') {
+      steps {
+        // Execute bundle release build
+        bat './gradlew bundleRelease'
+
+        // Archive the AAB (Android App Bundle) so that it can be downloaded from Jenkins
+        archiveArtifacts '**/*.aab'
+      }
+    }
     stage('Deploy') {
       when {
         // Only execute this stage when building from the `master` branch
