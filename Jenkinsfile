@@ -67,8 +67,16 @@ pipeline {
         // Execute bundle release build
         bat './gradlew bundleRelease'
 
+        // Sign unsigned aab
+        signAndroidApks (
+            keyStoreId: "paketin-seuranta-signing-key",
+            keyAlias: "Nitramite",
+            apksToSign: "**/bundle/release/release.aab",
+            skipZipalign: true
+        )
+
         // Archive the AAB (Android App Bundle) so that it can be downloaded from Jenkins
-        archiveArtifacts '**/*.aab'
+        archiveArtifacts '**/bundle/release/*.aab'
 
         // Upload the APK to Google Play (will upload manually from Jenkins Artifacts)
         // androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
