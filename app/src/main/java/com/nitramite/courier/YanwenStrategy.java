@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -76,13 +77,13 @@ public class YanwenStrategy implements CourierStrategy {
             Log.i(TAG, lastEventHtml);
             if (lastEventHtml.contains("In transport") || lastEventHtml.contains("has arrived in the country of destination")) {
                 parcelObject.setIsFound(true);
-                parcelObject.setPhase("IN_TRANSPORT");
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
             } else if (lastEventHtml.contains("Track End")) {
                 parcelObject.setIsFound(true);
-                parcelObject.setPhase("IN_TRANSPORT");
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
             } else if (lastEventHtml.contains("Delivered") || lastEventHtml.contains("delivered to the recipient")) {
                 parcelObject.setIsFound(true);
-                parcelObject.setPhase("DELIVERED");
+                parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
             }
         }
     }

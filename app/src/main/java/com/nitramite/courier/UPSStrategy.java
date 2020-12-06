@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.JsonArray;
 import com.nitramite.courier.ups.UpsTokenPair;
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,7 +115,7 @@ public class UPSStrategy implements CourierStrategy {
                     if (!description.equals("") && !dateStr.equals("") && !timeStr.equals("")) {
                         // Event description
                         if (description.contains(wordDelivered)) {
-                            parcelObject.setPhase("DELIVERED");
+                            parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
                         }
                         // Construct date and time string
                         Date parseTimeDate = apiDateFormat.parse(
@@ -136,7 +137,7 @@ public class UPSStrategy implements CourierStrategy {
                 parcelObject.setEventObjects(eventObjects);
                 // Set phase as default if still null
                 if (parcelObject.getPhase().equals("null")) {
-                    parcelObject.setPhase("IN_TRANSPORT");
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 }
             } else {
                 Log.i(TAG, "UPS shipment not found");

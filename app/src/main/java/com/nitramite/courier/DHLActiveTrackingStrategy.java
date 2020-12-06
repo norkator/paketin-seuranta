@@ -3,6 +3,7 @@ package com.nitramite.courier;
 import android.annotation.SuppressLint;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -84,7 +85,7 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
 
                 // Is in transit
                 if (eventsNodeList.getLength() > 0) {
-                    parcelObject.setPhase("TRANSIT");
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 }
 
                 @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
