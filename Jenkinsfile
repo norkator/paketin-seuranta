@@ -61,7 +61,7 @@ pipeline {
     stage('Deploy') {
       when {
         // Only execute this stage when building from the `master` branch
-        branch 'feature/android-app-bundle'
+        branch 'master'
       }
       steps {
 
