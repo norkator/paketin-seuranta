@@ -32,6 +32,7 @@ obj/
 
 # In some projects we dont want these
 /app/release/app-release.apk
+/app/release/app-release.aab
 /app/src/release/res/values/google_maps_api.xml
 /ReleaseKey/*
 Paketin-Seuranta.zip
