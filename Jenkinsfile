@@ -71,7 +71,7 @@ pipeline {
         signAndroidApks (
             keyStoreId: "paketin-seuranta-signing-key",
             keyAlias: "Nitramite",
-            apksToSign: "**/bundle/release/release.aab",
+            apksToSign: "**/bundle/release/app-release.aab",
             skipZipalign: true
         )
 
