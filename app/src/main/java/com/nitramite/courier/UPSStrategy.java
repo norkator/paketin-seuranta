@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,15 +38,16 @@ public class UPSStrategy implements CourierStrategy {
 
     // Api url
     private static final String tokenUrl = "https://www.ups.com/track?loc=en_US";
-    private static final String url = "https://www.ups.com/track/api/Track/GetStatus?loc=fi_FI";
+    private static final String url = "https://www.ups.com/track/api/Track/GetStatus?loc=";
 
+    private static String LOCALE_FI = "fi_FI";
+    private static String LOCALE_EN = "en_US";
 
     @Override
     public ParcelObject execute(String parcelCode, final Locale locale) {
         // Expected phase strings on site
-        final String wordDelivered = "TOIMITETTU";
-        final String wordInTransport = "Tilaus käsitelty: Valmis UPS:lle";
-        final String wordInTransportTwo = "Lähtöskannaus";
+        final String wordDelivered = locale == Locale.FI ? "TOIMITETTU" : "DELIVERED";
+
         // Objects
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
@@ -62,7 +62,7 @@ public class UPSStrategy implements CourierStrategy {
             JSONArray trackingNumbers = new JSONArray();
             trackingNumbers.put(parcelCode);
             JSONObject requestBody = new JSONObject();
-            requestBody.put("Locale", "fi_FI");
+            requestBody.put("Locale", locale == Locale.FI ? LOCALE_FI : LOCALE_EN);
             requestBody.putOpt("TrackingNumber", (Object) trackingNumbers);
             
             Log.i(TAG, requestBody.toString());
@@ -70,7 +70,7 @@ public class UPSStrategy implements CourierStrategy {
             RequestBody body = RequestBody.create(requestBody.toString(), JSON);
 
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(url + (locale == Locale.FI ? LOCALE_FI : LOCALE_EN))
                     .post(body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("User-Agent", Constants.UserAgent)
@@ -99,7 +99,7 @@ public class UPSStrategy implements CourierStrategy {
             if (eventsArray.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
                 // Fetch data
-                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm"); // Api time is: 28.03.2018 11:48
+                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat(locale == Locale.FI ? "dd.MM.yyyy HH:mm" : "MM/dd/yyyy h:mm");
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int a = 0; a < eventsArray.length(); a++) {
