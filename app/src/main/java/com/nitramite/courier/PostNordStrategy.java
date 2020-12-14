@@ -27,14 +27,14 @@ import okhttp3.Response;
 public class PostNordStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "PostNordStrategy";
+    private static final String TAG = PostNordStrategy.class.getSimpleName();
 
     @Override
     public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.postnord.fi/api/pnmw/shipment/" + parcelCode + "/fi";
+            String url = "https://www.postnord.fi/api/pnmw/shipment/" + parcelCode + "/" + (locale == Locale.FI ? "fi" : "en");
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
