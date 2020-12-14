@@ -273,7 +273,8 @@
     <string name="no_btn">No</string>
     <string name="open_location">Open location</string>
     <string name="to_folder">folder</string>
-
+    <string name="preference_screen_rotation_title">Lock screen rotation</string>
+    <string name="preference_screen_rotation_summary">Force application to stay in portrait mode.</string>
 
 
     <!-- Strings related to Settings -->
