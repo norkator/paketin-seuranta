@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 
 import org.jetbrains.annotations.NonNls;
 import org.json.JSONArray;
@@ -37,7 +38,7 @@ public class BringStrategy implements CourierStrategy {
 
     @SuppressWarnings("HardCodedStringLiteral")
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
 
         // Api url
         String url = "https://tracking.bring.com/tracking/api/fetch/" + parcelCode + "?lang=en";

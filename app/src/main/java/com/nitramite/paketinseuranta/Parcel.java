@@ -1267,14 +1267,22 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             if (autoStart) {
                 detectCarrierProgressBar.setVisibility(View.VISIBLE);
                 detectCarrierProgressBar.setProgress(0);
-                carrierDetectorTask = new CarrierDetectorTask(Parcel.this, parcelDataArray.get(0));
+                carrierDetectorTask = new CarrierDetectorTask(
+                        Parcel.this,
+                        parcelDataArray.get(0),
+                        localeUtils.getLocale(this)
+                );
                 carrierDetectorTask.execute();
                 startDetectorBtn.setVisibility(View.GONE);
             }
             startDetectorBtn.setOnClickListener(view -> {
                 detectCarrierProgressBar.setVisibility(View.VISIBLE);
                 detectCarrierProgressBar.setProgress(0);
-                carrierDetectorTask = new CarrierDetectorTask(Parcel.this, parcelDataArray.get(0));
+                carrierDetectorTask = new CarrierDetectorTask(
+                        Parcel.this,
+                        parcelDataArray.get(0),
+                        localeUtils.getLocale(this)
+                );
                 carrierDetectorTask.execute();
             });
             closeDialogBtn.setOnClickListener(view -> {

@@ -7,7 +7,9 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
+
 import androidx.preference.PreferenceManager;
+
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.Constants;
@@ -20,7 +22,7 @@ import java.util.Set;
 public class LocaleUtils {
 
     //  Logging
-    private static final String TAG = "LocaleUtils";
+    private static final String TAG = LocaleUtils.class.getSimpleName();
 
 
     /**
@@ -129,6 +131,28 @@ public class LocaleUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Get application current locale
+     * primary one is user manually set one and if null secondary is device global
+     * Also --> what a mess this thing is tarting to be for f sake...
+     *
+     * @return locale enum
+     */
+    public com.nitramite.utils.Locale getLocale(Context context) {
+        String ul = getLocaleString(context);
+        String dl = Locale.getDefault().getDisplayLanguage();
+        String lang = ul != null ? ul : dl;
+
+        switch (lang) {
+            case "en":
+                return com.nitramite.utils.Locale.EN;
+            case "fi":
+                return com.nitramite.utils.Locale.FI;
+        }
+        return com.nitramite.utils.Locale.FI;
     }
 
 

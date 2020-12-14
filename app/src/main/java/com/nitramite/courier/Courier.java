@@ -1,5 +1,7 @@
 package com.nitramite.courier;
 
+import com.nitramite.utils.Locale;
+
 import org.jetbrains.annotations.NonNls;
 
 /**
@@ -27,8 +29,8 @@ public class Courier {
     }
 
     // Execute selected courier strategy
-    public ParcelObject executeCourierStrategy(final String parcelCode) {
-        return this.courierStrategy.execute(parcelCode);
+    public ParcelObject executeCourierStrategy(final String parcelCode, final Locale locale) {
+        return this.courierStrategy.execute(parcelCode, locale);
     }
 
 } // End of class

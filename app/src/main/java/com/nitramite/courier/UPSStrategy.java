@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.JsonArray;
 import com.nitramite.courier.ups.UpsTokenPair;
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +43,7 @@ public class UPSStrategy implements CourierStrategy {
 
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         // Expected phase strings on site
         final String wordDelivered = "TOIMITETTU";
         final String wordInTransport = "Tilaus käsitelty: Valmis UPS:lle";
