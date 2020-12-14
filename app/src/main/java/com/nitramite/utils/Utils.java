@@ -64,30 +64,30 @@ public class Utils {
 
 
     // Month string to corresponding number
-    public static String finnishMonthStringToMonthNumber(String dateString) {
-        if (dateString.contains("tammikuu")) {
+    public static String monthStringToMonthNumber(String dateString) {
+        if (dateString.contains("tammikuu") || dateString.contains("January")) {
             return "01";
-        } else if (dateString.contains("helmikuu")) {
+        } else if (dateString.contains("helmikuu") || dateString.contains("February")) {
             return "02";
-        } else if (dateString.contains("maaliskuu")) {
+        } else if (dateString.contains("maaliskuu") || dateString.contains("March")) {
             return "03";
-        } else if (dateString.contains("huhtikuu")) {
+        } else if (dateString.contains("huhtikuu") || dateString.contains("April")) {
             return "04";
-        } else if (dateString.contains("toukokuu")) {
+        } else if (dateString.contains("toukokuu") || dateString.contains("May")) {
             return "05";
-        } else if (dateString.contains("kesäkuu")) {
+        } else if (dateString.contains("kesäkuu") || dateString.contains("June")) {
             return "06";
-        } else if (dateString.contains("heinäkuu")) {
+        } else if (dateString.contains("heinäkuu") || dateString.contains("July")) {
             return "07";
-        } else if (dateString.contains("elokuu")) {
+        } else if (dateString.contains("elokuu") || dateString.contains("August")) {
             return "08";
-        } else if (dateString.contains("syyskuu")) {
+        } else if (dateString.contains("syyskuu") || dateString.contains("September")) {
             return "09";
-        } else if (dateString.contains("lokakuu")) {
+        } else if (dateString.contains("lokakuu") || dateString.contains("October")) {
             return "10";
-        } else if (dateString.contains("marraskuu")) {
+        } else if (dateString.contains("marraskuu") || dateString.contains("November")) {
             return "11";
-        } else if (dateString.contains("joulukuu")) {
+        } else if (dateString.contains("joulukuu") || dateString.contains("December")) {
             return "12";
         }
         return "0";
