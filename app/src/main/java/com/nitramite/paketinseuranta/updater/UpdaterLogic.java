@@ -48,6 +48,7 @@ import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.paketinseuranta.PhaseNumberString;
 import com.nitramite.paketinseuranta.R;
 import com.nitramite.utils.CarrierUtils;
+import com.nitramite.utils.Locale;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.Utils;
 
@@ -61,7 +62,11 @@ public class UpdaterLogic {
     private static String TAG = "UpdaterLogic";
 
     public static Thread getUpdaterThread(Context context, LocaleUtils localeUtils, boolean enableNotifications, boolean updateFailedFirst, int serviceMode, String PARCEL_ID, DatabaseHelper databaseHelper) {
+
         List<ParcelService.ParcelServiceParcelItem> parcelServiceParcelItems = new ArrayList<>();
+
+        Locale locale = localeUtils.getLocale(context);
+
         return new Thread(new Runnable() {
             @SuppressWarnings("SpellCheckingInspection")
             @Override
@@ -111,7 +116,7 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_POSTI:
                                 case CarrierUtils.CARRIER_CHINA:
                                     courier.setCourierStrategy(new PostiStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     Log.i(TAG, "# Running Posti #");
 
                                     break;
@@ -119,97 +124,97 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_MATKAHUOLTO:
                                     Log.i(TAG, "# Running Matkahuolto #");
                                     courier.setCourierStrategy(new MatkahuoltoStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // DHL Express
                                 case CarrierUtils.CARRIER_DHL_EXPRESS:
                                     Log.i(TAG, "# Running DHL #");
                                     courier.setCourierStrategy(new DHLExpressStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // UPS
                                 case CarrierUtils.CARRIER_UPS:
                                     Log.i(TAG, "# Running UPS #");
                                     courier.setCourierStrategy(new UPSStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // FedEx
                                 case CarrierUtils.CARRIER_FEDEX:
                                     Log.i(TAG, "# Running FedEx #");
                                     courier.setCourierStrategy(new FedExStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // PostNord
                                 case CarrierUtils.CARRIER_POSTNORD:
                                     Log.i(TAG, "# Running PostNord #");
                                     courier.setCourierStrategy(new PostNordStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // ArraPaketti
                                 case CarrierUtils.CARRIER_ARRA_PAKETTI:
                                     Log.i(TAG, "# Running ArraPaketti #");
                                     courier.setCourierStrategy(new ArraPakettiStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // DHL Amazon
                                 case CarrierUtils.CARRIER_DHL_AMAZON:
                                     Log.i(TAG, "# Running DHL Amazon #");
                                     courier.setCourierStrategy(new DHLAmazonStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // DHL Active Tracking
                                 case CarrierUtils.CARRIER_DHL_ACTIVE_TRACKING:
                                     Log.i(TAG, "# Running DHL Active Tracking #");
                                     courier.setCourierStrategy(new DHLActiveTrackingStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // USPS (United States Postal Service)
                                 case CarrierUtils.CARRIER_USPS:
                                     Log.i(TAG, "# Running USPS #");
                                     courier.setCourierStrategy(new USPSStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // Yanwen
                                 case CarrierUtils.CARRIER_YANWEN:
                                     Log.i(TAG, "# Running Yanwen #");
                                     courier.setCourierStrategy(new YanwenStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // GLS
                                 case CarrierUtils.CARRIER_GLS:
                                     Log.i(TAG, "# Running GLS #");
                                     courier.setCourierStrategy(new GlsStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // Cainiao
                                 case CarrierUtils.CARRIER_CAINIAO:
                                     Log.i(TAG, "# Running Cainiao #");
                                     courier.setCourierStrategy(new CainiaoStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // 4PX
                                 case CarrierUtils.CARRIER_4PX:
                                     Log.i(TAG, "# Running 4PX #");
                                     courier.setCourierStrategy(new FourPXStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // China Post Registered Air Mail
                                 case CarrierUtils.CARRIER_CPRAM:
                                     Log.i(TAG, "# Running China Post Registered Air Mail #");
                                     courier.setCourierStrategy(new ChinaPostAirMailStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // Bring
                                 case CarrierUtils.CARRIER_BRING:
                                     Log.i(TAG, "# Running Bring #");
                                     courier.setCourierStrategy(new BringStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
                                 // DPD
                                 case CarrierUtils.CARRIER_DPD:
                                     Log.i(TAG, "# Running Dpd #");
                                     courier.setCourierStrategy(new DpdStrategy());
-                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
 
                                 // Handle default case

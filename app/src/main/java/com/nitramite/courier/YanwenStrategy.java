@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.jsoup.Jsoup;
@@ -29,7 +30,7 @@ public class YanwenStrategy implements CourierStrategy {
 
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         try {
             // Get website with tracking info

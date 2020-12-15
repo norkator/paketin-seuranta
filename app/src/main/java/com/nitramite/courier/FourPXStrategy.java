@@ -15,6 +15,7 @@ import com.nitramite.courier.fourpx.FourPXEvent;
 import com.nitramite.courier.fourpx.FourPXParcel;
 import com.nitramite.courier.fourpx.ListTrackResponse;
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.OkHttpUtils;
 
@@ -77,7 +78,7 @@ public class FourPXStrategy implements CourierStrategy {
     }
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
 
         try {

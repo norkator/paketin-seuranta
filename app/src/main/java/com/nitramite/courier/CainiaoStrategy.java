@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.paketinseuranta.PhaseNumber;
+import com.nitramite.utils.Locale;
 import com.nitramite.utils.Utils;
 
 import org.jetbrains.annotations.NonNls;
@@ -54,7 +55,7 @@ public class CainiaoStrategy implements CourierStrategy {
 
     @SuppressWarnings("HardCodedStringLiteral")
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
 
         try {

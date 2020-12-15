@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.paketinseuranta.PhaseNumber;
+import com.nitramite.utils.Locale;
 import com.nitramite.utils.OkHttpUtils;
 
 import org.json.JSONArray;
@@ -64,7 +65,7 @@ public class DpdStrategy implements CourierStrategy {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
 
         try {

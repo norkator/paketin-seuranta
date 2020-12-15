@@ -27,6 +27,7 @@ import com.nitramite.courier.PostiStrategy;
 import com.nitramite.courier.UPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
 import com.nitramite.utils.CarrierUtils;
+import com.nitramite.utils.Locale;
 
 import java.util.ArrayList;
 
@@ -38,11 +39,13 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
     private static final String TAG = "CarrierDetectorTask";
     private CarrierDetectorTaskInterface listener;
     private String parcelCode;
+    private Locale locale;
 
     // Constructor
-    CarrierDetectorTask(CarrierDetectorTaskInterface listener, final String parcelCode) {
+    CarrierDetectorTask(CarrierDetectorTaskInterface listener, final String parcelCode, Locale locale_) {
         this.listener = listener;
         this.parcelCode = parcelCode;
+        this.locale = locale_;
     }
 
     @Override
@@ -107,7 +110,7 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
             progress = progress + increment;
             try {
                 courier.setCourierStrategy(courierStrategies.get(i));
-                parcelObject = courier.executeCourierStrategy((this.parcelCode));
+                parcelObject = courier.executeCourierStrategy((this.parcelCode), locale);
                 if (parcelObject.getIsFound()) {
                     listener.onCarrierDetected(courierIntegers.get(i));
                 }

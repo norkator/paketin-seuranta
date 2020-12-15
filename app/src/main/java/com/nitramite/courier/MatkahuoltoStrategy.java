@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
 
 
@@ -28,15 +29,15 @@ import okhttp3.Response;
 public class MatkahuoltoStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "MatkahuoltoStrategy";
+    private static final String TAG = MatkahuoltoStrategy.class.getSimpleName();
 
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.api.matkahuolto.io/search/trackingInfo?language=fi&parcelNumber=" + parcelCode;
+            String url = "https://www.api.matkahuolto.io/search/trackingInfo?language=" + (locale == Locale.FI ? "fi" : "en") + "&parcelNumber=" + parcelCode;
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()

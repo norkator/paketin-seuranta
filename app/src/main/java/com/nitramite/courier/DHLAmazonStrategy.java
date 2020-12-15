@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.w3c.dom.Node;
@@ -34,7 +35,7 @@ public class DHLAmazonStrategy implements CourierStrategy {
     private static final String TAG = "DHLAmazonStrategy";
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {

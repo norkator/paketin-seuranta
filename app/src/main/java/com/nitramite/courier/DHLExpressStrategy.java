@@ -31,11 +31,11 @@ public class DHLExpressStrategy implements CourierStrategy {
 
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final com.nitramite.utils.Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.dhl.fi/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=fi";
+            String url = "https://www.dhl.fi/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=" + (locale == com.nitramite.utils.Locale.FI ? "fi" : "en");
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -83,12 +83,12 @@ public class DHLExpressStrategy implements CourierStrategy {
                         @SuppressLint("SimpleDateFormat") DateFormat tf2 = new SimpleDateFormat("dd.MM.yyyy");
                         final JSONObject deliveryTimeObject = jsonChildNode.getJSONObject("edd");
                         String date = deliveryTimeObject.optString("date");
-                        String monthNumber = Utils.finnishMonthStringToMonthNumber(date);
-                        String dayNumber = date.replace(" ", "")
-                                .replace("tammikuu", "").replace("helmikuu", "").replace("maaliskuu", "").replace("huhtikuu", "")
-                                .replace("toukokuu", "").replace("kesäkuu", "").replace("heinäkuu", "").replace("elokuu", "")
-                                .replace("syyskuu", "").replace("lokakuu", "").replace("marraskuu", "").replace("joulukuu", "")
-                                .split(",")[1];
+                        String monthNumber = Utils.monthStringToMonthNumber(date);
+
+                        String dayNumber = date.replace(" ", "");
+                        dayNumber = replaceMonths(dayNumber);
+                        dayNumber = dayNumber.split(",")[1];
+
                         String yearNumber = date.replace(" ", "").split(",")[2];
                         Date estimateDeliveryDate = tf1.parse(yearNumber + "-" + monthNumber + "-" + dayNumber);
                         //Log.i(TAG, yearNumber + "-" + monthNumber + "-" + dayNumber);
@@ -112,12 +112,10 @@ public class DHLExpressStrategy implements CourierStrategy {
                     // Date
                     // example: "maanantai, heinäkuu 16, 2018 "
                     String date = checkPointObject.getString("date");
-                    String monthNumber = Utils.finnishMonthStringToMonthNumber(date);
-                    String dayNumber = date.replace(" ", "")
-                            .replace("tammikuu", "").replace("helmikuu", "").replace("maaliskuu", "").replace("huhtikuu", "")
-                            .replace("toukokuu", "").replace("kesäkuu", "").replace("heinäkuu", "").replace("elokuu", "")
-                            .replace("syyskuu", "").replace("lokakuu", "").replace("marraskuu", "").replace("joulukuu", "")
-                            .split(",")[1];
+                    String monthNumber = Utils.monthStringToMonthNumber(date);
+                    String dayNumber = date.replace(" ", "");
+                    dayNumber = replaceMonths(dayNumber);
+                    dayNumber = dayNumber.split(",")[1];
                     String yearNumber = date.replace(" ", "").split(",")[2];
                     String time = checkPointObject.getString("time");
                     Date apiDate = apiDateFormat.parse(yearNumber + "-" + monthNumber + "-" + dayNumber + " " + time);
@@ -141,6 +139,35 @@ public class DHLExpressStrategy implements CourierStrategy {
             e.printStackTrace();
         }
         return parcelObject;
+    }
+
+
+    private String replaceMonths(String input) {
+        return input
+                .replace("tammikuu", "")
+                .replace("helmikuu", "")
+                .replace("maaliskuu", "")
+                .replace("huhtikuu", "")
+                .replace("toukokuu", "")
+                .replace("kesäkuu", "")
+                .replace("heinäkuu", "")
+                .replace("elokuu", "")
+                .replace("syyskuu", "")
+                .replace("lokakuu", "")
+                .replace("marraskuu", "")
+                .replace("joulukuu", "")
+                .replace("January", "")
+                .replace("February", "")
+                .replace("March", "")
+                .replace("April", "")
+                .replace("May", "")
+                .replace("June", "")
+                .replace("July", "")
+                .replace("August", "")
+                .replace("September", "")
+                .replace("October", "")
+                .replace("November", "")
+                .replace("December", "");
     }
 
 

@@ -33,7 +33,7 @@ public class FedExStrategy implements CourierStrategy {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final com.nitramite.utils.Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {

@@ -3,8 +3,8 @@ package com.nitramite.courier;
 import android.annotation.SuppressLint;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -34,7 +34,7 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
 
 
     @Override
-    public ParcelObject execute(String parcelCode) {
+    public ParcelObject execute(String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
 import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
@@ -29,7 +30,7 @@ public class GlsStrategy implements CourierStrategy {
     private static final String TAG = "GlsStrategy";
 
     @Override
-    public ParcelObject execute(final String parcelCode) {
+    public ParcelObject execute(final String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {

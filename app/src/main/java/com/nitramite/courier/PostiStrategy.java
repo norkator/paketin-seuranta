@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.utils.Locale;
+import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -30,7 +32,7 @@ public class PostiStrategy implements CourierStrategy {
     private static final String TAG = "PostiStrategy";
 
     @Override
-    public ParcelObject execute(final String parcelCode) {
+    public ParcelObject execute(final String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
@@ -105,7 +107,7 @@ public class PostiStrategy implements CourierStrategy {
                 if (jsonChildNode.getJSONObject("product").has("name")) {
                     if (!jsonChildNode.getJSONObject("product").getString("name").contains("null")) {
                         parcelObject.setProduct(
-                                jsonChildNode.getJSONObject("product").getJSONObject("name").optString("fi")
+                                jsonChildNode.getJSONObject("product").getJSONObject("name").optString(locale == Locale.FI? "fi" : "en")
                         );
                     }
                 }
@@ -118,7 +120,7 @@ public class PostiStrategy implements CourierStrategy {
                         JSONObject extraServiceNameObj = extraServiceObj.optJSONObject("name");
                         if (extraServiceNameObj != null) {
                             parcelObject.setExtraServices(
-                                    extraServiceNameObj.optString("fi")
+                                    extraServiceNameObj.optString(locale == Locale.FI? "fi" : "en")
                             );
                         }
                     }
@@ -157,7 +159,7 @@ public class PostiStrategy implements CourierStrategy {
                     JSONObject eventObj = eventJsonObj.optJSONObject("description");
                     String eventDescription = "-";
                     if (eventObj != null) {
-                        eventDescription = eventObj.optString("fi");
+                        eventDescription = eventObj.optString(locale == Locale.FI? "fi" : "en");
                     }
 
                     // Pass to object
