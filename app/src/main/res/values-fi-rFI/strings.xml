@@ -273,6 +273,8 @@
     <string name="no_btn">Ei</string>
     <string name="open_location">Avaa sijainti</string>
     <string name="to_folder">kansioon</string>
+    <string name="preference_screen_rotation_title">Lukitse näytön kierto</string>
+    <string name="preference_screen_rotation_summary">Pakottaa sovelluksen pysymään vain pystyasennossa.</string>
 
 
     <!-- Strings related to Settings -->
