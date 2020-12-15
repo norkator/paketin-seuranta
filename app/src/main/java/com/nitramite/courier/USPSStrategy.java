@@ -2,6 +2,8 @@ package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,7 +41,7 @@ public class USPSStrategy implements CourierStrategy {
                 if (dElement.select("strong").size() > 0) {
                     if (dElement.select("strong").text().equals("In-Transit")) {
                         parcelObject.setIsFound(true);
-                        parcelObject.setPhase("IN_TRANSPORT");
+                        parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                     }
                 }
             }
