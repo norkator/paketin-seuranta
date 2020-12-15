@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -78,7 +79,7 @@ public class PostNordStrategy implements CourierStrategy {
                 String itemStatus = item.optString("status");
                 Log.i(TAG, "Postnord package status: " + itemStatus);
                 if (itemStatus.equals("EN_ROUTE") || itemStatus.equals("INFORMED")) {
-                    parcelObject.setPhase("TRANSIT"); // Phase
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT); // Phase
                 } else {
                     parcelObject.setPhase(itemStatus);
                 }

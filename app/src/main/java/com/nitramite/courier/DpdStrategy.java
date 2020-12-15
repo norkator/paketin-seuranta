@@ -168,10 +168,10 @@ public class DpdStrategy implements CourierStrategy {
             case "ON_THE_ROAD":
             case "AT_DELIVERY_DEPOT":
             case "OUT_FOR_DELIVERY":
-                parcelObject.setPhase("IN_TRANSPORT");
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 break;
             case "DELIVERED":
-                parcelObject.setPhase("DELIVERED");
+                parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
                 break;
         }
     }

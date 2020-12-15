@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -59,7 +60,7 @@ public class GlsStrategy implements CourierStrategy {
 
                 // In transport
                 if (statusObject.getString("statusInfo").equals("INTRANSIT")) {
-                    parcelObject.setPhase("IN_TRANSPORT");
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 }
                 // TODO; Needs more statuses
 

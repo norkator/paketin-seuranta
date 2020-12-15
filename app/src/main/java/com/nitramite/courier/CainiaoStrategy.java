@@ -110,7 +110,7 @@ public class CainiaoStrategy implements CourierStrategy {
     private void proceedParsing(ParcelObject parcelObject, JSONObject detailsObject) throws JSONException, ParseException {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         parcelObject.setIsFound(true);
-        parcelObject.setPhase("IN_TRANSPORT");
+        parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
         parcelObject.setDestinationCountry(detailsObject.optString("destCountry"));
 
         // Parse events
@@ -166,13 +166,13 @@ public class CainiaoStrategy implements CourierStrategy {
         parcelObject.setDestinationCountry(dest);
         Log.i(TAG, status);
         if (status.equals("LTL_SIGNIN") || status.equals("SIGNIN") || status.equals("OWS_SIGNIN") || status.contains("WAIT4SIGNIN")) {
-            parcelObject.setPhase("DELIVERED");
+            parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
         } else if (status.equals("CWS_WAIT4SIGNIN") || status.equals("LTL_WAIT4SIGNIN") || status.equals("WAIT4SIGNIN")) {
-            parcelObject.setPhase("READY_FOR_PICKUP");
+            parcelObject.setPhase(PhaseNumber.PHASE_READY_FOR_PICKUP);
         } else if (status.contains("WAIT4PICKUP")) {
             parcelObject.setPhase(PhaseNumber.PHASE_WAITING_FOR_PICKUP);
         } else if (status.contains("RETURN")) {
-            parcelObject.setPhase("RETURNED");
+            parcelObject.setPhase(PhaseNumber.PHASE_RETURNED);
         }
     }
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.jetbrains.annotations.NonNls;
 import org.json.JSONArray;
@@ -109,7 +110,7 @@ public class ArraPakettiStrategy implements CourierStrategy {
 
                 if (eventObjects.size() > 0) {
                     parcelObject.setIsFound(true); // Parcel is found
-                    parcelObject.setPhase("TRANSIT");
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 }
 
             } else {

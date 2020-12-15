@@ -16,6 +16,7 @@ import com.nitramite.courier.fourpx.FourPXParcel;
 import com.nitramite.courier.fourpx.ListTrackResponse;
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 import com.nitramite.utils.OkHttpUtils;
 
 import org.json.JSONArray;
@@ -135,7 +136,7 @@ public class FourPXStrategy implements CourierStrategy {
     private void proceedParsing(FourPXParcel fourPXParcel, ParcelObject parcelObject) throws JSONException, ParseException {
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         parcelObject.setIsFound(true);
-        parcelObject.setPhase("IN_TRANSPORT");
+        parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
 
         // Parse events
         for (FourPXEvent event : fourPXParcel.getEvents()) {
@@ -159,10 +160,10 @@ public class FourPXStrategy implements CourierStrategy {
         }
         // This part is tricky. I didn't find any list of what different TkCodes mean. I am waiting my parcel to be delivered, and possibly extracting info from that
         if (!hasArrivedAtDestCountry && parcel.getDestinationCode().equals("FI")) {
-            parcelObject.setPhase("IN_TRANSPORT_NOT_IN_FINLAND");
+            parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT_NOT_IN_FINLAND);
         }
         if (parcel.getStatus() == 2) {
-            parcelObject.setPhase("DELIVERED");
+            parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
         }
     }
 

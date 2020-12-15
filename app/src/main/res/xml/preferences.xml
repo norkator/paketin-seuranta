@@ -90,8 +90,8 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="SP_PORTRAIT_ORIENTATION_ONLY"
-            android:summary="Pakottaa sovelluksen pysymään vain pystyasennossa. Tulee voimaan kun käynnistät sovelluksen uudelleen."
-            android:title="Älä käännä näyttöä" />
+            android:summary="@string/preference_screen_rotation_summary"
+            android:title="@string/preference_screen_rotation_title" />
 
         <SwitchPreference
             android:defaultValue="true"

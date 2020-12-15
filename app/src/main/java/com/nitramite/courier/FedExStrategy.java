@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,11 +71,11 @@ public class FedExStrategy implements CourierStrategy {
                 // Parse all package related normal data which is found
                 final String keyStatusStr = jsonChildNode.getString("keyStatus").toUpperCase(Locale.getDefault());
                 if (keyStatusStr.equals("LABEL CREATED") || keyStatusStr.contains("TRANSPORT") || keyStatusStr.contains("TRANSIT") || keyStatusStr.equals("SHIPMENT EXCEPTION") || keyStatusStr.equals("CLEARANCE DELAY")) {
-                    parcelObject.setPhase("TRANSIT"); // Phase
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT); // Phase
                 } else if (keyStatusStr.contains("DELIVERY") || keyStatusStr.contains("DELIVERED")) {
-                    parcelObject.setPhase("DELIVERED"); // Phase
+                    parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED); // Phase
                 } else {
-                    parcelObject.setPhase("TRANSIT"); // Phase
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT); // Phase
                 }
 
                 parcelObject.setDestinationCountry(jsonChildNode.getString("recipientCntryCD")); // Destination

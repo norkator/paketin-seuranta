@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -91,7 +92,7 @@ public class DHLAmazonStrategy implements CourierStrategy {
                     // Is parcel found
                     if (eventsNodeList.getLength() > 0) {
                         parcelObject.setIsFound(true); // Parcel is found
-                        parcelObject.setPhase("TRANSIT");
+                        parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                     }
 
                     @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");

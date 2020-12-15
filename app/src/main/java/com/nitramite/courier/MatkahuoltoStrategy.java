@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
+import com.nitramite.paketinseuranta.PhaseNumber;
 
 
 import org.json.JSONArray;
@@ -52,7 +53,7 @@ public class MatkahuoltoStrategy implements CourierStrategy {
 
             if (trackingEvents.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
-                parcelObject.setPhase("IN_TRANSPORT");
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
 
                 // Get product type
                 parcelObject.setProduct(jsonResponse.optString("productCategory"));
