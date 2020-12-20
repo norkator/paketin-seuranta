@@ -48,13 +48,6 @@ public class PhaseNumber {
             return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT_NOT_IN_FINLAND), PHASE_IN_TRANSPORT_NOT_IN_FINLAND);
 
 
-        } else if (phase.equals(PHASE_IN_TRANSPORT) || phase.equals(PHASE_TRANSIT) || phase.equals(PHASE_WAITING)
-                || lastEventStr.equals("Lähetys on saapunut kohdemaahan.")
-                || lastEventStr.equals("Lähetys on lajiteltu.")
-        ) {
-            return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT), PHASE_IN_TRANSPORT);
-
-
         } else if (phase.equals(PHASE_DELIVERED)
                 || lastEventStr.contains("Luovutettu vastaanottajalle")
                 || lastEventStr.contains("Lähetys on toimitettu")
@@ -78,6 +71,13 @@ public class PhaseNumber {
                 || lastEventStr.contains("toimitettu noutopisteeseen")
         )) {
             return new PhaseNumberString(intToString(PHASE_INT_READY_FOR_PICKUP), PHASE_READY_FOR_PICKUP);
+
+
+        } else if (phase.equals(PHASE_IN_TRANSPORT) || phase.equals(PHASE_TRANSIT) || phase.equals(PHASE_WAITING)
+                || lastEventStr.equals("Lähetys on saapunut kohdemaahan.")
+                || lastEventStr.equals("Lähetys on lajiteltu.")
+        ) {
+            return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT), PHASE_IN_TRANSPORT);
 
 
         } else if (phase.equals(PHASE_RETURNED) || phase.equals(PHASE_RETURNED_TO_SENDER)) {
