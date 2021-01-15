@@ -83,6 +83,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
     private AutoCompleteTextView deliveryMethodET;
     private String orderDateSqliteFormatStr = "";
     private String manualDeliveryDateSqliteFormatStr = "";
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch parcelPaidSwitch;
 
 

@@ -217,15 +217,16 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
                     res.getString(2),
                     res.getString(3),
                     res.getString(4),
-                    res.getString(5),       // Last update status
-                    res.getString(6),       // Latest event description
-                    res.getString(7),       // Carrier
+                    res.getString(5),      // Last update status
+                    res.getString(6),      // Latest event description
+                    res.getString(7),      // Carrier
                     res.getString(8),
                     res.getString(9),
                     res.getString(10),
                     res.getString(11),
-                    null,    // Last pickup date,
-                    null // Last event date, null because not used here
+                    null,           // Last pickup date,
+                    null,                 // Last event date, null because not used here
+                    null
             );
             parcelItem.setArchivedPackage(true); // This package is archived item
             parcelItems.add(parcelItem);

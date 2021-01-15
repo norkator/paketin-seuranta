@@ -356,6 +356,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     null,
                     null,
                     null,
+                    null,
                     null
             ));
         }
@@ -422,7 +423,8 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     null,
                     null,
                     null,
-                    res.getString(13)   // Latest parcel event date
+                    res.getString(13),  // Latest parcel event date
+                    null
             ));
         }
         return parcelItems;
