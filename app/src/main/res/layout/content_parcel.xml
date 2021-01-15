@@ -66,7 +66,23 @@
             </LinearLayout>
 
 
+            <!-- Parcel paid status view -->
+            <LinearLayout
+                android:id="@+id/parcelPaidView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bootStrapWarning"
+                android:gravity="center"
+                android:padding="5dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/parcel_parcel_not_paid"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
 
 
 

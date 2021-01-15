@@ -277,6 +277,7 @@
     <string name="preference_screen_rotation_summary">Force application to stay in portrait mode.</string>
     <string name="package_edit_dialog_parcel_payment_status">Parcel payment status</string>
     <string name="package_edit_dialog_parcel_paid">Parcel paid</string>
+    <string name="parcel_parcel_not_paid">Parcel not paid</string>
 
 
     <!-- Strings related to Settings -->

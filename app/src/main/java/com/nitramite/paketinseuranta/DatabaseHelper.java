@@ -277,6 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
         }
         contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
+        contentValues.put(PARCEL_PAID, parcelObject.getParcelPaid());
         return db.insert(PARCELS_TABLE, null, contentValues);
     }
 
@@ -318,6 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE + ", " + "p." + CREATE_DATE +
                 ", " + "p." + LASTPICKUPDATE + ", " +
                 "(SELECT " + TIMESTAMP + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + "latestParcelEvent" +
+                ", " + "p." + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " AS p " +
                 " WHERE " + "p." + IS_ARCHIVED + " = '0'" + " ORDER BY " + "p." + PHASE_NUMBER + " DESC";
         Log.i(TAG, query);
@@ -354,7 +356,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
                 "p." + PHASE + ", " + "p." + FI + ", " + "p." + TITLE + ", " + "p." + LAST_UPDATE_STATUS + ", " +
                 "(SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + DESCRIPTION +
-                ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE + ", " + "p." + CREATE_DATE +
+                ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE +
+                ", " + "p." + CREATE_DATE + ", " + "p." + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " AS p " +
                 " WHERE " + "p." + IS_ARCHIVED + " = '1'"
 

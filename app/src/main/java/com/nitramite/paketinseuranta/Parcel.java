@@ -91,19 +91,16 @@ import org.jetbrains.annotations.NonNls;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
-
-import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Parcel extends AppCompatActivity implements OnMapReadyCallback, SwipeRefreshLayout.OnRefreshListener, CarrierDetectorTaskInterface {
 
     // Logging
     @NonNls
-    private static final String TAG = "Parcel";
+    private static final String TAG = Parcel.class.getSimpleName();
 
     // Activity request codes
     private static final int ACTIVITY_RESULT_PARCEL_EDITOR = 3;  // The request code
@@ -123,7 +120,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     private TextView lockerCodeTV;
     private LinearLayout parcelEventsView;
     private TextView noEventsTV;
-    private LinearLayout deliveredView, estimateDeliveryOrLastPickupDateView;
+    private LinearLayout deliveredView, estimateDeliveryOrLastPickupDateView, parcelPaidView;
     private TextView deliveredTV, estimateDeliveryOrLastPickupDateTV;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Spinner selectCarrierSpinner;
@@ -262,6 +259,9 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         selectCarrierSpinner = findViewById(R.id.selectCarrierSpinner);
         parcelImagesLayout = findViewById(R.id.parcelImagesLayout);
         tryDetectCourierBtn = findViewById(R.id.tryDetectCourierBtn);
+        parcelPaidView = findViewById(R.id.parcelPaidView);
+        parcelPaidView.setVisibility(View.GONE);
+
 
         // Init layout inflater for additional details
         layoutInflater = LayoutInflater.from(Parcel.this);
@@ -700,6 +700,11 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     c++;
                 }
 
+                // Parcel paid view
+                if (res.getString(43) != null) {
+                    parcelPaidView.setVisibility(res.getString(43).equals("1") ? View.GONE : View.VISIBLE);
+                }
+
                 loadParcelImages();
             } else {
                 clearAllViewsContents();
@@ -725,6 +730,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         selectCarrierSpinner.setAdapter(null);
         deliveredView.setVisibility(View.GONE);
         estimateDeliveryOrLastPickupDateView.setVisibility(View.GONE);
+        parcelPaidView.setVisibility(View.GONE);
     }
 
 
