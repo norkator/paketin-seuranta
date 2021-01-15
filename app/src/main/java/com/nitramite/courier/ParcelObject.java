@@ -56,6 +56,7 @@ public class ParcelObject {
     private String orderDate = "";
     private String deliveryDate = "";
     private String productPage = "";
+    private String parcelPaid = "";
 
     private Boolean updateFailed = false;
 
@@ -259,6 +260,10 @@ public class ParcelObject {
         return productPage;
     }
 
+    public String getParcelPaid() {
+        return parcelPaid;
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Set methods
 
@@ -456,6 +461,10 @@ public class ParcelObject {
 
     public void setProductPage(String productPage) {
         this.productPage = productPage;
+    }
+
+    public void setParcelPaid(String parcelPaid) {
+        this.parcelPaid = parcelPaid;
     }
 
     // ---------------------------------------------------------------------------------------------

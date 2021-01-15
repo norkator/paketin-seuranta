@@ -275,6 +275,8 @@
     <string name="to_folder">kansioon</string>
     <string name="preference_screen_rotation_title">Lukitse näytön kierto</string>
     <string name="preference_screen_rotation_summary">Pakottaa sovelluksen pysymään vain pystyasennossa.</string>
+    <string name="package_edit_dialog_parcel_payment_status">Toimituksen maksun tila</string>
+    <string name="package_edit_dialog_parcel_paid">Toimitus maksettu</string>
 
 
     <!-- Strings related to Settings -->

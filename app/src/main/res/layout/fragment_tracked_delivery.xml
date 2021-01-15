@@ -252,6 +252,25 @@
 
             </LinearLayout>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/package_edit_dialog_parcel_payment_status"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/parcelPaidSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/package_edit_dialog_parcel_paid"
+                android:nextFocusForward="@+id/productPageET"
+                android:checked="true"
+                android:singleLine="true"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
         </LinearLayout>
 
         <androidx.cardview.widget.CardView

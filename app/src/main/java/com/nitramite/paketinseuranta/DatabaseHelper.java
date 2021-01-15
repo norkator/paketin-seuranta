@@ -671,7 +671,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getEditPackageData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT " + TITLE + ", " + LOCKERCODE + ", " + CARRIER + ", " + TRACKINGCODE + ", " + SENDER_TEXT + ", " +
-                DELIVERY_METHOD + ", " + ADDITIONAL_NOTE + ", " + PRODUCT_PAGE + ", " + ORDER_DATE + ", " + MANUAL_DELIVERED_DATE +
+                DELIVERY_METHOD + ", " + ADDITIONAL_NOTE + ", " + PRODUCT_PAGE + ", " + ORDER_DATE +
+                ", " + MANUAL_DELIVERED_DATE + ", " + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " WHERE " + ID + " = " + id, null);
     }
 
@@ -695,6 +696,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
         }
         contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
+        contentValues.put(PARCEL_PAID, parcelObject.getParcelPaid());
         db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{parcelObject.getId()});
         db.close();
         return true;

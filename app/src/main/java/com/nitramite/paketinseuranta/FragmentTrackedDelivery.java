@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +83,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
     private AutoCompleteTextView deliveryMethodET;
     private String orderDateSqliteFormatStr = "";
     private String manualDeliveryDateSqliteFormatStr = "";
+    private Switch parcelPaidSwitch;
 
 
     // Variables
@@ -116,6 +118,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         Button selectManualDeliveryDateBtn = view.findViewById(R.id.selectManualDeliveryDateBtn);
         Button pasteTrackingNumberBtn = view.findViewById(R.id.pasteTrackingNumberBtn);
         Button scanTrackingNumberBtn = view.findViewById(R.id.scanTrackingNumberBtn);
+        parcelPaidSwitch = view.findViewById(R.id.parcelPaidSwitch);
 
         /*
          * Force all caps for tracking code
@@ -148,6 +151,9 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 manualDeliveryDateSqliteFormatStr = res.getString(9);
                 manualDeliveryDateTV.setText(formatSqLiteDateToShowingDate(res.getString(9)));
             }
+
+            String paid = res.getString(10);
+            parcelPaidSwitch.setChecked(paid == null || paid.equals("1"));
 
             setCarrierSpinnerData(getActivity(), selectCarrierSpinner, carrierNumber, ((ParcelEditor) getActivity()).databaseHelper, ((ParcelEditor) getActivity()).parcelId);
 
@@ -303,6 +309,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 ((ParcelEditor) getActivity()).parcelObject.setProductPage(productPageET.getText().toString());
                 ((ParcelEditor) getActivity()).parcelObject.setOrderDate(orderDateSqliteFormatStr);
                 ((ParcelEditor) getActivity()).parcelObject.setDeliveryDate(manualDeliveryDateSqliteFormatStr);
+                ((ParcelEditor) getActivity()).parcelObject.setParcelPaid(parcelPaidSwitch.isChecked() ? "1" : "0");
 
                 if (((ParcelEditor) getActivity()).databaseHelper.updateEditPackageData(((ParcelEditor) getActivity()).parcelObject)) {
                     Toast.makeText(getActivity(), R.string.edit_package_utils_changes_saved, Toast.LENGTH_SHORT).show();
@@ -330,6 +337,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                     ((ParcelEditor) getActivity()).parcelObject.setProductPage(productPageET.getText().toString());
                     ((ParcelEditor) getActivity()).parcelObject.setOrderDate(orderDateSqliteFormatStr);
                     ((ParcelEditor) getActivity()).parcelObject.setDeliveryDate(manualDeliveryDateSqliteFormatStr);
+                    ((ParcelEditor) getActivity()).parcelObject.setParcelPaid(parcelPaidSwitch.isChecked() ? "1" : "0");
 
                     long insertedId = ((ParcelEditor) getActivity()).databaseHelper.insertData(((ParcelEditor) getActivity()).parcelObject);
                     if (insertedId > 0) {
