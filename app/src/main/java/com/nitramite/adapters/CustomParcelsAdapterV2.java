@@ -73,6 +73,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         TextView parcelLastMovementStatusTV = rowView.findViewById(R.id.parcelLastMovementStatusTV);
         ImageView statusImageView = rowView.findViewById(R.id.statusImageView);
         ImageView courierIcon = rowView.findViewById(R.id.courierIcon);
+        ImageView unpaidIcon = rowView.findViewById(R.id.unpaidIcon);
 
         // Defaults
         fourthLineNormal.setVisibility(View.GONE);
@@ -255,6 +256,12 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
             courierIcon.setVisibility(View.GONE);
         }
 
+        // If parcel is unpaid show icon
+        if (!parcelItem.getParcelPaid()) {
+            unpaidIcon.setImageResource(R.mipmap.unpaid);
+        } else {
+            unpaidIcon.setVisibility(View.GONE);
+        }
 
         return rowView;
     }

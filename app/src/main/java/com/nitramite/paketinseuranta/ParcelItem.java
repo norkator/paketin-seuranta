@@ -23,6 +23,7 @@ public class ParcelItem {
     private String parcelLatestEventDescription = null;
     private String parcelCarrier = null;
     private String parcelLastPickupDate = null;
+    private String parcelPaid = null;
 
     // Archive only
     private Boolean isArchivedPackage = false;
@@ -37,7 +38,7 @@ public class ParcelItem {
     ParcelItem(String parcelId, String parcelCode, String parcelPhase, String parcelType, String parcelTitle,
                String parcelUpdateStatus, String parcelLatestEventDescription, String parcelCarrier,
                String parcelSender, String parcelDeliveryMethod, String parcelAdditionalNote, String parcelCreateDate,
-               String parcelLastPickupDate, String lastEventDate) {
+               String parcelLastPickupDate, String lastEventDate, String parcelPaid) {
         this.parcelId = parcelId;
         this.parcelCode = parcelCode;
         this.parcelPhase = parcelPhase;
@@ -52,6 +53,7 @@ public class ParcelItem {
         this.parcelCreateDate = parcelCreateDate;
         this.parcelLastPickupDate = parcelLastPickupDate;
         this.lastEventDate = lastEventDate;
+        this.parcelPaid = parcelPaid;
     }
 
     public String getLastEventDate() {
@@ -129,4 +131,16 @@ public class ParcelItem {
     public String getParcelLastPickupDate() {
         return parcelLastPickupDate;
     }
+
+    public void setParcelPaid(Boolean parcelPaid_) {
+        this.parcelPaid = parcelPaid_ ? "1" : "0";
+    }
+
+    public Boolean getParcelPaid() {
+        if (parcelPaid == null) {
+            return true;
+        }
+        return parcelPaid.equals("1");
+    }
+
 } // End of class

@@ -117,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String PRODUCT_PAGE = "product_page"; // Parcel product page, website etc, user settable (40)
     private static final String ORDER_DATE = "order_date"; // User settable order date (selectable from calendar) (41)
     private static final String MANUAL_DELIVERED_DATE = "manual_delivered_date"; // User set parcel as delivered, this is set at that point with action time (42)
-    private static final String PARCEL_PAID = "parcel_paid"; // User can set parcel as paid or unpaid, boolean like
+    private static final String PARCEL_PAID = "parcel_paid"; // User can set parcel as paid or unpaid, boolean like (43)
 
     // -------------------------------------------------------------------
 
