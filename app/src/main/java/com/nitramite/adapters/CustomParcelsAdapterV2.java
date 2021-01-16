@@ -259,6 +259,7 @@ public class CustomParcelsAdapterV2 extends ArrayAdapter<ParcelItem> {
         // If parcel is unpaid show icon
         if (!parcelItem.getParcelPaid()) {
             unpaidIcon.setImageResource(R.mipmap.unpaid);
+            unpaidIcon.setVisibility(View.VISIBLE);
         } else {
             unpaidIcon.setVisibility(View.GONE);
         }
