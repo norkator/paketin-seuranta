@@ -24,6 +24,7 @@
     <!-- Bootstrap like color -->
     <color name="bootStrapPrimary">#347bb7</color>
     <color name="bootStrapSuccess">#5db85d</color>
+    <color name="bootStrapWarning">#FEB60D</color>
 
 
     <!-- Dot colors for intro -->

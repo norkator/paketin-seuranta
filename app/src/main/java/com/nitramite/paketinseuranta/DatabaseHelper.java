@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private boolean upgrade = false;
 
     // DATABASE VERSION
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
     // 4  = v1.1.2
     // 5  = v1.1.7
     // 6  = v1.2.1 (Archive feature)
@@ -64,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // 14 = v1.8.0 added parcel additional note field
     // 15 = v1.9.2 added parcel product_page field
     // 16 = v1.9.8 added parcel order_date, manual_delivered_date fields
+    // 17 = v2.7.15 added paid / unpaid feature for parcels
 
     // TABLE NAME'S
     private static final String PARCELS_TABLE = "Parcels";
@@ -116,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String PRODUCT_PAGE = "product_page"; // Parcel product page, website etc, user settable (40)
     private static final String ORDER_DATE = "order_date"; // User settable order date (selectable from calendar) (41)
     private static final String MANUAL_DELIVERED_DATE = "manual_delivered_date"; // User set parcel as delivered, this is set at that point with action time (42)
+    private static final String PARCEL_PAID = "parcel_paid"; // User can set parcel as paid or unpaid, boolean like (43)
 
     // -------------------------------------------------------------------
 
@@ -170,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "availability TEXT, lastpickupdate TEXT, fi TEXT, sender TEXT, lockercode TEXT, extraservices TEXT, weight TEXT, height TEXT, width TEXT, depth TEXT, " +
                 "volume TEXT, destinationpostcode TEXT, destinationcity TEXT, destinationcountry TEXT, recipientsignature TEXT, codamount TEXT, codcurrency TEXT, title TEXT, phase_number TEXT DEFAULT '0', " +
                 "is_archived TEXT DEFAULT '0', last_update_status TEXT, original_tracking_code TEXT, sender_text TEXT, delivery_method TEXT, create_date TEXT, additional_note TEXT, product_page TEXT, " +
-                "order_date TEXT, manual_delivered_date TEXT)");
+                "order_date TEXT, manual_delivered_date TEXT, parcel_paid TEXT)");
         // Create tracking data table
         db.execSQL("CREATE TABLE " + EVENTS_TABLE + "(id INTEGER PRIMARY KEY AUTOINCREMENT, parcel_id TEXT, carrier_t TEXT, description TEXT, timestamp TEXT, timestamp_sqlite DATETIME, location_code TEXT, location_name TEXT)");
         // Create image data table
@@ -275,6 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
         }
         contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
+        contentValues.put(PARCEL_PAID, parcelObject.getParcelPaid());
         return db.insert(PARCELS_TABLE, null, contentValues);
     }
 
@@ -316,6 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE + ", " + "p." + CREATE_DATE +
                 ", " + "p." + LASTPICKUPDATE + ", " +
                 "(SELECT " + TIMESTAMP + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + "latestParcelEvent" +
+                ", " + "p." + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " AS p " +
                 " WHERE " + "p." + IS_ARCHIVED + " = '0'" + " ORDER BY " + "p." + PHASE_NUMBER + " DESC";
         Log.i(TAG, query);
@@ -352,7 +356,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
                 "p." + PHASE + ", " + "p." + FI + ", " + "p." + TITLE + ", " + "p." + LAST_UPDATE_STATUS + ", " +
                 "(SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + DESCRIPTION +
-                ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE + ", " + "p." + CREATE_DATE +
+                ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE +
+                ", " + "p." + CREATE_DATE + ", " + "p." + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " AS p " +
                 " WHERE " + "p." + IS_ARCHIVED + " = '1'"
 
@@ -669,7 +674,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getEditPackageData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT " + TITLE + ", " + LOCKERCODE + ", " + CARRIER + ", " + TRACKINGCODE + ", " + SENDER_TEXT + ", " +
-                DELIVERY_METHOD + ", " + ADDITIONAL_NOTE + ", " + PRODUCT_PAGE + ", " + ORDER_DATE + ", " + MANUAL_DELIVERED_DATE +
+                DELIVERY_METHOD + ", " + ADDITIONAL_NOTE + ", " + PRODUCT_PAGE + ", " + ORDER_DATE +
+                ", " + MANUAL_DELIVERED_DATE + ", " + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " WHERE " + ID + " = " + id, null);
     }
 
@@ -693,6 +699,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(MANUAL_DELIVERED_DATE, parcelObject.getDeliveryDate());
         }
         contentValues.put(PRODUCT_PAGE, parcelObject.getProductPage());
+        contentValues.put(PARCEL_PAID, parcelObject.getParcelPaid());
         db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{parcelObject.getId()});
         db.close();
         return true;

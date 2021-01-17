@@ -479,7 +479,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     res.getString(10),
                     res.getString(11),
                     res.getString(12),      // Last pickup date
-                    res.getString(13)       // Last event date
+                    res.getString(13),      // Last event date
+                    res.getString(14)       // Parcel paid
             ));
         }
         updateListView();

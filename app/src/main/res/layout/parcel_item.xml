@@ -63,6 +63,15 @@
                         android:adjustViewBounds="true"
                         tools:ignore="ContentDescription" />
 
+                    <ImageView
+                        android:id="@+id/unpaidIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end|bottom"
+                        android:layout_weight="0"
+                        android:adjustViewBounds="true"
+                        tools:ignore="ContentDescription" />
+
                 </LinearLayout>
 
                 <TextView
