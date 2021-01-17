@@ -8,7 +8,6 @@
 
 package com.nitramite.paketinseuranta;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,7 +85,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
     //  Logging
     @NonNls
-    private static final String TAG = "MainMenu";
+    private static final String TAG = MainMenu.class.getSimpleName();
 
     // In app billing
     private BillingClient mBillingClient;
@@ -191,9 +189,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             LocalBroadcastManager.getInstance(this).unregisterReceiver(dataChangeReceiver);
             if (sharedPreferences != null) {
                 if (sharedPreferences.getBoolean(Constants.SP_PARCELS_AUTOMATIC_UPDATE, true)) {
-                   /* if (!isMyServiceRunning(ParcelServiceTimer.class)) {
-                        startService(new Intent(MainMenu.this, ParcelServiceTimer.class));
-                    }*/
                     PushUtils.subscribeToTopic(PushUtils.TOPIC_UPDATE);
                 } else
                     PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
@@ -296,21 +291,11 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             refreshParcelDataTask();
         }
 
-        // Stop auto parcel updates service if disabled
-        if (!autoParcelUpdates) {
-            stopService(new Intent(this, ParcelServiceTimer.class));
-        }
-
-
         // Backup feature
         checkForAutomaticBackup();
 
         // Init in app billing
         initInAppBilling();
-
-        Log.i(TAG, "-------------- SERVICE CHECK --------------"); //NON-NLS
-        Log.i(TAG, "ParcelServiceTimer.class running: " + isMyServiceRunning(ParcelServiceTimer.class)); //NON-NLS
-        Log.i(TAG, "-------------------------------------------"); //NON-NLS
     } // End of onCreate();
 
     // ---------------------------------------------------------------------------------------------

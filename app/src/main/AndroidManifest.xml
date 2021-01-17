@@ -45,14 +45,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Intro"
             android:label="@string/app_name"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- Service declarations -->
-        <service
-            android:name=".ParcelServiceTimer"
-            android:exported="false" />
+
         <service
             android:name=".ParcelService"
             android:exported="false" />
