@@ -35,7 +35,7 @@ public class PostNordStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.postnord.fi/api/pnmw/shipment/" + parcelCode + "/" + (locale == Locale.FI ? "fi" : "en");
+            String url = "https://ds.postnord.com/v2/trackandtrace/ntt/shipment/recipientview?id=" + parcelCode + "&locale=" + (locale == Locale.FI ? "fi" : "en");
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -49,8 +49,7 @@ public class PostNordStrategy implements CourierStrategy {
 
             // Parsing got json content
             JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
-            JSONObject jsonShipmentObj = jsonResponse.optJSONObject("response")
-                    .optJSONObject("trackingInformationResponse")
+            JSONObject jsonShipmentObj = jsonResponse.optJSONObject("TrackingInformationResponse")
                     .optJSONArray("shipments").getJSONObject(0);
 
             //Log.i(TAG, jsonShipmentObj.toString());
