@@ -79,16 +79,16 @@ pipeline {
         // Upload the APK to Google Play (will upload manually from Jenkins Artifacts)
         // androidApkUpload googleCredentialsId: 'Google Play', apkFilesPattern: '**/*-release.apk', trackName: 'beta'
       }
-      // post {
-      //   success {
-      //     mail to: 'nitramite@outlook.com', subject: 'Jenkins - Paketin Seuranta', body: 'New version uploaded!'
-      //   }
-      // }
     }
   }
-  // post {
-  //   failure {
-  //     mail to: 'nitramite@outlook.com', subject: 'Jenkins - Paketin Seuranta', body: "Build ${env.BUILD_NUMBER} failed; ${env.BUILD_URL}"
-  //   }
-  // }
+  post {
+     success {
+       script {
+         mail bcc: '', body: "<b>Pipeline</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: 'norkator@hotmail.com', mimeType: 'text/html', replyTo: '', subject: "Paketin Seuranta CI SUCCESS: ${env.JOB_NAME}", to: "nitramite@outlook.com";
+       }
+     }
+     failure {
+       mail bcc: '', body: "<b>Pipeline</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: 'norkator@hotmail.com', mimeType: 'text/html', replyTo: '', subject: "Paketin Seuranta CI FAILED: ${env.JOB_NAME}", to: "nitramite@outlook.com";
+     }
+  }
 }
