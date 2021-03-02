@@ -278,6 +278,9 @@
     <string name="package_edit_dialog_parcel_payment_status">Parcel payment status</string>
     <string name="package_edit_dialog_parcel_paid">Parcel paid</string>
     <string name="parcel_parcel_not_paid">Parcel not paid</string>
+    <string name="confirm">Confirm</string>
+    <string name="continue_with_backup_restore">Continue with database restore from backup?</string>
+    <string name="export_backup">Export backup</string>
 
 
     <!-- Strings related to Settings -->

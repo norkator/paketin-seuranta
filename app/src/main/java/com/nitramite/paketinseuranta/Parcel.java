@@ -64,6 +64,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDex;
 import androidx.preference.PreferenceManager;
@@ -927,7 +928,11 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             if (hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)) {
                 StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                 StrictMode.setVmPolicy(builder.build());
-                Uri outputFileUri = Uri.fromFile(parcelImageTempFile);
+                Uri outputFileUri = FileProvider.getUriForFile(
+                        this,
+                        this.getApplicationContext().getPackageName() + ".provider",
+                        parcelImageTempFile
+                ); // Uri.fromFile(parcelImageTempFile);
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, CAMERA_REQUEST);

@@ -278,6 +278,9 @@
     <string name="package_edit_dialog_parcel_payment_status">Toimituksen maksun tila</string>
     <string name="package_edit_dialog_parcel_paid">Toimitus maksettu</string>
     <string name="parcel_parcel_not_paid">Toimitusta ei ole maksettu</string>
+    <string name="confirm">Varmitus</string>
+    <string name="continue_with_backup_restore">Palauta tietokanta varmuuskopiosta?</string>
+    <string name="export_backup">Vie varmuuskopio</string>
 
 
     <!-- Strings related to Settings -->
