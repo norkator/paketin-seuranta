@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -109,14 +110,21 @@ public class BackupManager extends AppCompatActivity {
 
         restoreBackupBtn.setOnClickListener(view -> {
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Backup backup = BackupUtils.restoreDatabase(BackupManager.this);
-                if (backup.isSuccess()) {
-                    Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
-                    terminateApp();
-                } else {
-                    dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
-                            getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
-                }
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.confirm)
+                        .setMessage(R.string.continue_with_backup_restore)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(R.string.yes_btn, (dialog, whichButton) -> {
+                            Backup backup = BackupUtils.restoreDatabase(BackupManager.this);
+                            if (backup.isSuccess()) {
+                                Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
+                                terminateApp();
+                            } else {
+                                dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
+                                        getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
+                            }
+                        })
+                        .setNegativeButton(R.string.no_btn, null).show();
             }
         });
 
