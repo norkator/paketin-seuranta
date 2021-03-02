@@ -17,7 +17,7 @@ Table of contents
 * [Development environment](#dev-environment)
     * [Prerequisites](#prerequisites)
     * [Installing](#installing)
-    * [Creating parcel logos](#creating-parcel-logos)    
+    * [Creating parcel logos](#creating-parcel-courier-logos)
 * [For participants](#for-participants)
 * [Versioning](#versioning)
 * [Author](#author)
@@ -44,23 +44,23 @@ Dev environment
 
 Prerequisites
 -----
-* Download latest Android Studio
-https://developer.android.com/studio
-* Follow it's normal installation instructions.
-
+* Download latest [Android Studio](https://developer.android.com/studio)
+    * Follow it's normal installation instructions.
+    
 
 Installing
 -----
 
 Steps to get development environment running
 
-1. Install latest Android studio
-2. Click `File` -> `Open` -> Select project root containing `app` folder.
-3. Download all required SDK etc files. Android Studio automatically installs all required packages.
-4. Done!
+1. `git clone https://github.com/norkator/paketin-seuranta.git` or use gui like [Github Desktop](https://desktop.github.com/)
+2. Open Android studio
+3. Click `File` -> `Open` -> Select project root containing `app` folder.
+4. Download all required SDK etc files. Android Studio automatically installs all required packages.
+5. Happy developing!
 
 
-Creating parcel logos
+Creating parcel courier logos
 -----
 I have been using following tool:  
 [https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html)
@@ -69,10 +69,11 @@ I have been using following tool:
 For participants
 ============
 
-1. Let's keep Paketin Seuranta simple and respect privacy. No private servers and stuff like that. 
-Only direct communication to parcel service provider apis.
+1. Let's keep Paketin Seuranta simple and respect privacy. 
 
-2. I [norkator](https://github.com/norkator) will review and test pull requests. If everything looks and works 
+2. No private servers /backends meaning only direct communication to parcel service provider apis.
+
+3. I [norkator](https://github.com/norkator) will review and test pull requests. If everything looks and works 
 according to rules pr will be merged. Otherwise I ask changes. Just give me time. This repo is not dead. 
 
 
