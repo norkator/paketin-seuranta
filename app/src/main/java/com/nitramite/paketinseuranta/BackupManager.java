@@ -3,6 +3,7 @@ package com.nitramite.paketinseuranta;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.multidex.MultiDex;
 
 import android.Manifest;
@@ -14,11 +15,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,6 +36,8 @@ import com.nitramite.utils.SharedPreferencesUtils;
 
 import org.jetbrains.annotations.NonNls;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -70,6 +75,7 @@ public class BackupManager extends AppCompatActivity {
         // Find views
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
+        Button exportBackupBtn = findViewById(R.id.exportBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
         lastBackupDate = findViewById(R.id.lastBackupDate);
         setLastBackupTakenView();
@@ -105,6 +111,26 @@ public class BackupManager extends AppCompatActivity {
                             getString(R.string.main_menu_error),
                             getString(R.string.main_menu_taking_backup_failed) + " " + backup.getExceptionString());
                 }
+            }
+        });
+
+        exportBackupBtn.setOnClickListener(v -> {
+            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+            File file = BackupUtils.GetBackupFileDestination(this);
+            if (file.exists()) {
+                String s = "Backup file...";
+                intentShareFile.setType("*/*");
+                intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                        this,
+                        this.getApplicationContext().getPackageName() + ".provider",
+                        file
+                ));
+                intentShareFile.putExtra(Intent.EXTRA_SUBJECT, s);
+                intentShareFile.putExtra(Intent.EXTRA_TEXT, s);
+                intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(intentShareFile, s));
+            } else {
+                Toast.makeText(this, "Backup file does not exist", Toast.LENGTH_SHORT).show();
             }
         });
 

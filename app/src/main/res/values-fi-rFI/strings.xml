@@ -280,6 +280,7 @@
     <string name="parcel_parcel_not_paid">Toimitusta ei ole maksettu</string>
     <string name="confirm">Varmitus</string>
     <string name="continue_with_backup_restore">Palauta tietokanta varmuuskopiosta?</string>
+    <string name="export_backup">Vie varmuuskopio</string>
 
 
     <!-- Strings related to Settings -->

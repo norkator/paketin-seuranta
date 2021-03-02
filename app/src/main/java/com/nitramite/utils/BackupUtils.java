@@ -149,6 +149,22 @@ public class BackupUtils {
 
 
     /**
+     * Return backup destination as File object
+     *
+     * @param context of view
+     * @return File object
+     */
+    public static File GetBackupFileDestination(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return new File(context.getExternalFilesDir((String) null), DATABASE_NAME);
+        } else {
+            @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStorageDirectory() + "/Download/";
+            return new File(downloadsDir, DATABASE_NAME);
+        }
+    }
+
+
+    /**
      * Get file input stream from db source path
      *
      * @param context Context
@@ -156,16 +172,7 @@ public class BackupUtils {
      * @throws FileNotFoundException db file not found
      */
     private static FileInputStream getDBFileInputSteamFromExternalStorage(Context context) throws FileNotFoundException, NullPointerException {
-        FileInputStream fileInputStream = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            File file = new File(context.getExternalFilesDir((String) null), DATABASE_NAME);
-            fileInputStream = new FileInputStream(file);
-        } else {
-            @SuppressWarnings("deprecation") String downloadsDir = Environment.getExternalStorageDirectory() + "/Download/";
-            File file = new File(downloadsDir, DATABASE_NAME);
-            fileInputStream = new FileInputStream(file);
-        }
-        return fileInputStream;
+        return new FileInputStream(GetBackupFileDestination(context));
     }
 
 
@@ -191,7 +198,6 @@ public class BackupUtils {
         }
         return file;
     }
-
 
 
     @SuppressWarnings("HardCodedStringLiteral")
