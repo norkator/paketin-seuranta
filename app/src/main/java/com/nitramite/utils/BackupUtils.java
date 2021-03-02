@@ -2,13 +2,16 @@ package com.nitramite.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
 import androidx.core.content.FileProvider;
+import androidx.preference.PreferenceManager;
 
+import com.nitramite.paketinseuranta.Constants;
 import com.nitramite.paketinseuranta.R;
 
 import org.jetbrains.annotations.NonNls;
@@ -19,6 +22,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 
@@ -183,6 +190,20 @@ public class BackupUtils {
             dbWalFile.delete();
         }
         return file;
+    }
+
+
+
+    @SuppressWarnings("HardCodedStringLiteral")
+    public static void SaveBackupDate(Context context, Calendar calendar) {
+        Date now = calendar.getTime();
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        String strDt = simpleDate.format(now);
+        SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor normalEditor = setSharedPreferences.edit();
+        normalEditor.putString(Constants.SP_TIMED_BACKUP_LAST_DATE, strDt);
+        normalEditor.apply();
+        Log.i(TAG, "Backup is taken and date is saved: " + strDt);
     }
 
 

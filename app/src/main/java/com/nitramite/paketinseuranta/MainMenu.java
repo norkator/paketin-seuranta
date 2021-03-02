@@ -731,36 +731,24 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private void checkForAutomaticBackup() {
         if (sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false)) {
             final String lastBackupDate = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
-            Calendar c = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             if (lastBackupDate == null) {
                 BackupUtils.backupDatabase(this);
-                saveBackupDate(c);
+                BackupUtils.SaveBackupDate(this, calendar);
             } else {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    c.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
-                    c.add(Calendar.DATE, 5);
-                    if (c.getTimeInMillis() < System.currentTimeMillis()) {
+                    calendar.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
+                    calendar.add(Calendar.DATE, 5);
+                    if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
                         BackupUtils.backupDatabase(this);
-                        saveBackupDate(c);
+                        BackupUtils.SaveBackupDate(this, calendar);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
         }
-    }
-
-    @SuppressWarnings("HardCodedStringLiteral")
-    private void saveBackupDate(Calendar calendar) {
-        Date now = calendar.getTime();
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        String strDt = simpleDate.format(now);
-        SharedPreferences setSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor normalEditor = setSharedPreferences.edit();
-        normalEditor.putString(Constants.SP_TIMED_BACKUP_LAST_DATE, strDt);
-        normalEditor.apply();
-        Log.i(TAG, "Backup is taken and date is saved: " + strDt);
     }
 
 

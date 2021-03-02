@@ -32,16 +32,22 @@ import com.nitramite.utils.SharedPreferencesUtils;
 
 import org.jetbrains.annotations.NonNls;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 public class BackupManager extends AppCompatActivity {
 
 
-    //  Logging
+    // Logging
     @NonNls
-    private static final String TAG = "BackupManager";
+    private static final String TAG = BackupManager.class.getSimpleName();
+
+    // Views
+    private TextView lastBackupDate;
+
 
     // Variables
+    private SharedPreferences sharedPreferences = null;
     private LocaleUtils localeUtils = new LocaleUtils();
     private DialogUtils dialogUtils = new DialogUtils();
     private static final int OPEN_DIRECTORY_REQUEST_CODE = 1;
@@ -58,17 +64,14 @@ public class BackupManager extends AppCompatActivity {
         localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_backup_manager);
 
-        SharedPreferences sharedPreferences = SharedPreferencesUtils.getSharedPreferences(getApplicationContext());
+        sharedPreferences = SharedPreferencesUtils.getSharedPreferences(getApplicationContext());
 
         // Find views
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
-        TextView lastBackupDate = findViewById(R.id.lastBackupDate);
-
-
-        final String lastBackupDateStr = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
-        lastBackupDate.setText(lastBackupDateStr == null ? getString(R.string.no_timed_backups_taken) : getString(R.string.last_backup) + lastBackupDateStr);
+        lastBackupDate = findViewById(R.id.lastBackupDate);
+        setLastBackupTakenView();
 
 
         timedBackupToggle.setChecked(sharedPreferences.getBoolean(Constants.SP_TIMED_BACKUP_ENABLED, false));
@@ -86,7 +89,6 @@ public class BackupManager extends AppCompatActivity {
 
 
         takeBackupBtn.setOnClickListener(view -> {
-
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Backup backup = BackupUtils.backupDatabase(BackupManager.this);
                 if (backup.isSuccess()) {
@@ -95,14 +97,14 @@ public class BackupManager extends AppCompatActivity {
                             getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation(),
                             backup
                     );
+                    BackupUtils.SaveBackupDate(this, Calendar.getInstance()); // save last backup date time
+                    setLastBackupTakenView();
                 } else {
                     dialogUtils.genericErrorDialog(this, this.isFinishing(),
                             getString(R.string.main_menu_error),
                             getString(R.string.main_menu_taking_backup_failed) + " " + backup.getExceptionString());
                 }
             }
-
-
         });
 
         restoreBackupBtn.setOnClickListener(view -> {
@@ -203,6 +205,12 @@ public class BackupManager extends AppCompatActivity {
             finishAffinity();
             System.exit(0);
         }, 2000);
+    }
+
+
+    private void setLastBackupTakenView() {
+        final String lastBackupDateStr = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
+        lastBackupDate.setText(lastBackupDateStr == null ? getString(R.string.no_timed_backups_taken) : getString(R.string.last_backup) + lastBackupDateStr);
     }
 
 }
