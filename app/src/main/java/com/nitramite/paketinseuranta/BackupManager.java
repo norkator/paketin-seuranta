@@ -118,7 +118,7 @@ public class BackupManager extends AppCompatActivity {
             Intent intentShareFile = new Intent(Intent.ACTION_SEND);
             File file = BackupUtils.GetBackupFileDestination(this);
             if (file.exists()) {
-                String s = "Backup file...";
+                String s = "PARCELS.db";
                 intentShareFile.setType("*/*");
                 intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
                         this,
