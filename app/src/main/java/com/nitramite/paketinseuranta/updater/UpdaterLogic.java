@@ -37,6 +37,7 @@ import com.nitramite.courier.MatkahuoltoStrategy;
 import com.nitramite.courier.ParcelObject;
 import com.nitramite.courier.PostNordStrategy;
 import com.nitramite.courier.PostiStrategy;
+import com.nitramite.courier.TNTStrategy;
 import com.nitramite.courier.UPSStrategy;
 import com.nitramite.courier.USPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
@@ -214,6 +215,12 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_DPD:
                                     Log.i(TAG, "# Running Dpd #");
                                     courier.setCourierStrategy(new DpdStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
+                                    break;
+                                // TNT
+                                case CarrierUtils.CARRIER_TNT:
+                                    Log.i(TAG, "# Running TNT #");
+                                    courier.setCourierStrategy(new TNTStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
 

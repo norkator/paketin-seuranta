@@ -24,6 +24,7 @@ import com.nitramite.courier.MatkahuoltoStrategy;
 import com.nitramite.courier.ParcelObject;
 import com.nitramite.courier.PostNordStrategy;
 import com.nitramite.courier.PostiStrategy;
+import com.nitramite.courier.TNTStrategy;
 import com.nitramite.courier.UPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
 import com.nitramite.utils.CarrierUtils;
@@ -96,9 +97,11 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
         courierStrategies.add(new FourPXStrategy());
         courierIntegers.add(CarrierUtils.CARRIER_4PX);
 
-
         courierStrategies.add(new BringStrategy());
         courierIntegers.add(CarrierUtils.CARRIER_BRING);
+
+        courierStrategies.add(new TNTStrategy());
+        courierIntegers.add(CarrierUtils.CARRIER_TNT);
 
         int increment = 100 / courierStrategies.size();
         int progress = increment;
