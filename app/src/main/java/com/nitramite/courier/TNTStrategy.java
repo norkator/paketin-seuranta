@@ -83,7 +83,7 @@ public class TNTStrategy implements CourierStrategy {
             if (events.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
                 // Fetch data
-                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int a = 0; a < events.length(); a++) {
