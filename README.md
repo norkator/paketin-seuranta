@@ -18,6 +18,7 @@ Table of contents
     * [Prerequisites](#prerequisites)
     * [Installing](#installing)
     * [Creating parcel logos](#creating-parcel-courier-logos)
+* [Adding new courier](#adding-new-courier)
 * [For participants](#for-participants)
 * [Versioning](#versioning)
 * [Author](#author)
@@ -60,10 +61,17 @@ Steps to get development environment running
 5. Happy developing!
 
 
-Creating parcel courier logos
------
-I have been using following tool:  
-[https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html)
+Adding new courier
+============
+Good sample PR of such case is https://github.com/norkator/paketin-seuranta/pull/116
+
+1. Creating parcel courier logos. I have been using following tool: [https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html)
+2. Add new courier strategy at `/com.nitramite/courier` folder. Use others existing ones as sample.
+3. Add carrier with new id at `CarrierUtils` see others as sample. Use unique integer id! and add created icon.
+4. Add carrier to `UpdaterLogic` class.
+5. Add carrier to `setCarrierSpinnerData` at `FragmentTrackedDelivery`.
+6. Add carrier to `CarrierDetectorTask` if you want this new carrier is part of automatic detection tool.
+7. Should now be available for use.
 
 
 For participants
