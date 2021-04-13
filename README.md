@@ -63,6 +63,7 @@ Steps to get development environment running
 
 Adding new courier
 ============
+Good sample PR of such case is https://github.com/norkator/paketin-seuranta/pull/116
 
 1. Creating parcel courier logos. I have been using following tool: [https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html)
 2. Add new courier strategy at `/com.nitramite/courier` folder. Use others existing ones as sample.
