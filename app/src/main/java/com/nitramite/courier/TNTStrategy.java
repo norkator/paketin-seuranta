@@ -75,6 +75,8 @@ public class TNTStrategy implements CourierStrategy {
                     parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
                 } else if (status.optBoolean("isPending")) {
                     parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
+                } else if (status.optString("groupCode").equals("DELING")) { // is being delivered
+                    parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
                 }
             }
 
@@ -102,7 +104,9 @@ public class TNTStrategy implements CourierStrategy {
 
                     // Get location
                     JSONObject location = eventJsonObject.optJSONObject("location");
-                    String locationName = Objects.requireNonNull(location).optString("city") + ", " + location.optString("country");
+                    String locationName = !location.getString("city").equals("null") ?
+                            (location.optString("city") + ", " + location.optString("country"))
+                            : "";
                     String locationCode = location.optString("countryCode");
 
 
