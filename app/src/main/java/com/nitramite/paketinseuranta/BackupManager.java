@@ -36,8 +36,12 @@ import com.nitramite.utils.SharedPreferencesUtils;
 
 import org.jetbrains.annotations.NonNls;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -57,6 +61,7 @@ public class BackupManager extends AppCompatActivity {
     private LocaleUtils localeUtils = new LocaleUtils();
     private DialogUtils dialogUtils = new DialogUtils();
     private static final int OPEN_DIRECTORY_REQUEST_CODE = 1;
+    private static final int IMPORT_BACKUP_FILE_REQUEST_CODE = 2;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -136,7 +141,13 @@ public class BackupManager extends AppCompatActivity {
         });
 
         importBackupBtn.setOnClickListener(v -> {
-            /* */
+            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+            chooseFile.setType("*/*");
+            startActivityForResult(
+                    Intent.createChooser(chooseFile, "Choose a backup file"),
+                    IMPORT_BACKUP_FILE_REQUEST_CODE
+            );
         });
 
         restoreBackupBtn.setOnClickListener(view -> {
@@ -191,6 +202,30 @@ public class BackupManager extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Log.i(TAG, Objects.requireNonNull(data.getDataString()));
+        } else if (requestCode == IMPORT_BACKUP_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri content_describer = data.getData();
+            //get the path
+            Log.d(TAG, Objects.requireNonNull(content_describer.getPath()));
+            BufferedReader reader = null;
+            try {
+                InputStream in = this.getContentResolver().openInputStream(content_describer);
+                // now read the content:
+                reader = new BufferedReader(new InputStreamReader(in));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    Log.i(TAG, line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
