@@ -20,7 +20,9 @@
         <item name="android:itemBackground">@color/background_darker</item>
         <item name="android:actionMenuTextColor">@color/color_white</item>
         <item name="snackbarStyle">@style/CustomSnackbarStyle</item>
-
+        <!-- Custom font -->
+        <item name="android:fontFamily">@font/proxima_nova_regular</item>
+        <item name="fontFamily">@font/proxima_nova_regular</item>
     </style>
 
 
