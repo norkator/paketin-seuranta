@@ -204,27 +204,18 @@ public class BackupManager extends AppCompatActivity {
             Log.i(TAG, Objects.requireNonNull(data.getDataString()));
         } else if (requestCode == IMPORT_BACKUP_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri content_describer = data.getData();
-            //get the path
+            assert content_describer != null;
             Log.d(TAG, Objects.requireNonNull(content_describer.getPath()));
-            BufferedReader reader = null;
             try {
-                InputStream in = this.getContentResolver().openInputStream(content_describer);
-                // now read the content:
-                reader = new BufferedReader(new InputStreamReader(in));
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    Log.i(TAG, line);
+                InputStream inputStream = this.getContentResolver().openInputStream(content_describer);
+                assert inputStream != null;
+                if (BackupUtils.ImportDatabase(this, inputStream)) {
+                    Toast.makeText(this, "Database imported. You can now use restore button.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to import database from external resource", Toast.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }
