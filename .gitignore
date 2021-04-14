@@ -37,3 +37,4 @@ obj/
 /ReleaseKey/*
 Paketin-Seuranta.zip
 /app/google-services.json
+/app/src/main/java/com/nitramite/courier/*.json
