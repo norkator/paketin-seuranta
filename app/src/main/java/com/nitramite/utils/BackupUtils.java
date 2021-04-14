@@ -70,7 +70,7 @@ public class BackupUtils {
      * @param context view context
      * @return Backup object
      */
-    public static Backup backupDatabase(Context context) {
+    public static Backup BackupDatabase(Context context) {
         Backup backup = new Backup();
         try {
             FileInputStream dbFileInputStream = getDBFileInputStream(context, backup);
@@ -100,7 +100,7 @@ public class BackupUtils {
      * @param context view context
      * @return Backup object
      */
-    public static Backup restoreDatabase(Context context) {
+    public static Backup RestoreDatabase(Context context) {
         Backup backup = new Backup();
         try {
             File targetPathFile = getCleanedAppDBTargetPath(context);

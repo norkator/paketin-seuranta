@@ -733,7 +733,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             final String lastBackupDate = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
             Calendar calendar = Calendar.getInstance();
             if (lastBackupDate == null) {
-                BackupUtils.backupDatabase(this);
+                BackupUtils.BackupDatabase(this);
                 BackupUtils.SaveBackupDate(this, calendar);
             } else {
                 try {
@@ -741,7 +741,7 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
                     calendar.setTime(Objects.requireNonNull(sdf.parse(lastBackupDate)));
                     calendar.add(Calendar.DATE, 5);
                     if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
-                        BackupUtils.backupDatabase(this);
+                        BackupUtils.BackupDatabase(this);
                         BackupUtils.SaveBackupDate(this, calendar);
                     }
                 } catch (ParseException e) {

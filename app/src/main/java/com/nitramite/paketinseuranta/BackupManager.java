@@ -103,7 +103,7 @@ public class BackupManager extends AppCompatActivity {
 
         takeBackupBtn.setOnClickListener(view -> {
             if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Backup backup = BackupUtils.backupDatabase(BackupManager.this);
+                Backup backup = BackupUtils.BackupDatabase(BackupManager.this);
                 if (backup.isSuccess()) {
                     backupSuccessDialog(this, this.isFinishing(),
                             getString(R.string.main_menu_result),
@@ -157,7 +157,7 @@ public class BackupManager extends AppCompatActivity {
                         .setMessage(R.string.continue_with_backup_restore)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.yes_btn, (dialog, whichButton) -> {
-                            Backup backup = BackupUtils.restoreDatabase(BackupManager.this);
+                            Backup backup = BackupUtils.RestoreDatabase(BackupManager.this);
                             if (backup.isSuccess()) {
                                 Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
                                 terminateApp();
