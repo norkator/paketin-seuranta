@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
-import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.nitramite.paketinseuranta.Constants;
@@ -21,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +32,36 @@ import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 public class BackupUtils {
 
     @NonNls
-    private static final String TAG = "BackupUtils";
+    private static final String TAG = BackupUtils.class.getSimpleName();
+
+
+    /**
+     * Import database
+     * imports database into app data folder ready to be restored
+     *
+     * @param context     of view
+     * @param inputStream of selected backup file
+     * @return import status as boolean
+     */
+    public static boolean ImportDatabase(Context context, InputStream inputStream) {
+        Backup backup = new Backup();
+        try {
+            OutputStream dbFileOutputStream = getDBOutputStream(context, backup);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                dbFileOutputStream.write(buffer, 0, length);
+            }
+            dbFileOutputStream.flush();
+            dbFileOutputStream.close();
+            inputStream.close();
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
 
     /**
@@ -41,7 +70,7 @@ public class BackupUtils {
      * @param context view context
      * @return Backup object
      */
-    public static Backup backupDatabase(Context context) {
+    public static Backup BackupDatabase(Context context) {
         Backup backup = new Backup();
         try {
             FileInputStream dbFileInputStream = getDBFileInputStream(context, backup);
@@ -71,7 +100,7 @@ public class BackupUtils {
      * @param context view context
      * @return Backup object
      */
-    public static Backup restoreDatabase(Context context) {
+    public static Backup RestoreDatabase(Context context) {
         Backup backup = new Backup();
         try {
             File targetPathFile = getCleanedAppDBTargetPath(context);

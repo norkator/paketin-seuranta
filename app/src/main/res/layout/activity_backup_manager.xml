@@ -73,6 +73,14 @@
                         android:textSize="15sp" />
 
                     <Button
+                        android:id="@+id/importBackupBtn"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/import_backup"
+                        android:textSize="15sp" />
+
+                    <Button
                         android:id="@+id/restoreBackupBtn"
                         style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="wrap_content"
