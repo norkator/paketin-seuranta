@@ -76,6 +76,7 @@ public class BackupManager extends AppCompatActivity {
         CheckBox timedBackupToggle = findViewById(R.id.timedBackupToggle);
         Button takeBackupBtn = findViewById(R.id.takeBackupBtn);
         Button exportBackupBtn = findViewById(R.id.exportBackupBtn);
+        Button importBackupBtn = findViewById(R.id.importBackupBtn);
         Button restoreBackupBtn = findViewById(R.id.restoreBackupBtn);
         lastBackupDate = findViewById(R.id.lastBackupDate);
         setLastBackupTakenView();
@@ -132,6 +133,10 @@ public class BackupManager extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Backup file does not exist", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        importBackupBtn.setOnClickListener(v -> {
+            /* */
         });
 
         restoreBackupBtn.setOnClickListener(view -> {

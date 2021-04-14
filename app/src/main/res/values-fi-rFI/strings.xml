@@ -281,6 +281,7 @@
     <string name="confirm">Varmitus</string>
     <string name="continue_with_backup_restore">Palauta tietokanta varmuuskopiosta?</string>
     <string name="export_backup">Vie varmuuskopio</string>
+    <string name="import_backup">Tuo varmuuskopio</string>
 
 
     <!-- Strings related to Settings -->
