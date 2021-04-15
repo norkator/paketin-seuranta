@@ -36,8 +36,8 @@ public class SchenkerStrategy implements CourierStrategy {
     private static final String urlShipmentId = "https://eschenker.dbschenker.com/nges-portal/public/tracking-v2/resources/api/public/shipments";
     private static final String urlShipmentDetails = "https://eschenker.dbschenker.com/nges-portal/public/tracking-v2/resources/api/public/shipments/land/";
 
-    private static String LOCALE_FI = "fi_FI";
-    private static String LOCALE_EN = "en_GB";
+    // private static String LOCALE_FI = "fi_FI";
+    // private static String LOCALE_EN = "en_GB";
 
     @Override
     public ParcelObject execute(String parcelCode, final Locale locale) {
@@ -55,9 +55,69 @@ public class SchenkerStrategy implements CourierStrategy {
             }
 
             String shipmentDetails = getShipmentDetails(shipmentId);
-            Log.i(TAG, "shipment details: " + shipmentDetails);
+            // Log.i(TAG, "shipment details: " + shipmentDetails);
 
-        } catch (NullPointerException e) {
+            assert shipmentDetails != null;
+            JSONObject parcelJsonObject = new JSONObject(shipmentDetails);
+            JSONArray events = parcelJsonObject.optJSONArray("events");
+
+            // Status | phase parsing
+            JSONArray statusArray = parcelJsonObject.optJSONArray("progressBar");
+            assert statusArray != null;
+            if (statusArray.getJSONObject(5).optBoolean("active")) {
+                parcelObject.setPhase(PhaseNumber.PHASE_DELIVERED);
+            } else if (statusArray.getJSONObject(0).optBoolean("active")) {
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
+            }
+
+
+            parcelObject.setProduct(parcelJsonObject.optString("product"));
+            JSONObject goods = parcelJsonObject.getJSONObject("goods");
+            parcelObject.setWeight(goods.optJSONObject("weight").optString("value"));
+
+
+            // Parse events
+            assert events != null;
+            if (events.length() > 0) {
+                parcelObject.setIsFound(true); // Parcel is found
+                // Fetch data
+                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                for (int a = 0; a < events.length(); a++) {
+                    // Event obj
+                    JSONObject eventJsonObject = events.optJSONObject(a);
+
+                    String description = eventJsonObject.optString("comment");
+                    String dateStr = eventJsonObject.optString("date");
+
+                    // Construct date and time string
+                    Date parseTimeDate = apiDateFormat.parse(dateStr);
+
+                    // Format date and time for different formats
+                    String finalTimeStamp = showingDateFormat.format(Objects.requireNonNull(parseTimeDate));
+                    String sqliteTimeStamp = SQLiteDateFormat.format(parseTimeDate);
+
+                    // Get location
+                    JSONObject location = eventJsonObject.optJSONObject("location");
+                    String locationName = location.optString("name");
+                    String locationCode = location.optString("countryCode");
+
+
+                    // Add to event object
+                    EventObject eventObject = new EventObject(
+                            description, finalTimeStamp, sqliteTimeStamp, locationCode, locationName
+                    );
+                    eventObjects.add(eventObject);
+                }
+
+                // Set events
+                parcelObject.setEventObjects(eventObjects);
+            } else {
+                Log.i(TAG, "Schenker shipment not found");
+                parcelObject.setIsFound(false); // Parcel not found
+            }
+        } catch (NullPointerException | JSONException | ParseException e) {
             e.printStackTrace();
         }
         return parcelObject;
