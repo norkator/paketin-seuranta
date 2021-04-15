@@ -376,6 +376,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_BRING_STR,
                 CarrierUtils.CARRIER_DPD_STR,
                 CarrierUtils.CARRIER_TNT_STR,
+                CarrierUtils.CARRIER_SCHENKER_STR,
                 CarrierUtils.CARRIER_OTHER_STR
         };
         Integer[] carrierCodes = {
@@ -396,6 +397,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_BRING,
                 CarrierUtils.CARRIER_DPD,
                 CarrierUtils.CARRIER_TNT,
+                CarrierUtils.CARRIER_SCHENKER,
                 CarrierUtils.CARRIER_OTHER
         };
         CustomCarrierSpinnerAdapter customCarrierAdapter = new CustomCarrierSpinnerAdapter(activityContext, R.layout.carrier_adapter, carriers);
@@ -452,8 +454,11 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
             case CarrierUtils.CARRIER_TNT:
                 selectCarrierSpinner.setSelection(16);
                 break;
-            case CarrierUtils.CARRIER_OTHER:
+            case CarrierUtils.CARRIER_SCHENKER:
                 selectCarrierSpinner.setSelection(17);
+                break;
+            case CarrierUtils.CARRIER_OTHER:
+                selectCarrierSpinner.setSelection(18);
                 break;
         }
         selectCarrierSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
