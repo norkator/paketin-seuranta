@@ -39,6 +39,13 @@ public class SchenkerStrategy implements CourierStrategy {
     // private static String LOCALE_FI = "fi_FI";
     // private static String LOCALE_EN = "en_GB";
 
+    @SuppressLint("SimpleDateFormat")
+    private static DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    @SuppressLint("SimpleDateFormat")
+    private static DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    @SuppressLint("SimpleDateFormat")
+    private static DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Override
     public ParcelObject execute(String parcelCode, final Locale locale) {
 
@@ -74,6 +81,19 @@ public class SchenkerStrategy implements CourierStrategy {
             parcelObject.setProduct(parcelJsonObject.optString("product"));
             JSONObject goods = parcelJsonObject.getJSONObject("goods");
             parcelObject.setWeight(goods.optJSONObject("weight").optString("value"));
+            parcelObject.setQuantity(goods.optString("pieces"));
+
+            String agreedDeliveryTime = parcelJsonObject.optJSONObject("deliveryDate").optString("agreed");
+            String estimatedDeliveryTime = parcelJsonObject.optJSONObject("deliveryDate").optString("estimated");
+            Date deliveryDate = null;
+            if (!agreedDeliveryTime.equals("null")) {
+                deliveryDate = apiDateFormat.parse(agreedDeliveryTime);
+            } else if (!estimatedDeliveryTime.equals("null")) {
+                deliveryDate = apiDateFormat.parse(estimatedDeliveryTime);
+            }
+            parcelObject.setEstimatedDeliveryTime(
+                    showingDateFormat.format(Objects.requireNonNull(deliveryDate))
+            );
 
 
             // Parse events
@@ -81,9 +101,6 @@ public class SchenkerStrategy implements CourierStrategy {
             if (events.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
                 // Fetch data
-                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int a = 0; a < events.length(); a++) {
                     // Event obj
                     JSONObject eventJsonObject = events.optJSONObject(a);
