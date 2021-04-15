@@ -34,7 +34,7 @@ public class SchenkerStrategy implements CourierStrategy {
 
     // Api url
     private static final String urlShipmentId = "https://eschenker.dbschenker.com/nges-portal/public/tracking-v2/resources/api/public/shipments";
-    private static final String urlShipmentDetails = "https://eschenker.dbschenker.com/nges-portal/public/tracking-v2/resources/api/public/shipments/land/"; // + shipmentId
+    private static final String urlShipmentDetails = "https://eschenker.dbschenker.com/nges-portal/public/tracking-v2/resources/api/public/shipments/land/";
 
     private static String LOCALE_FI = "fi_FI";
     private static String LOCALE_EN = "en_GB";
@@ -46,6 +46,32 @@ public class SchenkerStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
+            String shipmentId = getShipmentId(parcelCode);
+            Log.i(TAG, "shipment id: " + shipmentId);
+
+            if (shipmentId == null) {
+                parcelObject.setIsFound(false);
+                return parcelObject;
+            }
+
+            String shipmentDetails = getShipmentDetails(shipmentId);
+            Log.i(TAG, "shipment details: " + shipmentDetails);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return parcelObject;
+    }
+
+
+    /**
+     * Return shipment id for provided tracking number
+     *
+     * @param parcelCode which is ShippersRefNo
+     * @return id from Schenker system or null if not found
+     */
+    private String getShipmentId(String parcelCode) {
+        try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(urlShipmentId + "?query=" + parcelCode + "&referenceType=ShippersRefNo")
@@ -53,18 +79,39 @@ public class SchenkerStrategy implements CourierStrategy {
                     .build();
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
-
+            Log.i(TAG, "ShipmentId query: " + jsonResult);
             JSONObject jsonResponse = new JSONObject(jsonResult);
-            JSONArray parcelObjects = Objects.requireNonNull(jsonResponse.optJSONObject("tracker.output")).optJSONArray("consignment");
-            JSONObject parcelJsonObject = Objects.requireNonNull(parcelObjects).optJSONObject(0);
-            Log.i(TAG, "Schenker Parcel: " + parcelJsonObject.toString());
-
-
-
+            JSONArray jsonArray = jsonResponse.getJSONArray("result");
+            if (jsonArray.length() == 0) {
+                return null;
+            }
+            return jsonArray.getJSONObject(0).optString("id");
         } catch (NullPointerException | IOException | JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return parcelObject;
+    }
+
+
+    /**
+     * Get normal shipment details and events
+     *
+     * @param shipmentId from shipment id query
+     * @return shipment details in string form
+     */
+    private String getShipmentDetails(String shipmentId) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(urlShipmentDetails + shipmentId)
+                    .addHeader("User-Agent", Constants.UserAgent)
+                    .build();
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
