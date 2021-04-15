@@ -496,6 +496,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(CODCURRENCY, parcelObject.getCodCurrency());
         contentValues.put(PHASE_NUMBER, parcelObject.getPhaseToNumber());
         contentValues.put(LAST_UPDATE_STATUS, lastUpdateStatus);
+        contentValues.put(QUANTITY, parcelObject.getQuantity());
         db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{id});
         db.close();
     }

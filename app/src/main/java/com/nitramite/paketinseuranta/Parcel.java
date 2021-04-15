@@ -471,7 +471,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
-                
+
 
                 // Last pickup date
                 if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) && !res.getString(15).equals("null") && res.getString(15).length() > 4) {
@@ -535,8 +535,8 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     addAdditionalDetailsLine(getString(R.string.parcel_service), res.getString(19));
                 }
                 // Quantity
-                if (!res.getString(43).equals("null") && res.getString(43).length() > 0) {
-                    addAdditionalDetailsLine(getString(R.string.parcel_quantity), res.getString(43) + " " + getString(R.string.quantity_pieces));
+                if (!res.getString(44).equals("null") && res.getString(44).length() > 0) {
+                    addAdditionalDetailsLine(getString(R.string.parcel_quantity), res.getString(44) + " " + getString(R.string.quantity_pieces));
                 }
                 // Weight
                 if (!res.getString(20).equals("null") && res.getString(20).length() > 0) {
