@@ -110,6 +110,7 @@
     <string name="parcel_sender">Sender:</string>
     <string name="parcel_locker_code">Lockercode:</string>
     <string name="parcel_service">Service:</string>
+    <string name="parcel_quantity">Quantity:</string>
     <string name="parcel_weight">Weight:</string>
     <string name="parcel_height">Height:</string>
     <string name="parcel_width">Width:</string>
@@ -282,6 +283,7 @@
     <string name="continue_with_backup_restore">Continue with database restore from backup?</string>
     <string name="export_backup">Export backup</string>
     <string name="import_backup">Import backup</string>
+    <string name="quantity_pieces"></string>
 
 
     <!-- Strings related to Settings -->
