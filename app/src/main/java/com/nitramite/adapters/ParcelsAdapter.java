@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nitramite.paketinseuranta.ParcelItem;
@@ -57,6 +59,9 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewHolder holder = (ViewHolder) viewHolder;
 
         // Defaults
+        holder.swipeViewArchive.setVisibility(View.GONE);
+        holder.swipeViewDelete.setVisibility(View.GONE);
+        holder.swipeViewReturn.setVisibility(View.GONE);
         holder.fourthLineNormal.setVisibility(View.GONE);
         holder.fourthLineTitle.setVisibility(View.GONE);
         holder.fifthLineNormal.setVisibility(View.GONE);
@@ -274,6 +279,8 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         // Find views
+        CardView viewForeground;
+        LinearLayout swipeViewArchive, swipeViewDelete, swipeViewReturn;
         TextView firstLineBold, secondLineNormal, thirdLineNormal, fourthLineNormal, fourthLineTitle,
                 fifthLineNormal, fifthLineTitle, sixthLineNormal, sixthLineTitle, seventhLineNormal,
                 parcelUpdateStatusTV, parcelLastMovementStatusTV;
@@ -283,6 +290,10 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
             // Find views
+            viewForeground = itemView.findViewById(R.id.viewForeground);
+            swipeViewArchive = itemView.findViewById(R.id.swipeViewArchive);
+            swipeViewDelete = itemView.findViewById(R.id.swipeViewDelete);
+            swipeViewReturn = itemView.findViewById(R.id.swipeViewReturn);
             firstLineBold = itemView.findViewById(R.id.firstLineBold);
             secondLineNormal = itemView.findViewById(R.id.secondLineNormal);
             thirdLineNormal = itemView.findViewById(R.id.thirdLineNormal);
@@ -299,8 +310,8 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             courierIcon = itemView.findViewById(R.id.courierIcon);
             unpaidIcon = itemView.findViewById(R.id.unpaidIcon);
 
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            viewForeground.setOnClickListener(this);
+            viewForeground.setOnLongClickListener(this);
         }
 
         @Override

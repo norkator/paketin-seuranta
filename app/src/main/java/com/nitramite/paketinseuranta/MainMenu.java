@@ -45,6 +45,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDex;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -63,6 +64,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
 import com.nitramite.adapters.ParcelsAdapter;
 import com.nitramite.adapters.ParcelsAdapterListener;
+import com.nitramite.adapters.RecyclerItemTouchHelper;
 import com.nitramite.paketinseuranta.notifier.PushUtils;
 import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.LocaleUtils;
@@ -80,7 +82,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, PurchasesUpdatedListener, ParcelsAdapterListener {
+public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+        PurchasesUpdatedListener, ParcelsAdapterListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     //  Logging
     @NonNls
@@ -406,13 +409,11 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
                 adapter.setClickListeners(this);
                 recyclerView.setAdapter(adapter);
 
-                // Todo implement swipe
-                // adapter.setSwipeActionListener(this)
-                //         .setDimBackgrounds(true)
-                //         .setListView(trackItemsList);
-                // adapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
-                //         .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
 
+                ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(
+                        0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this, RecyclerItemTouchHelper.ActivityTarget.MAIN_MENU
+                );
+                new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
             } else {
                 adapter.notifyDataSetChanged();
             }
@@ -474,27 +475,17 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
     }
 
 
-    // @Override
-    // public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
-    //     for (int i = 0; i < positionList.length; i++) {
-    //         SwipeDirection direction = directionList[i];
-    //         onSwipePosition = positionList[i];
-    //         switch (direction) {
-    //             case DIRECTION_NORMAL_RIGHT:
-    //                 directionRightArchive();
-    //                 break;
-    //             case DIRECTION_NORMAL_LEFT:
-    //                 directionLeftDelete();
-    //                 break;
-    //             case DIRECTION_FAR_RIGHT:
-    //                 directionRightArchive();
-    //                 break;
-    //             case DIRECTION_FAR_LEFT:
-    //                 directionLeftDelete();
-    //                 break;
-    //         }
-    //     }
-    // }
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        switch (direction) {
+            case 4:
+                directionLeftDelete(position);
+                break;
+            case 8:
+                directionRightArchive(position);
+                break;
+        }
+    }
 
 
     // Swipe from right to left deletes item
@@ -811,6 +802,5 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
             initInAppBilling();
         }
     }
-
 
 } // End of class
