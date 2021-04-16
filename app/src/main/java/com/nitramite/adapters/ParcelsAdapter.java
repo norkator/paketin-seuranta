@@ -25,6 +25,7 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final String TAG = ParcelsAdapter.class.getSimpleName();
 
     // Variables
+    private ParcelsAdapterListener parcelsAdapterListener;
     private final Context context;
     private final ArrayList<ParcelItem> parcelItems;
     private final LayoutInflater mInflater;
@@ -270,7 +271,7 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         // Find views
         TextView firstLineBold, secondLineNormal, thirdLineNormal, fourthLineNormal, fourthLineTitle,
@@ -298,8 +299,26 @@ public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             courierIcon = itemView.findViewById(R.id.courierIcon);
             unpaidIcon = itemView.findViewById(R.id.unpaidIcon);
 
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int pos = getBindingAdapterPosition();
+            parcelsAdapterListener.onItemClick(null, pos);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            parcelsAdapterListener.onItemLongClick(view, getBindingAdapterPosition());
+            return true;
         }
     }
 
+
+    public void setClickListeners(ParcelsAdapterListener parcelsAdapterListener) {
+        this.parcelsAdapterListener = parcelsAdapterListener;
+    }
 
 }
