@@ -102,7 +102,8 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
     // Components
     private LocaleUtils localeUtils = new LocaleUtils();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView trackItemsList;
+    private View emptyView = null;
+    private RecyclerView recyclerView;
     private ParcelsAdapter adapter = null;
     private SharedPreferences sharedPreferences;
     private Boolean SP_UPDATE_FAILED_FIRST = false;
@@ -128,12 +129,8 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
             int serviceMode = 0;
-            String parcelID = "";
-            String parcelCode = "";
             if (extras != null) {
                 serviceMode = extras.getInt("MODE");
-                parcelCode = extras.getString("PARCEL_CODE");
-                parcelID = extras.getString("PARCEL_ID");
             }
             if (serviceMode == 0) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -188,7 +185,6 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
                     PushUtils.unsubscribeFromTopic(PushUtils.TOPIC_UPDATE);
 
             }
-        } catch (IllegalStateException ignored) {
         } catch (RuntimeException ignored) {
         }
     }
@@ -239,7 +235,6 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
         boolean SP_UPDATE_PARCELS_ON_STARTUP = sharedPreferences.getBoolean(Constants.SP_UPDATE_PARCELS_ON_STARTUP, true);
         SP_UPDATE_FAILED_FIRST = sharedPreferences.getBoolean(Constants.SP_UPDATE_FAILED_FIRST, false);
         lastUpdate = sharedPreferences.getBoolean(Constants.SP_PACKAGE_LAST_CHANGE, false);
-        boolean autoParcelUpdates = sharedPreferences.getBoolean("parcels_automatic_update", true);
         // If automatic background updating is disabled ensure that service is not running
         boolean SP_PARCELS_AUTOMATIC_UPDATE = sharedPreferences.getBoolean(Constants.SP_PARCELS_AUTOMATIC_UPDATE, true);
         if (SP_PARCELS_AUTOMATIC_UPDATE) {
@@ -259,9 +254,10 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        View emptyView = findViewById(R.id.emptyView);
-        trackItemsList = findViewById(R.id.trackItemsList);
-        // trackItemsList.setEmptyView(emptyView); // Todo, implement empty view
+        emptyView = findViewById(R.id.emptyView);
+        recyclerView = findViewById(R.id.trackItemsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -330,7 +326,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
             dialog.setContentView(R.layout.custom_events_recycler_view);
             dialog.setCanceledOnTouchOutside(false);
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
             lp.width = WindowManager.LayoutParams.MATCH_PARENT;
             lp.height = WindowManager.LayoutParams.MATCH_PARENT;
             dialog.show();
@@ -403,20 +399,25 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
     // Update list view
     public void updateListView() {
-        if (adapter == null) {
-            adapter = new ParcelsAdapter(MainMenu.this, parcelItems, true, lastUpdate);
-            adapter.setClickListeners(this);
-            trackItemsList.setAdapter(adapter);
+        if (parcelItems.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+            if (adapter == null) {
+                adapter = new ParcelsAdapter(MainMenu.this, parcelItems, true, lastUpdate);
+                adapter.setClickListeners(this);
+                recyclerView.setAdapter(adapter);
 
-            // Todo implement swipe
-            // adapter.setSwipeActionListener(this)
-            //         .setDimBackgrounds(true)
-            //         .setListView(trackItemsList);
-            // adapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
-            //         .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
+                // Todo implement swipe
+                // adapter.setSwipeActionListener(this)
+                //         .setDimBackgrounds(true)
+                //         .setListView(trackItemsList);
+                // adapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
+                //         .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
 
+            } else {
+                adapter.notifyDataSetChanged();
+            }
         } else {
-            adapter.notifyDataSetChanged();
+            emptyView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -434,6 +435,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
         String[] longTapArrayItems = getResources().getStringArray(R.array.pref_long_tap_values);
         String longTapSelectedAction = sharedPreferences.getString(Constants.SP_MAIN_MENU_LIST_LONG_TAP_ACTION, "");
 
+        assert longTapSelectedAction != null;
         if (longTapSelectedAction.equals(longTapArrayItems[0])) {
             if (isMyServiceRunning(ParcelService.class)) {
                 Toast.makeText(MainMenu.this, R.string.main_menu_update_in_progress_try_again_later, Toast.LENGTH_LONG).show();
