@@ -26,14 +26,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,13 +61,12 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nitramite.adapters.CustomEventsRecyclerViewAdapter;
-import com.nitramite.adapters.CustomParcelsAdapterV2;
+import com.nitramite.adapters.ParcelsAdapter;
+import com.nitramite.adapters.ParcelsAdapterListener;
 import com.nitramite.paketinseuranta.notifier.PushUtils;
 import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
-import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
-import com.wdullaer.swipeactionadapter.SwipeDirection;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -76,12 +76,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener, SwipeRefreshLayout.OnRefreshListener, PurchasesUpdatedListener {
+public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, PurchasesUpdatedListener, ParcelsAdapterListener {
 
     //  Logging
     @NonNls
@@ -103,9 +102,8 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     // Components
     private LocaleUtils localeUtils = new LocaleUtils();
     private SwipeRefreshLayout swipeRefreshLayout;
-    private CustomParcelsAdapterV2 adapter;
-    private ListView trackItemsList;
-    private View emptyView;
+    private RecyclerView trackItemsList;
+    private ParcelsAdapter adapter = null;
     private SharedPreferences sharedPreferences;
     private Boolean SP_UPDATE_FAILED_FIRST = false;
     private boolean lastUpdate = false;
@@ -114,10 +112,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     private static final int ACTIVITY_RESULT_PARCEL = 1;  // The request code
     private static final int ACTIVITY_RESULT_ARCHIVE = 2;  // The request code
     public static final int ACTIVITY_RESULT_PARCEL_EDITOR = 3;  // The request code
-
-    // Swipe action adapter
-    protected SwipeActionAdapter mAdapter;
-    private int onSwipePosition;
 
 
     @Override
@@ -265,9 +259,9 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
-        emptyView = findViewById(R.id.emptyView);
+        View emptyView = findViewById(R.id.emptyView);
         trackItemsList = findViewById(R.id.trackItemsList);
-        trackItemsList.setEmptyView(emptyView);
+        // trackItemsList.setEmptyView(emptyView); // Todo, implement empty view
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -282,8 +276,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
 
 
         readItems();
-        setupListViewListener();
-        setupListViewListener2();
 
 
         // Start automatic refresh task if enabled from settings
@@ -327,71 +319,6 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
             }
         } catch (NullPointerException ignored) {
         }
-    }
-
-
-    // ---------------------------------------------------------------------------------------------
-
-    // ON CLICK LISTENER
-    @SuppressWarnings("HardCodedStringLiteral")
-    private void setupListViewListener2() {
-        trackItemsList.setOnItemClickListener(
-                (parent, view, position, id) -> {
-                    String parcelId = parcelItems.get(position).getParcelId();
-                    Intent intent = new Intent(MainMenu.this, Parcel.class);
-                    intent.putExtra("PARCEL_ID", parcelId);
-                    startActivityForResult(intent, ACTIVITY_RESULT_PARCEL);
-                });
-    }
-
-
-    // ---------------------------------------------------------------------------------------------
-
-    // Long click listener for Parcel events path window service starter
-    private void setupListViewListener() {
-        trackItemsList.setOnItemLongClickListener(
-                (adapter, item, pos, id) -> {
-
-                    String[] longTapArrayItems = getResources().getStringArray(R.array.pref_long_tap_values);
-                    String longTapSelectedAction = sharedPreferences.getString(Constants.SP_MAIN_MENU_LIST_LONG_TAP_ACTION, "");
-
-                    if (longTapSelectedAction.equals(longTapArrayItems[0])) {
-                        if (isMyServiceRunning(ParcelService.class)) {
-                            Toast.makeText(MainMenu.this, R.string.main_menu_update_in_progress_try_again_later, Toast.LENGTH_LONG).show();
-                        } else {
-                            trackingEvents_FIS.clear();
-                            trackingEvents_TIMESTAMPS.clear();
-                            trackingEvents_LOCATIONCODES.clear();
-                            trackingEvents_LOCATIONNAMES.clear();
-                            Cursor res = databaseHelper.getAllTrackingData(parcelItems.get(pos).getParcelId());
-                            if (res.getCount() == 0) {
-                                //noinspection HardCodedStringLiteral
-                                Log.i(TAG, "Got nothing saved on tracking table with parcelID: " + parcelItems.get(pos).getParcelCode());
-                            }
-                            while (res.moveToNext()) {
-                                trackingEvents_FIS.add(res.getString(3));
-                                trackingEvents_TIMESTAMPS.add(res.getString(4));
-                                trackingEvents_LOCATIONCODES.add(res.getString(6));
-                                trackingEvents_LOCATIONNAMES.add(res.getString(7));
-                            }
-                            res.close();
-                            showPackageEventsDialog();
-                        }
-                    } else if (longTapSelectedAction.equals(longTapArrayItems[1])) { // Clipboard
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("", parcelItems.get(pos).getParcelCode());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(MainMenu.this, R.string.main_menu_code_copied_to_your_clipboard, Toast.LENGTH_SHORT).show();
-                    } else if (longTapSelectedAction.equals("") || longTapSelectedAction.equals(longTapArrayItems[2])) { // Edit information
-                        Intent intent = new Intent(MainMenu.this, ParcelEditor.class);
-                        //noinspection HardCodedStringLiteral
-                        intent.putExtra("PARCEL_ID", parcelItems.get(pos).getParcelId());
-                        startActivityForResult(intent, ACTIVITY_RESULT_PARCEL_EDITOR);
-                    } else {
-                        Toast.makeText(MainMenu.this, R.string.main_menu_long_click_function_selection_not_made_on_settings, Toast.LENGTH_LONG).show();
-                    }
-                    return true;
-                });
     }
 
 
@@ -477,88 +404,121 @@ public class MainMenu extends AppCompatActivity implements SwipeActionAdapter.Sw
     // Update list view
     public void updateListView() {
         if (adapter == null) {
-            adapter = new CustomParcelsAdapterV2(MainMenu.this, parcelItems, true, lastUpdate);
-            mAdapter = new SwipeActionAdapter(adapter);
-            mAdapter.setSwipeActionListener(this)
-                    .setDimBackgrounds(true)
-                    .setListView(trackItemsList);
-            mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
-                    .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
-            trackItemsList.setAdapter(mAdapter);
+            adapter = new ParcelsAdapter(MainMenu.this, parcelItems, true, lastUpdate);
+            adapter.setClickListeners(this);
+            trackItemsList.setAdapter(adapter);
+
+            // Todo implement swipe
+            // adapter.setSwipeActionListener(this)
+            //         .setDimBackgrounds(true)
+            //         .setListView(trackItemsList);
+            // adapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_archive)
+            //         .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
+
         } else {
             adapter.notifyDataSetChanged();
         }
     }
 
+
     @Override
-    public boolean hasActions(int position, SwipeDirection direction) {
-        if (direction.isLeft()) return true;
-        return direction.isRight();
+    public void onItemClick(View view, int position) {
+        String parcelId = parcelItems.get(position).getParcelId();
+        Intent intent = new Intent(MainMenu.this, Parcel.class);
+        intent.putExtra("PARCEL_ID", parcelId);
+        startActivityForResult(intent, ACTIVITY_RESULT_PARCEL);
     }
 
     @Override
-    public boolean shouldDismiss(int position, SwipeDirection direction) {
-        return direction == SwipeDirection.DIRECTION_NORMAL_RIGHT;
-    }
+    public void onItemLongClick(View view, int position) {
+        String[] longTapArrayItems = getResources().getStringArray(R.array.pref_long_tap_values);
+        String longTapSelectedAction = sharedPreferences.getString(Constants.SP_MAIN_MENU_LIST_LONG_TAP_ACTION, "");
 
-    @Override
-    public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
-        for (int i = 0; i < positionList.length; i++) {
-            SwipeDirection direction = directionList[i];
-            onSwipePosition = positionList[i];
-            switch (direction) {
-                case DIRECTION_NORMAL_RIGHT:
-                    directionRightArchive();
-                    break;
-                case DIRECTION_NORMAL_LEFT:
-                    directionLeftDelete();
-                    break;
-                case DIRECTION_FAR_RIGHT:
-                    directionRightArchive();
-                    break;
-                case DIRECTION_FAR_LEFT:
-                    directionLeftDelete();
-                    break;
+        if (longTapSelectedAction.equals(longTapArrayItems[0])) {
+            if (isMyServiceRunning(ParcelService.class)) {
+                Toast.makeText(MainMenu.this, R.string.main_menu_update_in_progress_try_again_later, Toast.LENGTH_LONG).show();
+            } else {
+                trackingEvents_FIS.clear();
+                trackingEvents_TIMESTAMPS.clear();
+                trackingEvents_LOCATIONCODES.clear();
+                trackingEvents_LOCATIONNAMES.clear();
+                Cursor res = databaseHelper.getAllTrackingData(parcelItems.get(position).getParcelId());
+                if (res.getCount() == 0) {
+                    //noinspection HardCodedStringLiteral
+                    Log.i(TAG, "Got nothing saved on tracking table with parcelID: " + parcelItems.get(position).getParcelCode());
+                }
+                while (res.moveToNext()) {
+                    trackingEvents_FIS.add(res.getString(3));
+                    trackingEvents_TIMESTAMPS.add(res.getString(4));
+                    trackingEvents_LOCATIONCODES.add(res.getString(6));
+                    trackingEvents_LOCATIONNAMES.add(res.getString(7));
+                }
+                res.close();
+                showPackageEventsDialog();
             }
+        } else if (longTapSelectedAction.equals(longTapArrayItems[1])) { // Clipboard
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("", parcelItems.get(position).getParcelCode());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(MainMenu.this, R.string.main_menu_code_copied_to_your_clipboard, Toast.LENGTH_SHORT).show();
+        } else if (longTapSelectedAction.equals("") || longTapSelectedAction.equals(longTapArrayItems[2])) { // Edit information
+            Intent intent = new Intent(MainMenu.this, ParcelEditor.class);
+            //noinspection HardCodedStringLiteral
+            intent.putExtra("PARCEL_ID", parcelItems.get(position).getParcelId());
+            startActivityForResult(intent, ACTIVITY_RESULT_PARCEL_EDITOR);
+        } else {
+            Toast.makeText(MainMenu.this, R.string.main_menu_long_click_function_selection_not_made_on_settings, Toast.LENGTH_LONG).show();
         }
     }
 
 
-    @Override
-    public void onSwipeStarted(ListView listView, int position, SwipeDirection direction) {
-        swipeRefreshLayout.setEnabled(false);
-    }
-
-    @Override
-    public void onSwipeEnded(ListView listView, int position, SwipeDirection direction) {
-        swipeRefreshLayout.setEnabled(true);
-    }
+    // @Override
+    // public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
+    //     for (int i = 0; i < positionList.length; i++) {
+    //         SwipeDirection direction = directionList[i];
+    //         onSwipePosition = positionList[i];
+    //         switch (direction) {
+    //             case DIRECTION_NORMAL_RIGHT:
+    //                 directionRightArchive();
+    //                 break;
+    //             case DIRECTION_NORMAL_LEFT:
+    //                 directionLeftDelete();
+    //                 break;
+    //             case DIRECTION_FAR_RIGHT:
+    //                 directionRightArchive();
+    //                 break;
+    //             case DIRECTION_FAR_LEFT:
+    //                 directionLeftDelete();
+    //                 break;
+    //         }
+    //     }
+    // }
 
 
     // Swipe from right to left deletes item
-    private void directionLeftDelete() {
+    private void directionLeftDelete(int position) {
         if (isMyServiceRunning(ParcelService.class)) {
             Toast.makeText(MainMenu.this, R.string.main_menu_cannot_delete_updating_packages_data, Toast.LENGTH_LONG).show();
         } else {
-            deleteItemConfirmationDialog();
+            deleteItemConfirmationDialog(position);
         }
     }
 
 
     // Swipe from left to right deletes item
-    private void directionRightArchive() {
-        String codeId = parcelItems.get(onSwipePosition).getParcelId();
+    private void directionRightArchive(int position) {
+        String codeId = parcelItems.get(position).getParcelId();
         databaseHelper.updateArchived(codeId, true);
         readItems();
     }
 
 
-    private void deleteItemConfirmationDialog() {
+    private void deleteItemConfirmationDialog(int position) {
         new AlertDialog.Builder(MainMenu.this)
                 .setTitle(R.string.main_menu_deletion_title)
                 .setMessage(R.string.main_menu_you_are_about_to_delete_following_package_from_list)
                 .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
-                    String codeId = parcelItems.get(onSwipePosition).getParcelId();
+                    String codeId = parcelItems.get(position).getParcelId();
                     databaseHelper.deletePackageData(codeId);
                     readItems();
                 })
