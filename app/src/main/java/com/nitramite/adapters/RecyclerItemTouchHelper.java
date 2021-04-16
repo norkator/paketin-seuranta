@@ -65,10 +65,15 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 }
                 break;
             case ARCHIVE:
-                if (dX < 0) {
+                if (dX > 0) {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.VISIBLE);
+                    ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
+                } else if (dX < 0) {
+                    ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.VISIBLE);
+                    ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.GONE);
                 } else {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.GONE);
+                    ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
                 }
                 break;
         }

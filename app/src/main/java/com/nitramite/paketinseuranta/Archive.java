@@ -38,7 +38,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -49,7 +48,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.nitramite.adapters.ParcelsAdapter;
+import com.nitramite.adapters.ParcelsAdapterListener;
+import com.nitramite.adapters.RecyclerItemTouchHelper;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
@@ -58,20 +63,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Archive extends AppCompatActivity {
+public class Archive extends AppCompatActivity implements ParcelsAdapterListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     //  Logging
-    private static final String TAG = "Archive"; //NON-NLS
+    private static final String TAG = Archive.class.getSimpleName();
 
     // Main items
     private DatabaseHelper databaseHelper = new DatabaseHelper(this);
     private ArrayList<ParcelItem> parcelItems = new ArrayList<>();
 
     // Components
-    InputMethodManager inputMethodManager;
+    private InputMethodManager inputMethodManager;
     private LocaleUtils localeUtils = new LocaleUtils();
-    // private CustomParcelsAdapterV2 adapter;
-    private ListView archiveItemsList;
+    private View emptyView = null;
+    private RecyclerView recyclerView;
+    private ParcelsAdapter adapter = null;
     private CardView searchQueryCard;
     private EditText searchArchiveInput;
     private ImageView clearToolBarImage;
@@ -128,9 +134,10 @@ public class Archive extends AppCompatActivity {
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // Find and int views
-        archiveItemsList = findViewById(R.id.archiveItemsList);
-        View emptyView = findViewById(R.id.emptyView);
-        archiveItemsList.setEmptyView(emptyView);
+        emptyView = findViewById(R.id.emptyView);
+        recyclerView = findViewById(R.id.archiveItemsList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         searchQueryCard = findViewById(R.id.searchQueryCard);
         searchQueryCard.setVisibility(View.GONE);
         searchArchiveInput = findViewById(R.id.searchArchiveInput);
@@ -162,20 +169,6 @@ public class Archive extends AppCompatActivity {
 
             }
         });
-
-
-        archiveItemsList.setOnItemClickListener((parent, view, position, id) -> {
-            String parcelId = parcelItems.get(position).getParcelId();
-            Intent i = new Intent(Archive.this, Parcel.class);
-            i.putExtra("PARCEL_ID", parcelId); //NON-NLS
-            startActivityForResult(i, PARCEL_ACTIVITY_RESULT);
-        });
-
-        archiveItemsList.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            setDeliveredConfirmationDialog(i);
-            return true;
-        });
-
 
         // Activity results set
         Intent returnIntent = new Intent();
@@ -224,91 +217,91 @@ public class Archive extends AppCompatActivity {
             parcelItem.setArchivedPackage(true); // This package is archived item
             parcelItems.add(parcelItem);
         }
-        // updateListView();
+        updateListView();
     }
 
 
     // ---------------------------------------------------------------------------------------------
 
     // Update list view
-    //public void updateListView() {
-    //    if (adapter == null) {
-    //        adapter = new CustomParcelsAdapterV2(this, parcelItems, true, false);
-    //        mAdapter = new SwipeActionAdapter(adapter);
-    //        mAdapter.setSwipeActionListener(this)
-    //                .setDimBackgrounds(true)
-    //                .setListView(archiveItemsList);
-    //        mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_return)
-    //                .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
-    //        archiveItemsList.setAdapter(mAdapter);
-    //    } else {
-    //        adapter.notifyDataSetChanged();
-    //    }
-    //}
-//
-    //@Override
-    //public boolean hasActions(int position, SwipeDirection direction) {
-    //    if (direction.isLeft()) return true;
-    //    return direction.isRight();
-    //}
-//
-    //@Override
-    //public boolean shouldDismiss(int position, SwipeDirection direction) {
-    //    return direction == SwipeDirection.DIRECTION_NORMAL_RIGHT;
-    //}
-//
-    //@Override
-    //public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
-    //    for (int i = 0; i < positionList.length; i++) {
-    //        SwipeDirection direction = directionList[i];
-    //        onSwipePosition = positionList[i];
-    //        switch (direction) {
-    //            case DIRECTION_NORMAL_RIGHT:
-    //                directionRightReturn();
-    //                break;
-    //            case DIRECTION_NORMAL_LEFT:
-    //                directionLeftDelete();
-    //                break;
-    //            case DIRECTION_FAR_RIGHT:
-    //                directionRightReturn();
-    //                break;
-    //            case DIRECTION_FAR_LEFT:
-    //                directionLeftDelete();
-    //                break;
-    //        }
-    //    }
-    //}
+    public void updateListView() {
+        if (parcelItems.size() > 0) {
+            emptyView.setVisibility(View.GONE);
+            if (adapter == null) {
+                adapter = new ParcelsAdapter(Archive.this, parcelItems, true, false);
+                adapter.setClickListeners(this);
+                recyclerView.setAdapter(adapter);
+
+
+                ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(
+                        0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this, RecyclerItemTouchHelper.ActivityTarget.ARCHIVE
+                );
+                new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+            } else {
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    public void onItemClick(View view, int position) {
+        String parcelId = parcelItems.get(position).getParcelId();
+        Intent i = new Intent(Archive.this, Parcel.class);
+        i.putExtra("PARCEL_ID", parcelId); //NON-NLS
+        startActivityForResult(i, PARCEL_ACTIVITY_RESULT);
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        setDeliveredConfirmationDialog(position);
+    }
+
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        switch (direction) {
+            case 4:
+                directionLeftDelete(position);
+                break;
+            case 8:
+                directionRightReturn(position);
+                break;
+        }
+    }
 
 
     // Swipe from right to left deletes item
-    // private void directionLeftDelete() {
-    //     deleteItemConfirmationDialog();
-    // }
-//
-//
-    // // Swipe from left to right returns item on list
-    // private void directionRightReturn() {
-    //     String codeId = parcelItems.get(onSwipePosition).getParcelId();
-    //     databaseHelper.updateArchived(codeId, false);
-    //     readItems(null);
-    // }
-//
-//
-    // private void deleteItemConfirmationDialog() {
-    //     new AlertDialog.Builder(Archive.this)
-    //             .setTitle(R.string.archive_delete_title)
-    //             .setMessage(R.string.archive_delete_description)
-    //             .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
-    //                 String codeId = parcelItems.get(onSwipePosition).getParcelId();
-    //                 databaseHelper.deletePackageData(codeId);
-    //                 readItems(null);
-    //             })
-    //             .setNegativeButton(R.string.no_btn, (dialog, which) -> {
-    //                 // Return
-    //             })
-    //             .setIcon(R.mipmap.ps_logo_round)
-    //             .show();
-    // }
+    private void directionLeftDelete(int position) {
+        deleteItemConfirmationDialog(position);
+    }
+
+
+    // Swipe from left to right returns item on list
+    private void directionRightReturn(int position) {
+        String codeId = parcelItems.get(position).getParcelId();
+        databaseHelper.updateArchived(codeId, false);
+        readItems(null);
+    }
+
+
+    private void deleteItemConfirmationDialog(int position) {
+        new AlertDialog.Builder(Archive.this)
+                .setTitle(R.string.archive_delete_title)
+                .setMessage(R.string.archive_delete_description)
+                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
+                    String codeId = parcelItems.get(position).getParcelId();
+                    databaseHelper.deletePackageData(codeId);
+                    readItems(null);
+                })
+                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
+                    // Return
+                })
+                .setIcon(R.mipmap.ps_logo_round)
+                .show();
+    }
 
 
     private void setDeliveredConfirmationDialog(final int position) {
@@ -398,7 +391,6 @@ public class Archive extends AppCompatActivity {
             }
         });
         dismissBtn.setOnClickListener(view -> dialog.dismiss());
-        // Todo, find out why this approach does not really open folder
         openLocationBtn.setOnClickListener(v -> openCSVFolder());
     }
 
@@ -481,8 +473,6 @@ public class Archive extends AppCompatActivity {
     }
 
 
-    // ---------------------------------------------------------------------------------------------
-
     // Menu items
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -520,8 +510,5 @@ public class Archive extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    // ---------------------------------------------------------------------------------------------
 
 } // End of class

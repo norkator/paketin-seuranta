@@ -70,11 +70,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/holo_green_light"
-        android:gravity="end|center"
+        android:gravity="start|center"
         android:orientation="horizontal"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_clear" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,11 +87,6 @@
             android:text="@string/swipe_right_return_return_button"
             android:textColor="#fff"
             android:textSize="14sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_clear" />
 
     </LinearLayout>
 
