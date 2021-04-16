@@ -50,18 +50,15 @@ import androidx.core.content.ContextCompat;
 import androidx.multidex.MultiDex;
 import androidx.preference.PreferenceManager;
 
-import com.nitramite.adapters.CustomParcelsAdapterV2;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
-import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
-import com.wdullaer.swipeactionadapter.SwipeDirection;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Archive extends AppCompatActivity implements SwipeActionAdapter.SwipeActionListener {
+public class Archive extends AppCompatActivity {
 
     //  Logging
     private static final String TAG = "Archive"; //NON-NLS
@@ -73,15 +70,11 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
     // Components
     InputMethodManager inputMethodManager;
     private LocaleUtils localeUtils = new LocaleUtils();
-    private CustomParcelsAdapterV2 adapter;
+    // private CustomParcelsAdapterV2 adapter;
     private ListView archiveItemsList;
     private CardView searchQueryCard;
     private EditText searchArchiveInput;
     private ImageView clearToolBarImage;
-
-    // Swipe action adapter
-    protected SwipeActionAdapter mAdapter;
-    private int onSwipePosition;
 
     // Variables
     private static final int PARCEL_ACTIVITY_RESULT = 3;  // The request code
@@ -231,91 +224,91 @@ public class Archive extends AppCompatActivity implements SwipeActionAdapter.Swi
             parcelItem.setArchivedPackage(true); // This package is archived item
             parcelItems.add(parcelItem);
         }
-        updateListView();
+        // updateListView();
     }
 
 
     // ---------------------------------------------------------------------------------------------
 
     // Update list view
-    public void updateListView() {
-        if (adapter == null) {
-            adapter = new CustomParcelsAdapterV2(this, parcelItems, true, false);
-            mAdapter = new SwipeActionAdapter(adapter);
-            mAdapter.setSwipeActionListener(this)
-                    .setDimBackgrounds(true)
-                    .setListView(archiveItemsList);
-            mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_return)
-                    .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
-            archiveItemsList.setAdapter(mAdapter);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public boolean hasActions(int position, SwipeDirection direction) {
-        if (direction.isLeft()) return true;
-        return direction.isRight();
-    }
-
-    @Override
-    public boolean shouldDismiss(int position, SwipeDirection direction) {
-        return direction == SwipeDirection.DIRECTION_NORMAL_RIGHT;
-    }
-
-    @Override
-    public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
-        for (int i = 0; i < positionList.length; i++) {
-            SwipeDirection direction = directionList[i];
-            onSwipePosition = positionList[i];
-            switch (direction) {
-                case DIRECTION_NORMAL_RIGHT:
-                    directionRightReturn();
-                    break;
-                case DIRECTION_NORMAL_LEFT:
-                    directionLeftDelete();
-                    break;
-                case DIRECTION_FAR_RIGHT:
-                    directionRightReturn();
-                    break;
-                case DIRECTION_FAR_LEFT:
-                    directionLeftDelete();
-                    break;
-            }
-        }
-    }
+    //public void updateListView() {
+    //    if (adapter == null) {
+    //        adapter = new CustomParcelsAdapterV2(this, parcelItems, true, false);
+    //        mAdapter = new SwipeActionAdapter(adapter);
+    //        mAdapter.setSwipeActionListener(this)
+    //                .setDimBackgrounds(true)
+    //                .setListView(archiveItemsList);
+    //        mAdapter.addBackground(SwipeDirection.DIRECTION_NORMAL_RIGHT, R.layout.swipe_right_return)
+    //                .addBackground(SwipeDirection.DIRECTION_NORMAL_LEFT, R.layout.swipe_left_delete);
+    //        archiveItemsList.setAdapter(mAdapter);
+    //    } else {
+    //        adapter.notifyDataSetChanged();
+    //    }
+    //}
+//
+    //@Override
+    //public boolean hasActions(int position, SwipeDirection direction) {
+    //    if (direction.isLeft()) return true;
+    //    return direction.isRight();
+    //}
+//
+    //@Override
+    //public boolean shouldDismiss(int position, SwipeDirection direction) {
+    //    return direction == SwipeDirection.DIRECTION_NORMAL_RIGHT;
+    //}
+//
+    //@Override
+    //public void onSwipe(int[] positionList, SwipeDirection[] directionList) {
+    //    for (int i = 0; i < positionList.length; i++) {
+    //        SwipeDirection direction = directionList[i];
+    //        onSwipePosition = positionList[i];
+    //        switch (direction) {
+    //            case DIRECTION_NORMAL_RIGHT:
+    //                directionRightReturn();
+    //                break;
+    //            case DIRECTION_NORMAL_LEFT:
+    //                directionLeftDelete();
+    //                break;
+    //            case DIRECTION_FAR_RIGHT:
+    //                directionRightReturn();
+    //                break;
+    //            case DIRECTION_FAR_LEFT:
+    //                directionLeftDelete();
+    //                break;
+    //        }
+    //    }
+    //}
 
 
     // Swipe from right to left deletes item
-    private void directionLeftDelete() {
-        deleteItemConfirmationDialog();
-    }
-
-
-    // Swipe from left to right returns item on list
-    private void directionRightReturn() {
-        String codeId = parcelItems.get(onSwipePosition).getParcelId();
-        databaseHelper.updateArchived(codeId, false);
-        readItems(null);
-    }
-
-
-    private void deleteItemConfirmationDialog() {
-        new AlertDialog.Builder(Archive.this)
-                .setTitle(R.string.archive_delete_title)
-                .setMessage(R.string.archive_delete_description)
-                .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
-                    String codeId = parcelItems.get(onSwipePosition).getParcelId();
-                    databaseHelper.deletePackageData(codeId);
-                    readItems(null);
-                })
-                .setNegativeButton(R.string.no_btn, (dialog, which) -> {
-                    // Return
-                })
-                .setIcon(R.mipmap.ps_logo_round)
-                .show();
-    }
+    // private void directionLeftDelete() {
+    //     deleteItemConfirmationDialog();
+    // }
+//
+//
+    // // Swipe from left to right returns item on list
+    // private void directionRightReturn() {
+    //     String codeId = parcelItems.get(onSwipePosition).getParcelId();
+    //     databaseHelper.updateArchived(codeId, false);
+    //     readItems(null);
+    // }
+//
+//
+    // private void deleteItemConfirmationDialog() {
+    //     new AlertDialog.Builder(Archive.this)
+    //             .setTitle(R.string.archive_delete_title)
+    //             .setMessage(R.string.archive_delete_description)
+    //             .setPositiveButton(R.string.yes_btn, (dialog, which) -> {
+    //                 String codeId = parcelItems.get(onSwipePosition).getParcelId();
+    //                 databaseHelper.deletePackageData(codeId);
+    //                 readItems(null);
+    //             })
+    //             .setNegativeButton(R.string.no_btn, (dialog, which) -> {
+    //                 // Return
+    //             })
+    //             .setIcon(R.mipmap.ps_logo_round)
+    //             .show();
+    // }
 
 
     private void setDeliveredConfirmationDialog(final int position) {
