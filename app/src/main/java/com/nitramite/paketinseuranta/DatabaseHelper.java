@@ -40,9 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Logging
     private static final String TAG = "DatabaseHelper";
 
-    // Variables
-    private Context context;
-
     // For database updating
     private List<String> columnsParcels;
     private List<String> columnsEventsData;
@@ -143,7 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Constructor
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+        // Variables
     }
 
 
@@ -203,8 +200,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         upgrade = true;
-        //db.execSQL("DROP TABLE IF EXISTS " + PARCELS_TABLE);
-        //db.execSQL("DROP TABLE IF EXISTS " + EVENTS_TABLE);
         onCreate(db);
     }
 
@@ -285,8 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get all package data
     Cursor getAllData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + IS_ARCHIVED + " = '0'" + " AND " + TRACKINGCODE + " != ''" + " ORDER BY " + PHASE_NUMBER + " DESC", null);
-        return res;
+        return db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + IS_ARCHIVED + " = '0'" + " AND " + TRACKINGCODE + " != ''" + " ORDER BY " + PHASE_NUMBER + " DESC", null);
     }
 
 
@@ -332,28 +326,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT " + "COUNT(*)" + " FROM " + PARCELS_TABLE + " WHERE " + KEY_ID + " = " + id + " AND " + IS_ARCHIVED + " = '1'", null);
         res.moveToFirst();
-        final Integer count = res.getInt(0);
+        final int count = res.getInt(0);
         res.close();
         return count > 0;
     }
 
 
-    // Get all archive package data
-    public Cursor getAllArchiveData() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + IS_ARCHIVED + " = '1'" + " ORDER BY " + KEY_ID + " DESC", null);
-        return res;
-    }
-
-
     // Get all archive data with latest event
     public Cursor getAllArchiveDataWithLatestEvent(String searchStr) {
-
-        Log.i(TAG, " AND (" + TITLE + " LIKE '" + searchStr + "' OR "
-                + TRACKINGCODE + " LIKE '" + searchStr + "' OR " + SENDER_TEXT + " LIKE '" + searchStr + "' OR " + DELIVERY_METHOD + " LIKE '" + searchStr + "'" + ")");
-
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
+        return db.rawQuery("SELECT p." + KEY_ID + ", " + "p." + TRACKINGCODE + ", " +
                 "p." + PHASE + ", " + "p." + FI + ", " + "p." + TITLE + ", " + "p." + LAST_UPDATE_STATUS + ", " +
                 "(SELECT " + DESCRIPTION + " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + "p." + KEY_ID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC LIMIT 1" + ")" + " AS " + DESCRIPTION +
                 ", " + "p." + CARRIER + ", " + "p." + SENDER_TEXT + ", " + "p." + DELIVERY_METHOD + ", " + "p." + ADDITIONAL_NOTE +
@@ -366,7 +348,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + TRACKINGCODE + " LIKE '%" + searchStr + "%' OR " + SENDER_TEXT + " LIKE '%" + searchStr + "%' OR " + DELIVERY_METHOD + " LIKE '%" + searchStr + "%'" + ")" : "")
 
                 + " ORDER BY " + "p." + KEY_ID + " DESC", null);
-        return res;
     }
 
 
@@ -414,24 +395,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get all package data where package is on ready to pickup state
     Cursor getAllDataWhereReadyToPickupState() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + IS_ARCHIVED + " = '0'" + " AND " + PHASE_NUMBER + " = 3" + " ORDER BY " + PHASE_NUMBER + " DESC", null);
-        return res;
-    }
-
-
-    // Get id with tracking code
-    public Cursor getIdByTrackingcode(String trackingcode) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + "trackingcode = ?", new String[]{String.valueOf(trackingcode)});
-        return res;
+        return db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + IS_ARCHIVED + " = '0'" + " AND " + PHASE_NUMBER + " = 3" + " ORDER BY " + PHASE_NUMBER + " DESC", null);
     }
 
 
     // Get data by id
     Cursor getDataByID(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + "id = ?" /*+ " AND " + TRACKINGCODE + " != ''"*/, new String[]{String.valueOf(id)});
-        return res;
+        return db.rawQuery("SELECT * FROM " + PARCELS_TABLE + " WHERE " + "id = ?", new String[]{String.valueOf(id)});
     }
 
 
@@ -463,7 +434,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         }
-        res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE + " = " + String.valueOf(PhaseNumber.PHASE_INT_IN_TRANSPORT) + " AND " + IS_ARCHIVED + " = '0'", null);
+        res = db.rawQuery("SELECT COUNT(*) FROM " + PARCELS_TABLE + " WHERE " + PHASE + " = " + PhaseNumber.PHASE_INT_IN_TRANSPORT + " AND " + IS_ARCHIVED + " = '0'", null);
         res.moveToFirst();
         if (res.getCount() > 0) {
             if (res.getInt(0) != 0) {
@@ -484,7 +455,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Update data
-    public boolean updateData(String id, String carrierCode, String carrierStatus, String trackingCode, ParcelObject parcelObject, String lastUpdateStatus) {
+    public void updateData(String id, String carrierCode, String carrierStatus, String trackingCode, ParcelObject parcelObject, String lastUpdateStatus) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_ID, id);
@@ -524,19 +495,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(LAST_UPDATE_STATUS, lastUpdateStatus);
         db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{id});
         db.close();
-        return true;
-    }
-
-
-    // Update phase number (used with ordering of main menu list)
-    boolean updatePhaseNumber(String id, String phaseNumber) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_ID, id);
-        contentValues.put(PHASE_NUMBER, phaseNumber);
-        db.update(PARCELS_TABLE, contentValues, " id = ?", new String[]{id});
-        db.close();
-        return true;
     }
 
 
@@ -602,36 +560,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // Set package title
-    public boolean updateTitle(String id, String title) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + PARCELS_TABLE + " SET title = '" + title + "' WHERE id = " + id);
-        db.close();
-        return true;
-    }
-
-
-    // Returns package current title
-    public String getTitle(String id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + TITLE + " FROM " + PARCELS_TABLE + " WHERE " + ID + " = " + id, null);
-        res.moveToFirst();
-        final String currentTitle = res.getString(0);
-        res.close();
-        db.close();
-        return currentTitle;
-    }
-
-
-    // Set locker code
-    public boolean updateLockerCode(String id, String lockerCode) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + PARCELS_TABLE + " SET " + LOCKERCODE + " = '" + lockerCode + "' WHERE id = " + id);
-        db.close();
-        return true;
-    }
-
-
     // Update carrier (change parcel carrier)
     public boolean updateCarrierCode(String id, Integer carrierCode) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -649,27 +577,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // Returns package current title
-    public String getParcelCurrentTrackingCode(String id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + TRACKINGCODE + " FROM " + PARCELS_TABLE + " WHERE " + ID + " = " + id, null);
-        res.moveToFirst();
-        final String currentTrackingCode = res.getString(0);
-        res.close();
-        db.close();
-        return currentTrackingCode;
-    }
-
-
-    // Set new tracking code
-    public boolean updateParcelTrackingCode(String id, String trackingCode) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + PARCELS_TABLE + " SET " + TRACKINGCODE + " = '" + trackingCode + "' WHERE id = " + id);
-        db.close();
-        return true;
-    }
-
-
     // Get data for package data edit
     public Cursor getEditPackageData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -678,6 +585,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", " + MANUAL_DELIVERED_DATE + ", " + PARCEL_PAID +
                 " FROM " + PARCELS_TABLE + " WHERE " + ID + " = " + id, null);
     }
+
 
     // Update data
     public boolean updateEditPackageData(ParcelObject parcelObject) {
@@ -740,9 +648,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     // Insert tracking data in a way that data is first verified not to exist
-    public boolean insertTrackingData(String parcel_id, String carrier_t, String description, String timeStamp, String timeStampSQLite, String locationCode, String locationName) {
+    public void insertTrackingData(String parcel_id, String carrier_t, String description, String timeStamp, String timeStampSQLite, String locationCode, String locationName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Cursor res = db.rawQuery("SELECT COUNT(*) FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = '"+ parcel_id +"'" + " AND " + DESCRIPTION + " = '" + description +"'", null); // Did not insert all data
         Cursor res = db.rawQuery(
                 "SELECT COUNT(*) FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = ? AND " +
                         DESCRIPTION + " = ? " + " AND " +
@@ -762,28 +669,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(LOCATION_CODE, locationCode);
             contentValues.put(LOCATION_NAME, locationName);
             long result = db.insert(EVENTS_TABLE, null, contentValues);
-            return result != -1;
         }
         res.close();
-        return false;
     }
 
 
     // Same than below one but return everything
     Cursor getAllTrackingData(String parcelID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID +
+        return db.rawQuery("SELECT * FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID +
                 " ORDER BY " + TIMESTAMP_SQLITE + " DESC", null);
-        return res;
     }
 
 
     // Returns parcel events for selected parcel id
     Cursor getAllEventsDataWithParcelID(String parcelID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + ID + ", " + PARCEL_ID + ", " + CARRIER_T + ", " + DESCRIPTION + ", " + TIMESTAMP + ", " + LOCATION_CODE + ", " + LOCATION_NAME +
+        return db.rawQuery("SELECT " + ID + ", " + PARCEL_ID + ", " + CARRIER_T + ", " + DESCRIPTION + ", " + TIMESTAMP + ", " + LOCATION_CODE + ", " + LOCATION_NAME +
                 " FROM " + EVENTS_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID + " ORDER BY " + TIMESTAMP_SQLITE + " DESC", null);
-        return res;
     }
 
 
@@ -829,33 +732,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean deleteAllTrackingDataWithParcelID(String parcelID) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + EVENTS_TABLE + " WHERE parcel_id = ?", new String[]{parcelID});
-        db.close();
-        return true;
-    }
-
-
     // ---------------------------------------------------------------------------------------------
     /* Image table */
 
     // Insert image data into image data table
-    boolean insertImageData(String parcel_id, byte[] imageData) {
+    void insertImageData(String parcel_id, byte[] imageData) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PARCEL_ID, parcel_id);
         contentValues.put(IMAGE_DATA, imageData);
-        long result = db.insert(IMAGES_TABLE, null, contentValues);
-        Log.i(TAG, contentValues.toString());
-        return result != -1;
+        db.insert(IMAGES_TABLE, null, contentValues);
     }
 
 
     Cursor loadParcelImages(final String parcelID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT " + IMAGE_ID + ", " + IMAGE_DATA + " FROM " + IMAGES_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID, null);
-        return res;
+        return db.rawQuery("SELECT " + IMAGE_ID + ", " + IMAGE_DATA + " FROM " + IMAGES_TABLE + " WHERE " + PARCEL_ID + " = " + parcelID, null);
     }
 
 
