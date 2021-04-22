@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -74,6 +76,12 @@ public class BackupManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_backup_manager);
+        setTitle(getString(R.string.backup));
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
 
         sharedPreferences = SharedPreferencesUtils.getSharedPreferences(getApplicationContext());
 
@@ -276,6 +284,24 @@ public class BackupManager extends AppCompatActivity {
     private void setLastBackupTakenView() {
         final String lastBackupDateStr = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
         lastBackupDate.setText(lastBackupDateStr == null ? getString(R.string.no_timed_backups_taken) : getString(R.string.last_backup) + lastBackupDateStr);
+    }
+
+
+
+    // Menu items
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // getMenuInflater().inflate(R.menu.menu_archive, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

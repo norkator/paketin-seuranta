@@ -282,6 +282,7 @@
     <string name="continue_with_backup_restore">Continue with database restore from backup?</string>
     <string name="export_backup">Export backup</string>
     <string name="import_backup">Import backup</string>
+    <string name="backup">Backup</string>
 
 
     <!-- Strings related to Settings -->
