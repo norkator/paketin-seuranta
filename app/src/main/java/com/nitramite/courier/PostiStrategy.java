@@ -105,7 +105,7 @@ public class PostiStrategy implements CourierStrategy {
                 }
 
                 if (jsonChildNode.getJSONObject("product").has("name")) {
-                    if (!jsonChildNode.getJSONObject("product").getString("name").contains("null")) {
+                    if (!jsonChildNode.getJSONObject("product").has("name")) {
                         parcelObject.setProduct(
                                 jsonChildNode.getJSONObject("product").getJSONObject("name").optString(locale == Locale.FI? "fi" : "en")
                         );
