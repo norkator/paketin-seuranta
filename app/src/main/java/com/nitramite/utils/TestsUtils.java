@@ -24,8 +24,7 @@ public class TestsUtils {
                     .get();
             Element element = document.select("#gatsby-focus-wrapper > main > section:nth-child(1) > div > div.stack-item.Em51._1ucn.w-100 > section > div > p > a").first();
             return element.text();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException e) {
             return null;
         }
     }
