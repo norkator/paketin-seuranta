@@ -1,8 +1,7 @@
 package com.nitramite.paketinseuranta;
 
-import android.util.Log;
-
 import com.nitramite.courier.Courier;
+import com.nitramite.courier.DHLExpressStrategy;
 import com.nitramite.courier.ParcelObject;
 import com.nitramite.courier.PostiStrategy;
 import com.nitramite.utils.TestsUtils;
@@ -16,10 +15,10 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class PostiStrategyTest {
+public class StrategyTest {
 
     //  Logging
-    private static final String TAG = PostiStrategyTest.class.getSimpleName();
+    private static final String TAG = StrategyTest.class.getSimpleName();
 
     private Courier courier = new Courier();
 
@@ -30,7 +29,15 @@ public class PostiStrategyTest {
         String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/posti");
         ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
 
-        // Log.i(TAG, parcelObject.)
+        assertEquals(true, parcelObject.getIsFound());
+    }
+
+
+    @Test
+    public void dhl_express_strategy_is_healthy() {
+        courier.setCourierStrategy(new DHLExpressStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/dhl");
+        ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
 
         assertEquals(true, parcelObject.getIsFound());
     }
