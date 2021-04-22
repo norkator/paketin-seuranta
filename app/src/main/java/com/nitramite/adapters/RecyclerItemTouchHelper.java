@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +50,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                 int actionState, boolean isCurrentlyActive) {
         final View foregroundView = ((ParcelsAdapter.ViewHolder) viewHolder).viewForeground;
+
         getDefaultUIUtil().onDrawOver(canvas, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
         switch (activityTarget) {
@@ -56,24 +58,30 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                 if (dX > 0) {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewArchive.setVisibility(View.VISIBLE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 30);
                 } else if (dX < 0) {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.VISIBLE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewArchive.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 30);
                 } else {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewArchive.setVisibility(View.GONE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 5);
                 }
                 break;
             case ARCHIVE:
                 if (dX > 0) {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.VISIBLE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 30);
                 } else if (dX < 0) {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.VISIBLE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 30);
                 } else {
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewReturn.setVisibility(View.GONE);
                     ((ParcelsAdapter.ViewHolder) viewHolder).swipeViewDelete.setVisibility(View.GONE);
+                    ViewCompat.setElevation(foregroundView, 5);
                 }
                 break;
         }
