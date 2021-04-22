@@ -117,7 +117,7 @@ public class StrategyTest {
         String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/yanwen");
         if (sampleTrackingCode != null) {
             ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
-            assertEquals(true, parcelObject.getIsFound());
+            assertEquals(true, parcelObject.getIsFound() || parcelObject.getEventObjects().size() > 0);
         } else {
             Log.i(TAG, str1 + YanwenStrategy.class.getSimpleName() + str2);
         }
