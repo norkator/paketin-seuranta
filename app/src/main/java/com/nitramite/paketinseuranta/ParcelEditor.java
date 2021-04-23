@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -58,6 +59,10 @@ public class ParcelEditor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         localeUtils.setApplicationLanguage(this);
         setContentView(R.layout.activity_parcel_editor);
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         // Get services
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -169,6 +174,9 @@ public class ParcelEditor extends AppCompatActivity {
         if (id == R.id.action_save) {
             this.fragmentTrackedDeliveryInterface.onSaveChangesActionBtnClick();
             return true;
+        }
+        if (id == android.R.id.home) {
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -284,6 +284,7 @@
     <string name="export_backup">Export backup</string>
     <string name="import_backup">Import backup</string>
     <string name="quantity_pieces"></string>
+    <string name="backup">Backup</string>
 
 
     <!-- Strings related to Settings -->
