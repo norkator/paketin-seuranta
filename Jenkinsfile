@@ -34,8 +34,10 @@ pipeline {
       }
     }
     stage('Unit test') {
+      when {
+        branch 'master'
+      }
       steps {
-        // Compile and run the unit tests for the app and its dependencies
         bat './gradlew testDebugUnitTest testDebugUnitTest'
 
         // Analyse the test results and update the build result as appropriate
