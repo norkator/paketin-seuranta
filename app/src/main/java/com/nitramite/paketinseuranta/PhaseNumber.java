@@ -38,12 +38,13 @@ public class PhaseNumber {
     // Returns number equivalent for phase string
     public static PhaseNumberString phaseToNumber(final String phase, final String lastEventStr) {
 
-        if (phase.equals(PHASE_IN_TRANSPORT_NOT_IN_FINLAND)
+        if (!phase.equals(PHASE_RETURNED_TO_SENDER) &&
+                (phase.equals(PHASE_IN_TRANSPORT_NOT_IN_FINLAND)
                 || lastEventStr.equals("Lähetys on matkalla kohdemaahan")
                 || lastEventStr.equals("Lähetys on rekisteröity.")
                 || lastEventStr.equals("Lähetys on lähtenyt varastolta")
                 || lastEventStr.equals("Lähetys on saapunut varastolle")
-                || lastEventStr.equals("Lähetys ei ole vielä saapunut Postille, odotathan")
+                || lastEventStr.equals("Lähetys ei ole vielä saapunut Postille, odotathan"))
         ) {
             return new PhaseNumberString(intToString(PHASE_INT_IN_TRANSPORT_NOT_IN_FINLAND), PHASE_IN_TRANSPORT_NOT_IN_FINLAND);
 

@@ -47,6 +47,9 @@ android {
         disable 'IconMissingDensityFolder'
         disable 'ObsoleteLintCustomCheck'
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -54,6 +57,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Test implementations
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.json:json:20180813'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // AndroidX
