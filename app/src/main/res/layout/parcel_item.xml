@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020
   ~ Paketin Seuranta
   ~
@@ -7,20 +6,111 @@
   ~ @author norkator
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/swipeViewArchive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="2dp"
+        android:background="@android:color/holo_orange_light"
+        android:gravity="start|center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/ic_archive" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/swipe_right_archive_archive_text"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/swipeViewDelete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:background="@android:color/holo_red_light"
+        android:gravity="end|center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text="@string/swipe_left_delete_delete_text"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/swipeViewReturn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="2dp"
+        android:background="@android:color/holo_green_light"
+        android:gravity="start|center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/ic_return" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/swipe_right_return_return_button"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/viewForeground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        card:cardCornerRadius="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        card:cardCornerRadius="5dp"
         card:cardElevation="2dp">
+
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -47,7 +137,7 @@
 
                     <TextView
                         android:id="@+id/firstLineBold"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -195,4 +285,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</FrameLayout>
