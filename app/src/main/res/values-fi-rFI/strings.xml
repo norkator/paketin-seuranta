@@ -110,6 +110,7 @@
     <string name="parcel_sender">Lähettäjä:</string>
     <string name="parcel_locker_code">Lokerokoodi:</string>
     <string name="parcel_service">Palvelu:</string>
+    <string name="parcel_quantity">Määrä:</string>
     <string name="parcel_weight">Paino:</string>
     <string name="parcel_height">Korkeus:</string>
     <string name="parcel_width">Leveys:</string>
@@ -282,6 +283,7 @@
     <string name="continue_with_backup_restore">Palauta tietokanta varmuuskopiosta?</string>
     <string name="export_backup">Vie varmuuskopio</string>
     <string name="import_backup">Tuo varmuuskopio</string>
+    <string name="quantity_pieces">kappaletta</string>
     <string name="backup">Varmuuskopio</string>
 
 
