@@ -1,6 +1,8 @@
 package com.nitramite.courier;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
+
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.paketinseuranta.PhaseNumber;
 
@@ -36,15 +38,14 @@ public class USPSStrategy implements CourierStrategy {
                     .get();
 
             // Parse current status from html
-            Elements deliveryStatusElements = document.getElementsByClass("delivery_status");
-            for(Element dElement : deliveryStatusElements ) {
-                if (dElement.select("strong").size() > 0) {
-                    if (dElement.select("strong").text().equals("In-Transit")) {
-                        parcelObject.setIsFound(true);
-                        parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
-                    }
-                }
+            Element statusElement = document.selectFirst("#tracked-numbers > div > div > div > div > div.product_summary.delivery_out_for_delivery > div.delivery_status > h2 > strong");
+            Log.i(TAG, statusElement.toString());
+            String statusText = statusElement.select("strong").text();
+            if (statusText.equals("In-Transit") || statusText.contains("Out for Delivery")) {
+                parcelObject.setIsFound(true);
+                parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT);
             }
+
 
 
             // Parse events
