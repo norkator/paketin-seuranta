@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.nitramite.paketinseuranta.EventObject;
 import com.nitramite.utils.Locale;
-import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.Utils;
 
 import org.json.JSONArray;
@@ -29,7 +28,7 @@ import okhttp3.Response;
 public class PostiStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "PostiStrategy";
+    private static final String TAG = PostiStrategy.class.getSimpleName();
 
     @Override
     public ParcelObject execute(final String parcelCode, final Locale locale) {

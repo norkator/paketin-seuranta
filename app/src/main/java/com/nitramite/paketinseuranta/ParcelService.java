@@ -45,7 +45,7 @@ public class ParcelService extends Service {
 
 
     // Logging
-    private static final String TAG = "ParcelService";
+    private static final String TAG = ParcelService.class.getSimpleName();
 
 
     @Override

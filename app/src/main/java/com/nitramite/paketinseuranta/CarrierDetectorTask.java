@@ -37,7 +37,7 @@ import java.util.ArrayList;
 public class CarrierDetectorTask extends AsyncTask<String, String, String> {
 
     // Variables
-    private static final String TAG = "CarrierDetectorTask";
+    private static final String TAG = CarrierDetectorTask.class.getSimpleName();
     private CarrierDetectorTaskInterface listener;
     private String parcelCode;
     private Locale locale;

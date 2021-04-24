@@ -2,14 +2,22 @@ package com.nitramite.paketinseuranta;
 
 import android.util.Log;
 
+import com.nitramite.courier.BringStrategy;
 import com.nitramite.courier.CainiaoStrategy;
 import com.nitramite.courier.Courier;
+import com.nitramite.courier.DHLActiveTrackingStrategy;
 import com.nitramite.courier.DHLExpressStrategy;
+import com.nitramite.courier.DpdStrategy;
 import com.nitramite.courier.FedExStrategy;
+import com.nitramite.courier.FourPXStrategy;
+import com.nitramite.courier.GlsStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
 import com.nitramite.courier.ParcelObject;
+import com.nitramite.courier.PostNordStrategy;
 import com.nitramite.courier.PostiStrategy;
+import com.nitramite.courier.TNTStrategy;
 import com.nitramite.courier.UPSStrategy;
+import com.nitramite.courier.USPSStrategy;
 import com.nitramite.courier.YanwenStrategy;
 import com.nitramite.utils.TestsUtils;
 
@@ -31,6 +39,19 @@ public class StrategyTest {
     private Courier courier = new Courier();
     private static String str1 = "!!!SKIPPED!!! ";
     private static String str2 = " has no tracking code available for testing!";
+
+
+    @Test
+    public void bring_strategy_is_healthy() {
+        courier.setCourierStrategy(new BringStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/bring");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + BringStrategy.class.getSimpleName() + str2);
+        }
+    }
 
 
     @Test
@@ -60,6 +81,32 @@ public class StrategyTest {
 
 
     @Test
+    public void dhl_active_tracking_strategy_is_healthy() {
+        courier.setCourierStrategy(new DHLActiveTrackingStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/dhl-active-tracing");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + DHLActiveTrackingStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void dpd_strategy_is_healthy() {
+        courier.setCourierStrategy(new DpdStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/dpd");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + DpdStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
     public void fedex_strategy_is_healthy() {
         courier.setCourierStrategy(new FedExStrategy());
         String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/fedex");
@@ -68,6 +115,32 @@ public class StrategyTest {
             assertEquals(true, parcelObject.getIsFound());
         } else {
             Log.i(TAG, str1 + FedExStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void four_px_strategy_is_healthy() {
+        courier.setCourierStrategy(new FourPXStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/4px");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + FourPXStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void gls_strategy_is_healthy() {
+        courier.setCourierStrategy(new GlsStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/gls");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + GlsStrategy.class.getSimpleName() + str2);
         }
     }
 
@@ -99,6 +172,32 @@ public class StrategyTest {
 
 
     @Test
+    public void postnord_strategy_is_healthy() {
+        courier.setCourierStrategy(new PostNordStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/postnord");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + PostNordStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void tnt_strategy_is_healthy() {
+        courier.setCourierStrategy(new TNTStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/tnt");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + TNTStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
     public void ups_strategy_is_healthy() {
         courier.setCourierStrategy(new UPSStrategy());
         String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/ups");
@@ -107,6 +206,19 @@ public class StrategyTest {
             assertEquals(true, parcelObject.getIsFound());
         } else {
             Log.i(TAG, str1 + UPSStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void usps_strategy_is_healthy() {
+        courier.setCourierStrategy(new USPSStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/usps");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assertEquals(true, parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + USPSStrategy.class.getSimpleName() + str2);
         }
     }
 

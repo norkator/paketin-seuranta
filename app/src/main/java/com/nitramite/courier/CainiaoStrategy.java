@@ -39,7 +39,7 @@ public class CainiaoStrategy implements CourierStrategy {
 
     // Logging
     @NonNls
-    private static final String TAG = "CainiaoStrategy";
+    private static final String TAG = CainiaoStrategy.class.getSimpleName();
 
 
     @SuppressWarnings("HardCodedStringLiteral")

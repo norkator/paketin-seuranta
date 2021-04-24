@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 public class Widget extends AppWidgetProvider {
 
     //  Logging
-    private static final String TAG = "Widget";
+    private static final String TAG = Widget.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

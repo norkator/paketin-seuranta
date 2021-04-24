@@ -31,7 +31,7 @@ public class ParcelEditor extends AppCompatActivity {
 
     //  Logging
     @NonNls
-    private static final String TAG = "ParcelEditor";
+    private static final String TAG = ParcelEditor.class.getSimpleName();
 
     // Marshmallow+ permission request
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 1;

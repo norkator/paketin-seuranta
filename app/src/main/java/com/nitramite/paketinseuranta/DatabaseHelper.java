@@ -38,7 +38,7 @@ import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Logging
-    private static final String TAG = "DatabaseHelper";
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
 
     // For database updating
     private List<String> columnsParcels;

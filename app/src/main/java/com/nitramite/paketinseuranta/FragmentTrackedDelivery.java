@@ -51,7 +51,7 @@ import java.util.Date;
 public class FragmentTrackedDelivery extends Fragment implements DatePickerDialog.OnDateSetListener, FragmentTrackedDeliveryInterface {
 
     // Logging
-    private static final String TAG = "FragmentTrackedDelivery";
+    private static final String TAG = FragmentTrackedDelivery.class.getSimpleName();
 
     // Date picker scenario
     enum DatePickerScenario {

@@ -34,7 +34,7 @@ public class BringStrategy implements CourierStrategy {
 
     // Logging
     @NonNls
-    private static final String TAG = "BringStrategy";
+    private static final String TAG = BringStrategy.class.getSimpleName();
 
     @SuppressWarnings("HardCodedStringLiteral")
     @Override

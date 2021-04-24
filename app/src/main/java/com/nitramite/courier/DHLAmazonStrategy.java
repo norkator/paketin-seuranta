@@ -32,7 +32,7 @@ import okhttp3.Response;
 public class DHLAmazonStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "DHLAmazonStrategy";
+    private static final String TAG = DHLAmazonStrategy.class.getSimpleName();
 
     @Override
     public ParcelObject execute(String parcelCode, final Locale locale) {

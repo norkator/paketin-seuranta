@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class FedExStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "FedExStrategy";
+    private static final String TAG = FedExStrategy.class.getSimpleName();
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

@@ -50,7 +50,7 @@ public class MyPreferencesActivity extends AppCompatActivity {
 
 
     //  Logging
-    private static final String TAG = "MyPreferencesActivity";
+    private static final String TAG = MyPreferencesActivity.class.getSimpleName();
 
 
     // Components

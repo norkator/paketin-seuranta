@@ -37,7 +37,7 @@ import okhttp3.ResponseBody;
 public class FourPXStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "FourPXStrategy";
+    private static final String TAG = FourPXStrategy.class.getSimpleName();
     private static final String URL = "http://track.4px.com/track/v2/front/listTrack";
 
 

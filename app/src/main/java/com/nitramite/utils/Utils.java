@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
 
     //  Logging
-    private static final String TAG = "Utils";
+    private static final String TAG = Utils.class.getSimpleName();
 
 
     // Get current datetime string
