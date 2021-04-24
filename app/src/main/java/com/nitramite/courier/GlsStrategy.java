@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class GlsStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "GlsStrategy";
+    private static final String TAG = GlsStrategy.class.getSimpleName();
 
     @Override
     public ParcelObject execute(final String parcelCode, final Locale locale) {

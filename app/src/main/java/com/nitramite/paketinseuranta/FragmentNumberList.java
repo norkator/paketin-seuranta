@@ -22,7 +22,7 @@ public class FragmentNumberList extends Fragment {
 
     // Logging
     @SuppressWarnings("HardCodedStringLiteral")
-    private static final String TAG = "FragmentNumberList";
+    private static final String TAG = FragmentNumberList.class.getSimpleName();
 
     // Activity components
     private EditText addTrackingCodesInput;

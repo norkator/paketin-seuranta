@@ -15,7 +15,7 @@ public class ChinaPostAirMailStrategy implements CourierStrategy {
 
     // Logging
     @NonNls
-    private static final String TAG = "CPRAM";
+    private static final String TAG = ChinaPostAirMailStrategy.class.getSimpleName();
 
 
     @SuppressWarnings("HardCodedStringLiteral")

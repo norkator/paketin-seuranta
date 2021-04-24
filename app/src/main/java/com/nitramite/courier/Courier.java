@@ -13,7 +13,7 @@ public class Courier {
 
     // Logging
     @NonNls
-    private static final String TAG = "Courier";
+    private static final String TAG = Courier.class.getSimpleName();
 
     // Strategy interface
     private CourierStrategy courierStrategy;

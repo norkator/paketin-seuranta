@@ -20,7 +20,7 @@ import java.util.Locale;
 public class USPSStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "USPSStrategy";
+    private static final String TAG = USPSStrategy.class.getSimpleName();;
 
 
     @Override

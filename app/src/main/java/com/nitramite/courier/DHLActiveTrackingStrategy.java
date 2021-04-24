@@ -30,7 +30,7 @@ import okhttp3.Response;
 public class DHLActiveTrackingStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "DHLActiveTracking";
+    private static final String TAG = DHLActiveTrackingStrategy.class.getSimpleName();
 
 
     @Override

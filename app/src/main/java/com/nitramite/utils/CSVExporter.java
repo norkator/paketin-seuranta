@@ -21,7 +21,7 @@ import java.util.Date;
 public class CSVExporter {
 
     //  Logging
-    private static final String TAG = "CSVExporter";
+    private static final String TAG = CSVExporter.class.getSimpleName();
 
     public static final String CSV_OLD_DIR = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/CSV/";
 

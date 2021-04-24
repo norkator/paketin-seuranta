@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class CustomAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     //  Logging
-    private static final String TAG = "CustomAutoComplete";
+    private static final String TAG = CustomAutoCompleteAdapter.class.getSimpleName();
 
     // Variables
     private Context context;

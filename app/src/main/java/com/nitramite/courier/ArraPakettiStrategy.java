@@ -28,7 +28,7 @@ public class ArraPakettiStrategy implements CourierStrategy {
 
     // Logging
     @NonNls
-    private static final String TAG = "ArraPakettiStrategy";
+    private static final String TAG = ArraPakettiStrategy.class.getSimpleName();;
 
     // Api url
     @NonNls

@@ -23,7 +23,7 @@ import java.util.Date;
 public class YanwenStrategy implements CourierStrategy {
 
     // Logging
-    private static final String TAG = "YanwenStrategy";
+    private static final String TAG = YanwenStrategy.class.getSimpleName();
 
     // Api url
     private static final String url = "https://track.yw56.com.cn/home/index?aspxerrorpath=/en-US0&InputTrackNumbers=";

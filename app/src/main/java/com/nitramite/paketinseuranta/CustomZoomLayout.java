@@ -16,7 +16,8 @@ public class CustomZoomLayout extends FrameLayout implements ScaleGestureDetecto
         ZOOM
     }
 
-    //private static final String TAG = "ZoomLayout";
+    private static final String TAG = CustomZoomLayout.class.getSimpleName();
+
     private static final float MIN_ZOOM = 1.0f;
     private static final float MAX_ZOOM = 4.0f;
 
