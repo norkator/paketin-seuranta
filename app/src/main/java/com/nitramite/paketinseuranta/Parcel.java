@@ -535,7 +535,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     addAdditionalDetailsLine(getString(R.string.parcel_service), res.getString(19));
                 }
                 // Quantity
-                if (!res.getString(44).equals("null") && res.getString(44).length() > 0) {
+                if (res.getString(44) != null && !res.getString(44).equals("null") && res.getString(44).length() > 0) {
                     addAdditionalDetailsLine(getString(R.string.parcel_quantity), res.getString(44) + " " + getString(R.string.quantity_pieces));
                 }
                 // Weight
