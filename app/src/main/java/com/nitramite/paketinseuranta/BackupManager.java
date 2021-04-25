@@ -149,13 +149,15 @@ public class BackupManager extends AppCompatActivity {
         });
 
         importBackupBtn.setOnClickListener(v -> {
-            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-            chooseFile.setType("*/*");
-            startActivityForResult(
-                    Intent.createChooser(chooseFile, "Choose a backup file"),
-                    IMPORT_BACKUP_FILE_REQUEST_CODE
-            );
+            if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+                chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+                chooseFile.setType("*/*");
+                startActivityForResult(
+                        Intent.createChooser(chooseFile, "Choose a backup file"),
+                        IMPORT_BACKUP_FILE_REQUEST_CODE
+                );
+            }
         });
 
         restoreBackupBtn.setOnClickListener(view -> {
@@ -285,7 +287,6 @@ public class BackupManager extends AppCompatActivity {
         final String lastBackupDateStr = sharedPreferences.getString(Constants.SP_TIMED_BACKUP_LAST_DATE, null);
         lastBackupDate.setText(lastBackupDateStr == null ? getString(R.string.no_timed_backups_taken) : getString(R.string.last_backup) + lastBackupDateStr);
     }
-
 
 
     // Menu items
