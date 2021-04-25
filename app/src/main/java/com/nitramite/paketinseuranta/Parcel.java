@@ -328,7 +328,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         readParcelDataFromSqlite();
         createParcelImageDirectory();
     } // END OF onCreate()
-    
+
 
     // Swipe action switch package
     private void swipeSwitchPackage(final boolean nextPackage) {
@@ -472,17 +472,6 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     e.printStackTrace();
                 }
 
-
-                // Last pickup date
-                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) && !res.getString(15).equals("null") && res.getString(15).length() > 4) {
-                    estimateDeliveryOrLastPickupDateView.setVisibility(View.VISIBLE);
-                    final String deliveryTimeString = getString(R.string.parcel_last_pickup_date) + " " + res.getString(15);
-                    estimateDeliveryOrLastPickupDateTV.setText(deliveryTimeString);
-                } else {
-                    estimateDeliveryOrLastPickupDateView.setVisibility(View.GONE);
-                }
-
-
                 // Package estimate delivery
                 if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) && !res.getString(7).equals("null") && res.getString(7).length() > 4) {
                     estimateDeliveryOrLastPickupDateView.setVisibility(View.VISIBLE);
@@ -492,6 +481,16 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
                     estimateDeliveryOrLastPickupDateView.setVisibility(View.GONE);
                 }
 
+                // Last pickup date
+                if (!res.getString(6).equals(PhaseNumber.PHASE_DELIVERED) &&
+                        !res.getString(6).equals(PhaseNumber.PHASE_IN_TRANSPORT) &&
+                        !res.getString(15).equals("null") && res.getString(15).length() > 4) {
+                    estimateDeliveryOrLastPickupDateView.setVisibility(View.VISIBLE);
+                    final String deliveryTimeString = getString(R.string.parcel_last_pickup_date) + " " + res.getString(15);
+                    estimateDeliveryOrLastPickupDateTV.setText(deliveryTimeString);
+                } else {
+                    estimateDeliveryOrLastPickupDateView.setVisibility(View.GONE);
+                }
 
                 // Package delivered
                 if (res.getString(6).equals(PhaseNumber.PHASE_DELIVERED)) {
