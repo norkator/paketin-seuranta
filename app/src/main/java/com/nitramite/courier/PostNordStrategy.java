@@ -155,7 +155,7 @@ public class PostNordStrategy implements CourierStrategy {
                     Objects.requireNonNull(statedMeasurement.optJSONObject("width")).optString("unit")
             ));
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | AssertionError e) {
             Log.e(TAG, e.toString());
         }
     }
