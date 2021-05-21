@@ -377,6 +377,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_DPD_STR,
                 CarrierUtils.CARRIER_TNT_STR,
                 CarrierUtils.CARRIER_SCHENKER_STR,
+                CarrierUtils.CARRIER_OMNIVA_STR,
                 CarrierUtils.CARRIER_OTHER_STR
         };
         Integer[] carrierCodes = {
@@ -398,6 +399,7 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
                 CarrierUtils.CARRIER_DPD,
                 CarrierUtils.CARRIER_TNT,
                 CarrierUtils.CARRIER_SCHENKER,
+                CarrierUtils.CARRIER_OMNIVA,
                 CarrierUtils.CARRIER_OTHER
         };
         CustomCarrierSpinnerAdapter customCarrierAdapter = new CustomCarrierSpinnerAdapter(activityContext, R.layout.carrier_adapter, carriers);
