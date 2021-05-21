@@ -166,7 +166,7 @@ public class CarrierUtils {
                 return R.mipmap.schenker_logo;
 
             case CARRIER_OMNIVA_STR:
-                return R.mipmap.schenker_logo; // todo, change logo
+                return R.mipmap.omniva_logo;
 
             case CARRIER_OTHER_STR:
                 return R.mipmap.muu_logo;
@@ -245,7 +245,7 @@ public class CarrierUtils {
                 return R.mipmap.schenker_logo;
 
             case CARRIER_OMNIVA:
-                return R.mipmap.schenker_logo; // todo, change logo
+                return R.mipmap.omniva_logo;
 
             case CARRIER_OTHER:
                 return R.mipmap.muu_logo;
