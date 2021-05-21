@@ -36,15 +36,7 @@ public class CSVExporter {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
         String fileName = "archive_export_" + sdf.format(new Date()) + ".csv";
-        File csvExportFile = null;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            csvExportFile = new File(context.getExternalFilesDir(null), fileName);
-        } else {
-            File csvDirectory = FileUtils.createDirIfNotExist(CSV_OLD_DIR);
-            csvExportFile = new File(csvDirectory, fileName);
-        }
-
+        File csvExportFile = GetCSVExportFile(context, fileName);
 
         boolean success = csvExportFile.createNewFile();
         if (!success) {
@@ -54,6 +46,16 @@ public class CSVExporter {
                 parcelAddDateChecked, parcelLastEventChecked, readyForPickupDateChecked, productPageChecked
         );
         return result ? csvExportFile.getName() : null;
+    }
+
+
+    public File GetCSVExportFile(Context context, String fileName) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return new File(context.getExternalFilesDir(null), fileName);
+        } else {
+            File csvDirectory = FileUtils.createDirIfNotExist(CSV_OLD_DIR);
+            return new File(csvDirectory, fileName);
+        }
     }
 
 
