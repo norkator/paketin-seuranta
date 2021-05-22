@@ -39,6 +39,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.multidex.MultiDex;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -55,10 +57,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nitramite.adapters.ParcelsAdapter;
 import com.nitramite.adapters.ParcelsAdapterListener;
 import com.nitramite.adapters.RecyclerItemTouchHelper;
+import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -378,11 +382,22 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
                     if (exportFileName == null) {
                         genericTextDialog(getString(R.string.main_menu_error), getString(R.string.archive_csv_export_failed_description));
                     } else {
-                        genericTextDialog(
-                                getString(R.string.archive_csv_export_succes_title),
-                                getString(R.string.archive_csv_export_success_description) + ": " +
-                                        finalOutputFolder + exportFileName
-                        );
+                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                        File file = csvExporter.GetCSVExportFile(this, exportFileName);
+                        if (file.exists()) {
+                            intentShareFile.setType("*/*");
+                            intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                                    this,
+                                    this.getApplicationContext().getPackageName() + ".provider",
+                                    file
+                            ));
+                            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, exportFileName);
+                            intentShareFile.putExtra(Intent.EXTRA_TEXT, exportFileName);
+                            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(Intent.createChooser(intentShareFile, exportFileName));
+                        } else {
+                            Toast.makeText(this, "CSV file to export does not exist!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } catch (IOException e) {
                     genericTextDialog(getString(R.string.main_menu_error), e.toString());
