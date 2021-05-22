@@ -34,6 +34,7 @@ import com.nitramite.courier.FedExStrategy;
 import com.nitramite.courier.FourPXStrategy;
 import com.nitramite.courier.GlsStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
+import com.nitramite.courier.OmnivaStrategy;
 import com.nitramite.courier.ParcelObject;
 import com.nitramite.courier.PostNordStrategy;
 import com.nitramite.courier.PostiStrategy;
@@ -228,6 +229,12 @@ public class UpdaterLogic {
                                 case CarrierUtils.CARRIER_SCHENKER:
                                     Log.i(TAG, "# Running Schenker #");
                                     courier.setCourierStrategy(new SchenkerStrategy());
+                                    parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
+                                    break;
+                                // Omniva
+                                case CarrierUtils.CARRIER_OMNIVA:
+                                    Log.i(TAG, "# Running Omniva #");
+                                    courier.setCourierStrategy(new OmnivaStrategy());
                                     parcelObject = courier.executeCourierStrategy(parcelServiceParcelItems.get(i).getParcelCodeItem(), locale);
                                     break;
 

@@ -35,6 +35,7 @@ public class CarrierUtils {
     public static final int CARRIER_DPD = 18;
     public static final int CARRIER_TNT = 19;
     public static final int CARRIER_SCHENKER = 20;
+    public static final int CARRIER_OMNIVA = 21;
     public static final int CARRIER_OTHER = 99;
 
     // Carries names
@@ -58,6 +59,7 @@ public class CarrierUtils {
     public static final String CARRIER_DPD_STR = "Dpd";
     public static final String CARRIER_TNT_STR = "TNT";
     public static final String CARRIER_SCHENKER_STR = "Schenker";
+    public static final String CARRIER_OMNIVA_STR = "Omniva";
     public static final String CARRIER_OTHER_STR = "Muu (ei kohdistu hakua)";
 
 
@@ -163,6 +165,9 @@ public class CarrierUtils {
             case CARRIER_SCHENKER_STR:
                 return R.mipmap.schenker_logo;
 
+            case CARRIER_OMNIVA_STR:
+                return R.mipmap.omniva_logo;
+
             case CARRIER_OTHER_STR:
                 return R.mipmap.muu_logo;
         }
@@ -238,6 +243,9 @@ public class CarrierUtils {
 
             case CARRIER_SCHENKER:
                 return R.mipmap.schenker_logo;
+
+            case CARRIER_OMNIVA:
+                return R.mipmap.omniva_logo;
 
             case CARRIER_OTHER:
                 return R.mipmap.muu_logo;

@@ -12,6 +12,7 @@ import com.nitramite.courier.FedExStrategy;
 import com.nitramite.courier.FourPXStrategy;
 import com.nitramite.courier.GlsStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
+import com.nitramite.courier.OmnivaStrategy;
 import com.nitramite.courier.ParcelObject;
 import com.nitramite.courier.PostNordStrategy;
 import com.nitramite.courier.PostiStrategy;
@@ -23,7 +24,6 @@ import com.nitramite.utils.TestsUtils;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -164,6 +164,19 @@ public class StrategyTest {
             assumeTrue(parcelObject.getIsFound());
         } else {
             Log.i(TAG, str1 + MatkahuoltoStrategy.class.getSimpleName() + str2);
+        }
+    }
+
+
+    @Test
+    public void omniva_strategy_is_healthy() {
+        courier.setCourierStrategy(new OmnivaStrategy());
+        String sampleTrackingCode = TestsUtils.GetTestTrackingCode("https://www.aftership.com/couriers/omniva");
+        if (sampleTrackingCode != null) {
+            ParcelObject parcelObject = courier.executeCourierStrategy(sampleTrackingCode, com.nitramite.utils.Locale.EN);
+            assumeTrue(parcelObject.getIsFound());
+        } else {
+            Log.i(TAG, str1 + OmnivaStrategy.class.getSimpleName() + str2);
         }
     }
 
