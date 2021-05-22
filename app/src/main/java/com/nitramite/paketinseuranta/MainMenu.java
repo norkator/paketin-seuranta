@@ -425,10 +425,15 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
     @Override
     public void onItemClick(View view, int position) {
-        String parcelId = parcelItems.get(position).getParcelId();
-        Intent intent = new Intent(MainMenu.this, Parcel.class);
-        intent.putExtra("PARCEL_ID", parcelId);
-        startActivityForResult(intent, ACTIVITY_RESULT_PARCEL);
+        try {
+            String parcelId = parcelItems.get(position).getParcelId();
+            Intent intent = new Intent(MainMenu.this, Parcel.class);
+            intent.putExtra("PARCEL_ID", parcelId);
+            startActivityForResult(intent, ACTIVITY_RESULT_PARCEL);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.e(TAG, e.toString());
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
