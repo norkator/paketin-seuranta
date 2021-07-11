@@ -41,6 +41,7 @@ public class PostNordStrategy implements CourierStrategy {
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("User-Agent", Constants.UserAgent)
+                    .addHeader("x-bap-key", "web-ncp")
                     .build();
             Response response = client.newCall(request).execute();
             String jsonResult = response.body().string();
