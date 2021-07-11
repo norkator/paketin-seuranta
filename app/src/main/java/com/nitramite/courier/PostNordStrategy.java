@@ -35,7 +35,7 @@ public class PostNordStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://ds.postnord.com/v2/trackandtrace/ntt/shipment/recipientview?id=" + parcelCode + "&locale=" + (locale == Locale.FI ? "fi" : "en");
+            String url = "https://api2.postnord.com/rest/shipment/v5/trackandtrace/ntt/shipment/recipientview?id=" + parcelCode + "&locale=" + (locale == Locale.FI ? "fi" : "en");
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
