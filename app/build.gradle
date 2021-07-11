@@ -57,7 +57,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Test implementations
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.json:json:20180813'
+    testImplementation 'org.json:json:20210307'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // AndroidX
