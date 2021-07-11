@@ -750,9 +750,11 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
     public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (Purchase purchase : purchases) {
-                if (purchase.getSku().equals(Constants.ITEM_SKU_DONATE)) {
-                    Toast.makeText(MainMenu.this, R.string.thank_you_for_donation, Toast.LENGTH_LONG).show();
-                    acknowledgePurchase(purchase);
+                for (String sku : purchase.getSkus()) {
+                    if (sku.equals(Constants.ITEM_SKU_DONATE)) {
+                        Toast.makeText(MainMenu.this, R.string.thank_you_for_donation, Toast.LENGTH_LONG).show();
+                        acknowledgePurchase(purchase);
+                    }
                 }
             }
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED && purchases != null) {
