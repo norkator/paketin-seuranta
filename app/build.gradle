@@ -70,7 +70,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     // Other third party
     implementation 'com.google.android.gms:play-services-maps:17.0.1' // Todo: upgrade in some point
-    implementation 'com.google.android.gms:play-services-auth:17.0.0' // Todo: upgrade in some point
+    implementation 'com.google.android.gms:play-services-auth:19.0.0' // Todo: upgrade in some point
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.google.android:flexbox:2.0.1'
