@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+
+    <!-- Take risk and run below libraries on lower min sdk than planned -->
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
     <application
         android:name=".PaketinSeurantaApp"
         android:allowBackup="true"
