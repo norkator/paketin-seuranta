@@ -1239,6 +1239,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createParcelImageDirectory();
         }
