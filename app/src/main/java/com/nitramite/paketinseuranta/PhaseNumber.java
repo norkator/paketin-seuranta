@@ -69,6 +69,7 @@ public class PhaseNumber {
                 || (lastEventStr.contains("UPS Access Point") && !lastEventStr.contains("toimipaikkaan odottaa"))
                 || lastEventStr.contains("Lähetys on noudettavissa")
                 || lastEventStr.contains("Lähetimme vastaanottajalle viestin lähetyksen saapumisesta")
+                || lastEventStr.contains("Lähetimme vastaanottajalle muistutuksen lähetyksen saapumisesta")
                 || lastEventStr.contains("toimitettu noutopisteeseen")
         )) {
             return new PhaseNumberString(intToString(PHASE_INT_READY_FOR_PICKUP), PHASE_READY_FOR_PICKUP);
