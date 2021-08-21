@@ -109,8 +109,12 @@ public class BarcodeList extends AppCompatActivity {
             res = databaseHelper.getAllData();
         }
         while (res.moveToNext()) {
-            parcelCodeItems.add(res.getString(3));
-            parcelTitleItems.add(res.getString(31));
+            String code = res.getString(3);
+            // Skip duplicate codes
+            if (!parcelCodeItems.contains(code)) {
+                parcelCodeItems.add(code);
+                parcelTitleItems.add(res.getString(31));
+            }
         }
         CustomBarcodeListAdapter customBarcodeListAdapter = new CustomBarcodeListAdapter(this, parcelCodeItems, parcelTitleItems, this.barcodeListSpacingValue);
         barcodeList.setAdapter(customBarcodeListAdapter);
