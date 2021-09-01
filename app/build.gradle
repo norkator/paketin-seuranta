@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'joda-time:joda-time:2.10.10'
     implementation 'com.google.code.gson:gson:2.8.7'
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.2'
     implementation 'com.android.billingclient:billing:4.0.0'
 }
 
