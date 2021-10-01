@@ -77,7 +77,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     // For the notifications
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'joda-time:joda-time:2.10.10'
+    implementation 'joda-time:joda-time:2.10.12'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.2'
     implementation 'com.android.billingclient:billing:4.0.0'
