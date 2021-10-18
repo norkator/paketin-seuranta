@@ -8,8 +8,6 @@ yleisesti Englannin kielellä.
 
 Paketin Seuranta is free application, no ads or paid content ever!
 
-You are not allowed to copy or use this app code to create similar application to 
-distribute it on Google Play or any other store.
 
 Table of contents
 =================
