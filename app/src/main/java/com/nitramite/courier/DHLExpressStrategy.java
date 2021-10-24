@@ -35,17 +35,13 @@ public class DHLExpressStrategy implements CourierStrategy {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
         try {
-            String url = "https://www.dhl.fi/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=" + (locale == com.nitramite.utils.Locale.FI ? "fi" : "en");
+            String url = "https://mydhl.express.dhl/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=" + (locale == com.nitramite.utils.Locale.FI ? "fi" : "en");
 
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(url)
                     .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
-                    .addHeader("Accept-Encoding", "gzip, deflate, br")
-                    .addHeader("Accept-Language", "fi,en-US;q=0.9,en;q=0.8,de;q=0.7")
-                    .addHeader("Connection", "keep-alive")
-                    .addHeader("Host", "www.dhl.fi")
-                    .addHeader("Referer", "https://www.dhl.fi/exp-fi/express/lahetysten_seuranta.html?AWB=" + parcelCode + "&brand=DHL")
+                    .addHeader("Referer", "https://mydhl.express.dhl/fi/fi/tracking.html")
                     .addHeader("User-Agent", Constants.UserAgent)
                     .build();
             Response response = client.newCall(request).execute();
