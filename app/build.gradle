@@ -10,15 +10,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.nitramite.paketinseuranta"
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionCode 144
-        versionName "2.14.0"
+        versionCode 145
+        versionName "2.15.0"
         multiDexEnabled true // Enabling multi dex support.
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
