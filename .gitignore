@@ -21,7 +21,6 @@ output.json
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
-.DS_Store
 /build
 /captures
 # gradle/
@@ -36,5 +35,5 @@ obj/
 /app/src/release/res/values/google_maps_api.xml
 /ReleaseKey/*
 Paketin-Seuranta.zip
-/app/google-services.json
+# /app/google-services.json
 /app/src/main/java/com/nitramite/courier/*.json

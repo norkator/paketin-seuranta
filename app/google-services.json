@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "171844644207",
+    "firebase_url": "https://robotic-sector-119016.firebaseio.com",
+    "project_id": "robotic-sector-119016",
+    "storage_bucket": "robotic-sector-119016.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171844644207:android:02473fca9c31b0449e8c9a",
+        "android_client_info": {
+          "package_name": "com.nitramite.paketinseuranta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171844644207-tg7h45l4tg9dehhg5c173lf71j1u6ko4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "dummy-api-key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171844644207-tg7h45l4tg9dehhg5c173lf71j1u6ko4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
