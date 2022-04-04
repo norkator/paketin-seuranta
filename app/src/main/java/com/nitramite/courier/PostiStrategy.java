@@ -30,11 +30,82 @@ public class PostiStrategy implements CourierStrategy {
     // Logging
     private static final String TAG = PostiStrategy.class.getSimpleName();
 
+
+    private static final String TOKEN_URL = "https://auth-service.posti.fi/api/v1/anonymous_token";
+
+
     @Override
     public ParcelObject execute(final String parcelCode, final Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
+
         try {
+            PostiToken postiToken = getTokens();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.i(TAG, e.toString());
+        } catch (SSLException e) {
+            Log.i(TAG, "RESET BY PEER FOR " + parcelCode);
+            parcelObject.setUpdateFailed(true);
+            e.printStackTrace();
+        } catch (IOException | ParseException | NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return parcelObject;
+    }
+
+
+    /**
+     * Get required tokens for graphql call
+     *
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
+    private PostiToken getTokens() throws IOException, JSONException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(TOKEN_URL)
+                .addHeader("User-Agent", Constants.UserAgent)
+                .addHeader("content-type", Constants.ContentType)
+                .build();
+        Response response = client.newCall(request).execute();
+        String body = response.body().string();
+        JSONObject jsonBody = new JSONObject(body);
+        JSONArray roleTokens = jsonBody.optJSONArray("role_tokens");
+        JSONObject first = roleTokens.optJSONObject(0);
+        return new PostiToken(
+                jsonBody.optString("id_token"),
+                first.optString("token")
+        );
+    }
+
+
+    /**
+     * Object holding tokens
+     */
+    private class PostiToken {
+        private String idToken;
+        private String roleToken;
+
+        PostiToken(String idToken, String roleToken) {
+            this.idToken = idToken;
+            this.roleToken = roleToken;
+        }
+
+        public String getIdToken() {
+            return idToken;
+        }
+
+        public String getRoleToken() {
+            return roleToken;
+        }
+
+    }
+
+    /*
+       try {
             String url = "https://www.posti.fi/henkiloasiakkaat/seuranta/api/shipments/" + parcelCode;
 
             OkHttpClient client = new OkHttpClient();
@@ -184,8 +255,7 @@ public class PostiStrategy implements CourierStrategy {
         } catch (IOException | ParseException | NullPointerException e) {
             e.printStackTrace();
         }
-        return parcelObject;
-    }
+     */
 
 
 } // End of class
