@@ -149,7 +149,8 @@ public class PostiStrategy implements CourierStrategy {
 
                     // Pass to object
                     EventObject eventObject = new EventObject(
-                            eventDescription, parsedDate, parsedDateSQLiteFormat, event.optString("locationCode"), event.optString("locationName")
+                            eventDescription, parsedDate, parsedDateSQLiteFormat,
+                            event.optString("eventCode"), event.optString("city")
                     );
                     // Add object
                     eventObjects.add(eventObject);
