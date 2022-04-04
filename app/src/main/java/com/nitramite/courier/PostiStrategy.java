@@ -60,25 +60,25 @@ public class PostiStrategy implements CourierStrategy {
 
             // Parsing got json content
             // Log.i(TAG, "Parsing posti: " + parcelCode);
-            JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
-            JSONArray jsonMainNode = jsonResponse.optJSONArray("shipments");            // Get "shipments" array
-            JSONObject jsonChildNode = jsonMainNode.getJSONObject(0);                   // Get first object from "shipments" array
+            JSONObject body = new JSONObject(jsonResult);
+            JSONArray shipmentView = body.optJSONObject("data").optJSONArray("shipmentView");
+            JSONObject jsonChildNode = shipmentView.getJSONObject(0);
 
-            // Log.i(TAG, jsonChildNode.toString());
 
-            if (jsonChildNode.length() > 0) {
+            if (shipmentView.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
 
-                parcelObject.setParcelCode2(jsonChildNode.optString("trackingCode"));
-                parcelObject.setErrandCode(jsonChildNode.optString("errandCode"));
-                parcelObject.setPhase(jsonChildNode.optString("phase"));
+                JSONObject parcel = jsonChildNode.optJSONObject("parcel");
 
+                parcelObject.setParcelCode2(parcel.optString("otherTrackingNumber"));
+                parcelObject.setErrandCode(parcel.optString("errandCode"));
+                parcelObject.setPhase(parcel.optJSONObject("status").optString("code"));
 
                 // Parse estimate delivery time
                 try {
                     @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
                     @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                    String timeStamp = jsonChildNode.optString("estimatedDeliveryTime");
+                    String timeStamp = parcel.optString("estimatedDeliveryTime");
                     Date parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp));
                     final String parsedDate = showingDateFormat.format(parseTimeDate);
                     parcelObject.setEstimatedDeliveryTime(parsedDate);
@@ -86,28 +86,24 @@ public class PostiStrategy implements CourierStrategy {
                     Log.i(TAG, e.toString());
                 }
 
-
-                if (!jsonChildNode.isNull("pickupAddress")) {
-                    JSONObject pickupAddress = jsonChildNode.getJSONObject("pickupAddress");
-                    if (pickupAddress.length() > 4) {
-                        parcelObject.setPickupAddress(
-                                pickupAddress.optString("name"),
-                                pickupAddress.optString("street"),
-                                pickupAddress.optString("postcode"),
-                                pickupAddress.optString("city"),
-                                pickupAddress.optString("latitude"),
-                                pickupAddress.optString("longitude"),
-                                pickupAddress.optString("availability")
-                        );
-                    }
+                if (!parcel.isNull("pickupPoint")) {
+                    JSONObject pickupPoint = parcel.optJSONObject("pickupPoint");
+                    parcelObject.setPickupAddress(
+                            pickupPoint.optString("street1"),
+                            pickupPoint.optString("street2"),
+                            pickupPoint.optString("postcode"),
+                            pickupPoint.optString("city"),
+                            pickupPoint.optString("latitude"),
+                            pickupPoint.optString("longitude"),
+                            pickupPoint.optString("availabilityTime")
+                    );
                 }
-
 
                 // Parse last pickup date
                 try {
                     @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
                     @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-                    String timeStamp = jsonChildNode.optString("lastPickupDate");
+                    String timeStamp = parcel.optString("lastCollectionDate");
                     Date parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp));
                     final String parsedDate = showingDateFormat.format(parseTimeDate);
                     parcelObject.setLastPickupDate(parsedDate);
@@ -115,46 +111,25 @@ public class PostiStrategy implements CourierStrategy {
                     Log.i(TAG, e.toString());
                 }
 
-                if (jsonChildNode.getJSONObject("product").has("name")) {
-                    if (!jsonChildNode.getJSONObject("product").has("name")) {
-                        parcelObject.setProduct(
-                                jsonChildNode.getJSONObject("product").getJSONObject("name").optString(locale == Locale.FI ? "fi" : "en")
-                        );
-                    }
-                }
-                parcelObject.setSender(jsonChildNode.optString("sender"));
-                parcelObject.setLockerCode(jsonChildNode.optString("lockerCode"));
-                JSONArray extraServicesArray = jsonChildNode.getJSONArray("extraServices");
-                if (extraServicesArray.length() > 0) {
-                    JSONObject extraServiceObj = extraServicesArray.getJSONObject(0); // Get only first
-                    if (extraServiceObj != null) {
-                        JSONObject extraServiceNameObj = extraServiceObj.optJSONObject("name");
-                        if (extraServiceNameObj != null) {
-                            parcelObject.setExtraServices(
-                                    extraServiceNameObj.optString(locale == Locale.FI ? "fi" : "en")
-                            );
-                        }
-                    }
-                }
-                parcelObject.setWeight(jsonChildNode.optString("weight"));
-                parcelObject.setHeight(jsonChildNode.optString("height"));
-                parcelObject.setWidth(jsonChildNode.optString("width"));
-                parcelObject.setDepth(jsonChildNode.optString("depth"));
-                parcelObject.setVolume(jsonChildNode.optString("volume"));
-                parcelObject.setDestinationPostcode(jsonChildNode.optString("destinationPostcode"));
-                parcelObject.setDestinationCity(jsonChildNode.optString("destinationCity"));
-                parcelObject.setDestinationCountry(jsonChildNode.optString("destinationCountry"));
-                parcelObject.setRecipientSignature(jsonChildNode.optString("recipientSignature"));
-                parcelObject.setCodAmount(jsonChildNode.optString("codAmount"));
-                parcelObject.setCodCurrency(jsonChildNode.optString("codCurrency"));
+                parcelObject.setWeight(parcel.optJSONObject("weight").optString("value"));
+                parcelObject.setHeight(parcel.optJSONObject("height").optString("value"));
+                parcelObject.setWidth(parcel.optJSONObject("width").optString("value"));
+                parcelObject.setDepth(parcel.optJSONObject("length").optString("value"));
+                parcelObject.setVolume(parcel.optJSONObject("volume").optString("value"));
+
+                parcelObject.setDestinationPostcode(parcel.optJSONObject("destination").optString("postcode"));
+                parcelObject.setDestinationCity(parcel.optJSONObject("destination").optString("city"));
+                parcelObject.setDestinationCountry(parcel.optJSONObject("destination").optString("country"));
 
 
                 // Parse events
-                JSONArray eventsArray = jsonChildNode.optJSONArray("events");
+                String userLocale = locale == Locale.FI ? "fi" : "en";
+                JSONArray eventsArray = parcel.optJSONArray("events");
                 @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); // yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int i = 0; i < eventsArray.length(); i++) {
+
                     JSONObject event = eventsArray.getJSONObject(i);
 
                     String timeStamp = event.optString("timestamp");
@@ -163,14 +138,13 @@ public class PostiStrategy implements CourierStrategy {
                     final String parsedDate = showingDateFormat.format(parseTimeDate);
                     final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
 
-                    // Log.i(TAG, "After parsing date format is: " + parsedDate);
-                    // Log.i(TAG, "After parsing SQLite date format is: " + parsedDateSQLiteFormat);
-
-                    JSONObject eventJsonObj = eventsArray.optJSONObject(i);
-                    JSONObject eventObj = eventJsonObj.optJSONObject("description");
                     String eventDescription = "-";
-                    if (eventObj != null) {
-                        eventDescription = eventObj.optString(locale == Locale.FI ? "fi" : "en");
+                    JSONArray descriptions = event.optJSONArray("eventDescription");
+                    for (int d = 0; d < eventsArray.length(); d++) {
+                        JSONObject desc = descriptions.optJSONObject(i);
+                        if (desc.optString("lang").equals(userLocale)) {
+                            eventDescription = desc.optString("value");
+                        }
                     }
 
                     // Pass to object
@@ -186,7 +160,6 @@ public class PostiStrategy implements CourierStrategy {
                 Log.i(TAG, "Posti shipment not found");
                 parcelObject.setIsFound(false); // Parcel not found
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -212,13 +185,17 @@ public class PostiStrategy implements CourierStrategy {
      */
     private PostiToken getTokens() throws IOException, JSONException {
         OkHttpClient client = new OkHttpClient();
+        RequestBody postBody = RequestBody.create("", JSON);
         Request request = new Request.Builder()
                 .url(TOKEN_URL)
                 .addHeader("User-Agent", Constants.UserAgent)
                 .addHeader("content-type", Constants.ContentType)
+                .post(postBody)
                 .build();
         Response response = client.newCall(request).execute();
         String body = response.body().string();
+        Log.i(TAG, "Token response body");
+        Log.i(TAG, body);
         JSONObject jsonBody = new JSONObject(body);
         JSONArray roleTokens = jsonBody.optJSONArray("role_tokens");
         JSONObject first = roleTokens.optJSONObject(0);
