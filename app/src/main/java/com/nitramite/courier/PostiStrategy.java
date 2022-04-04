@@ -140,8 +140,8 @@ public class PostiStrategy implements CourierStrategy {
 
                     String eventDescription = "-";
                     JSONArray descriptions = event.optJSONArray("eventDescription");
-                    for (int d = 0; d < eventsArray.length(); d++) {
-                        JSONObject desc = descriptions.optJSONObject(i);
+                    for (int d = 0; d < descriptions.length(); d++) {
+                        JSONObject desc = descriptions.optJSONObject(d);
                         if (desc.optString("lang").equals(userLocale)) {
                             eventDescription = desc.optString("value");
                         }
