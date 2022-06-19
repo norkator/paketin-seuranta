@@ -29,25 +29,28 @@ public class Widget extends AppWidgetProvider {
     // onUpdate
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        for (int i = 0; i < appWidgetIds.length; i++) {
-            Intent intent = new Intent(context, MainMenu.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-            DatabaseHelper dbHelper = new DatabaseHelper(context);
-            String status = dbHelper.getWidgetStatusInformation();
-            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
-            rv.setTextViewText(R.id.statusText, status);
+        try {
+            for (int i = 0; i < appWidgetIds.length; i++) {
+                Intent intent = new Intent(context, MainMenu.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                DatabaseHelper dbHelper = new DatabaseHelper(context);
+                String status = dbHelper.getWidgetStatusInformation();
+                RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
+                rv.setTextViewText(R.id.statusText, status);
 
-            // On click refresh trigger method
-            Log.i(TAG, "Widget on update event");
-            Intent updateIntent = new Intent(context, Widget.class);
-            updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            PendingIntent pendingUpdate = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            rv.setOnClickPendingIntent(R.id.refreshPackagesBtn, pendingUpdate);
+                // On click refresh trigger method
+                Log.i(TAG, "Widget on update event");
+                Intent updateIntent = new Intent(context, Widget.class);
+                updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                PendingIntent pendingUpdate = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                rv.setOnClickPendingIntent(R.id.refreshPackagesBtn, pendingUpdate);
 
-            // Finish
-            rv.setOnClickPendingIntent(R.id.widgetBg, pendingIntent);
-            appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
+                // Finish
+                rv.setOnClickPendingIntent(R.id.widgetBg, pendingIntent);
+                appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
+            }
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
-} // End of class
+}
