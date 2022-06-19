@@ -64,11 +64,9 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
         courierStrategies.add(new MatkahuoltoStrategy());
         courierIntegers.add(CarrierUtils.CARRIER_MATKAHUOLTO);
 
-        courierStrategies.add(new DHLExpressStrategy());
-        courierIntegers.add(CarrierUtils.CARRIER_DHL_EXPRESS);
-
-        courierStrategies.add(new DHLExpressStrategy());
-        courierIntegers.add(CarrierUtils.CARRIER_DHL_EXPRESS);
+        // disabled due api rate limit
+        // courierStrategies.add(new DHLExpressStrategy());
+        // courierIntegers.add(CarrierUtils.CARRIER_DHL_EXPRESS);
 
         courierStrategies.add(new DHLAmazonStrategy());
         courierIntegers.add(CarrierUtils.CARRIER_DHL_AMAZON);

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,37 +30,30 @@ public class DHLExpressStrategy implements CourierStrategy {
     // Logging
     private static final String TAG = DHLExpressStrategy.class.getSimpleName();
 
+    // Config (rate limited 250 calls per day with a maximum of 1 call per second)
+    private static final String serviceUrl = "https://api-eu.dhl.com/track/shipments";
+    private static final String apiKey = "GjXLDK3A4zjZQ8YGzXER33rZbzyJL2nW";
 
     @Override
     public ParcelObject execute(String parcelCode, final com.nitramite.utils.Locale locale) {
         ParcelObject parcelObject = new ParcelObject(parcelCode);
         ArrayList<EventObject> eventObjects = new ArrayList<>();
-        try {
-            String url = "https://mydhl.express.dhl/shipmentTracking?AWB=" + parcelCode + "&countryCode=fi&languageCode=" + (locale == com.nitramite.utils.Locale.FI ? "fi" : "en");
 
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
-                    .addHeader("Referer", "https://mydhl.express.dhl/fi/fi/tracking.html")
-                    .addHeader("User-Agent", Constants.UserAgent)
-                    .build();
-            Response response = client.newCall(request).execute();
-            String jsonResult = response.body().string();
+        try {
+            String jsonResult = getTrackingData(parcelCode, locale);
 
             // Parsing got json content
-            JSONObject jsonResponse = new JSONObject(jsonResult);                       // Json content
-            JSONArray jsonMainNode = jsonResponse.optJSONArray("results");              // Get "results" array
-            JSONObject jsonChildNode = jsonMainNode.getJSONObject(0);                   // Get first object from "results" array
-            Log.i(TAG, jsonChildNode.toString()); // Print whole response
+            JSONObject jsonResponse = new JSONObject(jsonResult);
+            JSONArray jsonMainNode = jsonResponse.optJSONArray("shipments");
+            JSONObject jsonChildNode = Objects.requireNonNull(jsonMainNode).getJSONObject(0);
 
 
             if (jsonChildNode.length() > 0) {
                 parcelObject.setIsFound(true); // Parcel is found
 
                 // Parse all package related normal data found
-                if (jsonChildNode.has("delivery")) {
-                    String phase = jsonChildNode.getJSONObject("delivery").getString("status").toUpperCase(Locale.getDefault());
+                if (jsonChildNode.has("status")) {
+                    String phase = jsonChildNode.getJSONObject("status").getString("status").toUpperCase(Locale.getDefault());
                     if (phase.equals(PhaseNumber.PHASE_TRANSIT)) {
                         phase = PhaseNumber.PHASE_IN_TRANSPORT;
                     }
@@ -67,104 +61,62 @@ public class DHLExpressStrategy implements CourierStrategy {
                 } else {
                     parcelObject.setPhase(PhaseNumber.PHASE_IN_TRANSPORT); // Set as in transport phase since it's still coming
                 }
-                parcelObject.setDestinationCountry(jsonChildNode.getJSONObject("destination").getString("value")); // Destination
-                parcelObject.setProduct(jsonChildNode.getString("label"));
-                parcelObject.setRecipientSignature(jsonChildNode.getString("description"));
-
-
-                // Try to parse estimate delivery time
-                try {
-                    if (jsonChildNode.has("edd")) {
-                        @SuppressLint("SimpleDateFormat") DateFormat tf1 = new SimpleDateFormat("yyyy-MM-dd");
-                        @SuppressLint("SimpleDateFormat") DateFormat tf2 = new SimpleDateFormat("dd.MM.yyyy");
-                        final JSONObject deliveryTimeObject = jsonChildNode.getJSONObject("edd");
-                        String date = deliveryTimeObject.optString("date");
-                        String monthNumber = Utils.monthStringToMonthNumber(date);
-
-                        String dayNumber = date.replace(" ", "");
-                        dayNumber = replaceMonths(dayNumber);
-                        dayNumber = dayNumber.split(",")[1];
-
-                        String yearNumber = date.replace(" ", "").split(",")[2];
-                        Date estimateDeliveryDate = tf1.parse(yearNumber + "-" + monthNumber + "-" + dayNumber);
-                        //Log.i(TAG, yearNumber + "-" + monthNumber + "-" + dayNumber);
-                        parcelObject.setEstimatedDeliveryTime(tf2.format(estimateDeliveryDate));
-                    }
-                } catch (Exception e) {
-                    Log.i(TAG, e.toString());
-                }
+                parcelObject.setDestinationCountry(jsonChildNode.getJSONObject("destination")
+                        .getJSONObject("address").getString("addressLocality")); // Destination
+                parcelObject.setProduct(jsonChildNode.getString("service"));
 
 
                 // Parse events
-                JSONArray checkPoints = jsonChildNode.getJSONArray("checkpoints");
+                JSONArray events = jsonChildNode.getJSONArray("events");
                 // Declare time formats here
-                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                @SuppressLint("SimpleDateFormat") DateFormat apiDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 @SuppressLint("SimpleDateFormat") DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                for (int i = 0; i < checkPoints.length(); i++) {
-                    JSONObject checkPointObject = checkPoints.getJSONObject(i);
-                    // Description
-                    String description = checkPointObject.getString("description");
-                    // Date
-                    // example: "maanantai, heinäkuu 16, 2018 "
-                    String date = checkPointObject.getString("date");
-                    String monthNumber = Utils.monthStringToMonthNumber(date);
-                    String dayNumber = date.replace(" ", "");
-                    dayNumber = replaceMonths(dayNumber);
-                    dayNumber = dayNumber.split(",")[1];
-                    String yearNumber = date.replace(" ", "").split(",")[2];
-                    String time = checkPointObject.getString("time");
-                    Date apiDate = apiDateFormat.parse(yearNumber + "-" + monthNumber + "-" + dayNumber + " " + time);
-                    String parsedShowingDate = showingDateFormat.format(apiDate);
-                    String parsedDateSQLiteFormat = SQLiteDateFormat.format(apiDate);
-                    String locationName = checkPointObject.getString("location");
+                for (int i = 0; i < events.length(); i++) {
+                    JSONObject event = events.getJSONObject(i);
+
+                    String description = event.getString("description");
+
+                    String timeStamp = event.optString("timestamp");
+                    Date parseTimeDate = Utils.postiOffsetDateHours(apiDateFormat.parse(timeStamp));
+                    final String parsedDate = showingDateFormat.format(parseTimeDate);
+                    final String parsedDateSQLiteFormat = SQLiteDateFormat.format(parseTimeDate);
+
+                    String locationName = event.getJSONObject("location").getJSONObject("address").getString("addressLocality");
+
                     EventObject eventObject = new EventObject(
-                            description, parsedShowingDate, parsedDateSQLiteFormat, "", locationName
+                            description, parsedDate, parsedDateSQLiteFormat, "", locationName
                     );
                     eventObjects.add(eventObject);
                 }
                 parcelObject.setEventObjects(eventObjects); // Set event object into parcel object for later fetching
             } else {
-                Log.i(TAG, "DHL shipment not found");
+                Log.i(TAG, "DHL express shipment not found");
                 parcelObject.setIsFound(false); // Parcel not found
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.i(TAG, e.toString());
-        } catch (IOException | ParseException | NullPointerException | IllegalArgumentException e) {
+        } catch (NullPointerException | IllegalArgumentException | JSONException | ParseException | IOException e) {
             e.printStackTrace();
         }
         return parcelObject;
     }
 
 
-    private String replaceMonths(String input) {
-        return input
-                .replace("tammikuu", "")
-                .replace("helmikuu", "")
-                .replace("maaliskuu", "")
-                .replace("huhtikuu", "")
-                .replace("toukokuu", "")
-                .replace("kesäkuu", "")
-                .replace("heinäkuu", "")
-                .replace("elokuu", "")
-                .replace("syyskuu", "")
-                .replace("lokakuu", "")
-                .replace("marraskuu", "")
-                .replace("joulukuu", "")
-                .replace("January", "")
-                .replace("February", "")
-                .replace("March", "")
-                .replace("April", "")
-                .replace("May", "")
-                .replace("June", "")
-                .replace("July", "")
-                .replace("August", "")
-                .replace("September", "")
-                .replace("October", "")
-                .replace("November", "")
-                .replace("December", "");
+    /**
+     * Get tracking data
+     *
+     * @return tracking data in json format
+     * @throws IOException in case of failure
+     */
+    private String getTrackingData(String parcelCode, final com.nitramite.utils.Locale locale) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(serviceUrl + "?trackingNumber=" + parcelCode + "&service=express&originCountryCode=FI&requesterCountryCode=" + (locale == com.nitramite.utils.Locale.FI ? "FI" : "EN"))
+                .addHeader("User-Agent", Constants.UserAgent)
+                .addHeader("Accept", Constants.ContentType)
+                .addHeader("DHL-API-Key", apiKey)
+                .build();
+        Response response = client.newCall(request).execute();
+        return Objects.requireNonNull(response.body()).string();
     }
 
-
-} // End of class
+}
