@@ -8,6 +8,8 @@ yleisesti Englannin kielellä.
 
 Paketin Seuranta is free application, no ads or paid content ever!
 
+# This app is looking for maintainers, otherwise it will be archived!
+
 
 Table of contents
 =================
