@@ -2,13 +2,11 @@
 
 # Paketin Seuranta
 
-Nitramite Paketin Seuranta on pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
+Nitramite Paketin Seuranta *oli* pitkän historian omaava eri kuriirien toimitusten seuraamiseen 
 tarkoitettu Android sovellus. Sovelluksen kohdeyleisö on Suomessa mutta pidetään repositorio 
 yleisesti Englannin kielellä.
 
 Paketin Seuranta is free application, no ads or paid content ever!
-
-# This app is looking for maintainers, otherwise it will be archived!
 
 
 Table of contents
