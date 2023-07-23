@@ -71,7 +71,7 @@ dependencies {
     // For the notifications
     implementation 'com.google.firebase:firebase-messaging:23.2.0'
     implementation 'joda-time:joda-time:2.12.5'
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.1'
     implementation 'com.android.billingclient:billing:6.0.1'
 }
