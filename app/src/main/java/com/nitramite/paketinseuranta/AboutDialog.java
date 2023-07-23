@@ -50,7 +50,7 @@ public class AboutDialog extends DialogFragment {
     private CardView cardView;
     private AppCompatImageView image;
     private TextView title, subTitle, body;
-    private Button positiveBtn, negativeBtn, userManualBtn;
+    private Button positiveBtn, negativeBtn;
     private LinearLayout buttonsPanel;
 
     @Override
@@ -107,12 +107,7 @@ public class AboutDialog extends DialogFragment {
                     positiveBtn.setTextColor(ContextCompat.getColor(getActivity(), builder.getPositiveTextColor()));
                 }
                 if (builder.getOnPositiveClicked() != null) {
-                    positiveBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            builder.getOnPositiveClicked().OnClick(v, getDialog());
-                        }
-                    });
+                    positiveBtn.setOnClickListener(v -> builder.getOnPositiveClicked().OnClick(v, getDialog()));
                 }
             } else {
                 positiveBtn.setVisibility(View.GONE);
@@ -123,37 +118,13 @@ public class AboutDialog extends DialogFragment {
                     negativeBtn.setTextColor(ContextCompat.getColor(getActivity(), builder.getNegativeColor()));
                 }
                 if (builder.getOnNegativeClicked() != null) {
-                    negativeBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            builder.getOnNegativeClicked().OnClick(v, getDialog());
-                        }
-                    });
+                    negativeBtn.setOnClickListener(v -> builder.getOnNegativeClicked().OnClick(v, getDialog()));
                 }
             } else {
                 negativeBtn.setVisibility(View.GONE);
             }
 
-            if (builder.getUserManualButtonText() != null) {
-                userManualBtn.setText(builder.getUserManualButtonText());
-                if (builder.getNegativeColor() != 0) {
-                    userManualBtn.setTextColor(ContextCompat.getColor(getActivity(), builder.getNegativeColor()));
-                }
-                if (builder.getOnNegativeClicked() != null) {
-                    userManualBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            builder.getOnUserManualClicked().OnClick(v, getDialog());
-                        }
-                    });
-                }
-            } else {
-                userManualBtn.setVisibility(View.GONE);
-            }
-
             if (builder.getImageRecourse() != 0) {
-                //Drawable imageRes = VectorDrawableCompat.create(getResources(), builder.getImageRecourse(), getActivity().getTheme());
-                //image.setImageDrawable(imageRes);
                 image.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ps_logo_round_big));
             } else if (builder.getImageDrawable() != null) {
                 image.setImageDrawable(builder.getImageDrawable());
@@ -192,9 +163,6 @@ public class AboutDialog extends DialogFragment {
             if (builder.getNegativeButtonFont() != null) {
                 negativeBtn.setTypeface(builder.getNegativeButtonFont());
             }
-            if (builder.getUserManualButtonFont() != null) {
-                userManualBtn.setTypeface(builder.getNegativeButtonFont());
-            }
 
             if (builder.getAlertFont() != null) {
                 title.setTypeface(builder.getAlertFont());
@@ -224,10 +192,7 @@ public class AboutDialog extends DialogFragment {
                 buttonsPanel.setLayoutParams(params);
             }
 
-
         }
-
-
     }
 
     private void initViews(View view) {
@@ -239,7 +204,6 @@ public class AboutDialog extends DialogFragment {
         body = view.findViewById(R.id.body);
         positiveBtn = view.findViewById(R.id.positiveBtn);
         negativeBtn = view.findViewById(R.id.negativeBtn);
-        userManualBtn = view.findViewById(R.id.userManualBtn);
         buttonsPanel = view.findViewById(R.id.buttons_panel);
     }
 
