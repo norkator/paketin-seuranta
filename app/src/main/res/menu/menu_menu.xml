@@ -35,6 +35,9 @@
         android:title="@string/support_development"
         app:showAsAction="never" />
 
-
+    <item
+        android:id="@+id/action_join_development"
+        android:title="@string/join_development"
+        app:showAsAction="never" />
 
 </menu>

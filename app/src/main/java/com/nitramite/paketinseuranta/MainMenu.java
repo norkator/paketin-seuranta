@@ -657,6 +657,10 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
             inAppPurchase(Constants.ITEM_SKU_DONATE);
             return true;
         }
+        if (id == R.id.action_join_development) {
+            openUrl("https://github.com/norkator/paketin-seuranta");
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -707,6 +711,12 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
                 }
             }
         }
+    }
+
+    private void openUrl(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
 

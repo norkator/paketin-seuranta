@@ -285,6 +285,7 @@
     <string name="import_backup">Tuo varmuuskopio</string>
     <string name="quantity_pieces">kappaletta</string>
     <string name="backup">Varmuuskopio</string>
+    <string name="join_development">Liity mukaan kehitykseen</string>
 
 
     <!-- Strings related to Settings -->

@@ -285,6 +285,7 @@
     <string name="import_backup">Import backup</string>
     <string name="quantity_pieces"></string>
     <string name="backup">Backup</string>
+    <string name="join_development">Join the development</string>
 
 
     <!-- Strings related to Settings -->
