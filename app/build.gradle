@@ -39,15 +39,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
-        disable 'ObsoleteSdkInt'
-        disable 'IconLocation'
-        disable 'IconDuplicates'
-        disable 'IconMissingDensityFolder'
-        disable 'ObsoleteLintCustomCheck'
-    }
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    namespace 'com.nitramite.paketinseuranta'
+    lint {
+        disable 'ObsoleteSdkInt', 'IconLocation', 'IconDuplicates', 'IconMissingDensityFolder', 'ObsoleteLintCustomCheck'
     }
 }
 
