@@ -327,7 +327,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
         readParcelDataFromSqlite();
         createParcelImageDirectory();
-    } // END OF onCreate()
+    }
 
 
     // Swipe action switch package
@@ -928,7 +928,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             return true;
         }
         if (id == R.id.action_take_image) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 try {
                     startActivityForResult(takePictureIntent, CAMERA_REQUEST);
@@ -1112,13 +1112,18 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         // Package photo feature
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 saveImageToDB(imageBitmap);
             } else {
                 try {
-                    String photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+                    String photoPath = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        photoPath = parcelImageTempFile.getPath();
+                    } else {
+                        photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+                    }
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
@@ -1184,17 +1189,9 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     // Show selected image in dialog
     private void imageViewDialog(final String imageId, final Bitmap bitmap) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton(R.string.parcel_close_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+        builder.setPositiveButton(R.string.parcel_close_button, (dialog, which) -> {
                 })
-                .setNegativeButton(R.string.parcel_delete_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        deletePackageImageConfirmationDialog(imageId);
-                    }
-                });
+                .setNegativeButton(R.string.parcel_delete_button, (dialogInterface, i) -> deletePackageImageConfirmationDialog(imageId));
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.image_view_dialog, null);
@@ -1239,8 +1236,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
 
     public void requestPermission(String permission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(Parcel.this, permission) == PackageManager.PERMISSION_GRANTED) {
-            } else {
+            if (ContextCompat.checkSelfPermission(Parcel.this, permission) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{permission}, 1);
             }
         }
@@ -1425,7 +1421,4 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         });
     }
 
-
-    // ---------------------------------------------------------------------------------------------
-
-} // End of class
+}
