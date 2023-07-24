@@ -99,7 +99,7 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         MultiDex.install(this);
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -222,6 +222,7 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
     // ---------------------------------------------------------------------------------------------
 
     // Update list view
+    @SuppressLint("NotifyDataSetChanged")
     public void updateListView() {
         if (parcelItems.size() > 0) {
             emptyView.setVisibility(View.GONE);
@@ -355,7 +356,6 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         final CheckBox productPageCB = dialog.findViewById(R.id.productPageCB);
 
         // Listeners
-        String finalOutputFolder = outputFolder;
         exportBtn.setOnClickListener(view -> {
             CSVExporter csvExporter = new CSVExporter();
             try {
@@ -495,4 +495,4 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         return super.onOptionsItemSelected(item);
     }
 
-} // End of class
+}
