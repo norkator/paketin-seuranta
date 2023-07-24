@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -99,7 +100,6 @@ import java.util.Map;
 @SuppressWarnings("FieldCanBeLocal")
 public class Parcel extends AppCompatActivity implements OnMapReadyCallback, SwipeRefreshLayout.OnRefreshListener, CarrierDetectorTaskInterface {
 
-    // Logging
     @NonNls
     private static final String TAG = Parcel.class.getSimpleName();
 
@@ -928,17 +928,27 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
             return true;
         }
         if (id == R.id.action_take_image) {
-            if (hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)) {
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                StrictMode.setVmPolicy(builder.build());
-                Uri outputFileUri = FileProvider.getUriForFile(
-                        this,
-                        this.getApplicationContext().getPackageName() + ".provider",
-                        parcelImageTempFile
-                ); // Uri.fromFile(parcelImageTempFile);
-                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                startActivityForResult(intent, CAMERA_REQUEST);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+                } catch (ActivityNotFoundException e) {
+                    genericErrorDialog(getString(R.string.main_menu_error), e.toString());
+                }
+            } else {
+                // seems to work up to Android 10
+                if (hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+                    Uri outputFileUri = FileProvider.getUriForFile(
+                            this,
+                            this.getApplicationContext().getPackageName() + ".provider",
+                            parcelImageTempFile
+                    ); // Uri.fromFile(parcelImageTempFile);
+                    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    startActivityForResult(intent, CAMERA_REQUEST);
+                }
             }
             return true;
         }
@@ -1097,26 +1107,26 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     }
 
 
-    // Activity result
     @SuppressWarnings("HardCodedStringLiteral")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Package photo feature
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            try {
-                String photoPath = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    photoPath = parcelImageTempFile.getPath();
-                } else {
-                    photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                saveImageToDB(imageBitmap);
+            } else {
+                try {
+                    String photoPath = Environment.getExternalStorageDirectory() + "/PaketinSeuranta/Kuvat/" + "temp.png";
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+                    saveImageToDB(bitmap);
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                    e.printStackTrace();
                 }
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
-                saveImageToDB(bitmap);
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-                e.printStackTrace();
             }
         } else if (requestCode == ACTIVITY_RESULT_PARCEL_EDITOR) {
             readParcelDataFromSqlite();
@@ -1175,10 +1185,10 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     private void imageViewDialog(final String imageId, final Bitmap bitmap) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.parcel_close_button, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        })
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
                 .setNegativeButton(R.string.parcel_delete_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
