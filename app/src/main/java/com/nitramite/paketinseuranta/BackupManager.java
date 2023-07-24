@@ -110,21 +110,19 @@ public class BackupManager extends AppCompatActivity {
 
 
         takeBackupBtn.setOnClickListener(view -> {
-            if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Backup backup = BackupUtils.BackupDatabase(BackupManager.this);
-                if (backup.isSuccess()) {
-                    backupSuccessDialog(this, this.isFinishing(),
-                            getString(R.string.main_menu_result),
-                            getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation(),
-                            backup
-                    );
-                    BackupUtils.SaveBackupDate(this, Calendar.getInstance()); // save last backup date time
-                    setLastBackupTakenView();
-                } else {
-                    dialogUtils.genericErrorDialog(this, this.isFinishing(),
-                            getString(R.string.main_menu_error),
-                            getString(R.string.main_menu_taking_backup_failed) + " " + backup.getExceptionString());
-                }
+            Backup backup = BackupUtils.BackupDatabase(BackupManager.this);
+            if (backup.isSuccess()) {
+                backupSuccessDialog(this, this.isFinishing(),
+                        getString(R.string.main_menu_result),
+                        getString(R.string.main_menu_taking_backup_success) + " " + backup.getLocation(),
+                        backup
+                );
+                BackupUtils.SaveBackupDate(this, Calendar.getInstance()); // save last backup date time
+                setLastBackupTakenView();
+            } else {
+                dialogUtils.genericErrorDialog(this, this.isFinishing(),
+                        getString(R.string.main_menu_error),
+                        getString(R.string.main_menu_taking_backup_failed) + " " + backup.getExceptionString());
             }
         });
 
@@ -149,35 +147,31 @@ public class BackupManager extends AppCompatActivity {
         });
 
         importBackupBtn.setOnClickListener(v -> {
-            if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-                chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-                chooseFile.setType("*/*");
-                startActivityForResult(
-                        Intent.createChooser(chooseFile, "Choose a backup file"),
-                        IMPORT_BACKUP_FILE_REQUEST_CODE
-                );
-            }
+            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+            chooseFile.setType("*/*");
+            startActivityForResult(
+                    Intent.createChooser(chooseFile, "Choose a backup file"),
+                    IMPORT_BACKUP_FILE_REQUEST_CODE
+            );
         });
 
         restoreBackupBtn.setOnClickListener(view -> {
-            if (hasPermission(BackupManager.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.confirm)
-                        .setMessage(R.string.continue_with_backup_restore)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(R.string.yes_btn, (dialog, whichButton) -> {
-                            Backup backup = BackupUtils.RestoreDatabase(BackupManager.this);
-                            if (backup.isSuccess()) {
-                                Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
-                                terminateApp();
-                            } else {
-                                dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
-                                        getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
-                            }
-                        })
-                        .setNegativeButton(R.string.no_btn, null).show();
-            }
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.confirm)
+                    .setMessage(R.string.continue_with_backup_restore)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(R.string.yes_btn, (dialog, whichButton) -> {
+                        Backup backup = BackupUtils.RestoreDatabase(BackupManager.this);
+                        if (backup.isSuccess()) {
+                            Toast.makeText(BackupManager.this, R.string.main_menu_restore_successfull, Toast.LENGTH_LONG).show();
+                            terminateApp();
+                        } else {
+                            dialogUtils.genericErrorDialog(this, this.isFinishing(), getString(R.string.main_menu_error),
+                                    getString(R.string.main_menu_restore_un_successfull) + " " + backup.getExceptionString());
+                        }
+                    })
+                    .setNegativeButton(R.string.no_btn, null).show();
         });
 
 
