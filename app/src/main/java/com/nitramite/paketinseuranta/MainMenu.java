@@ -8,6 +8,7 @@
 
 package com.nitramite.paketinseuranta;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -93,17 +94,17 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
     private BillingClient mBillingClient;
 
     // Main items
-    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
-    private ArrayList<ParcelItem> parcelItems = new ArrayList<>();
+    private final DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    private final ArrayList<ParcelItem> parcelItems = new ArrayList<>();
 
     // Tracking data list views
-    private ArrayList<String> trackingEvents_FIS = new ArrayList<>();
-    private ArrayList<String> trackingEvents_TIMESTAMPS = new ArrayList<>();
-    private ArrayList<String> trackingEvents_LOCATIONCODES = new ArrayList<>();
-    private ArrayList<String> trackingEvents_LOCATIONNAMES = new ArrayList<>();
+    private final ArrayList<String> trackingEvents_FIS = new ArrayList<>();
+    private final ArrayList<String> trackingEvents_TIMESTAMPS = new ArrayList<>();
+    private final ArrayList<String> trackingEvents_LOCATIONCODES = new ArrayList<>();
+    private final ArrayList<String> trackingEvents_LOCATIONNAMES = new ArrayList<>();
 
     // Components
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private final LocaleUtils localeUtils = new LocaleUtils();
     private SwipeRefreshLayout swipeRefreshLayout;
     private View emptyView = null;
     private RecyclerView recyclerView;
@@ -126,7 +127,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
 
     // Parcel service finish broad cast receiver
-    private BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
         @SuppressWarnings("HardCodedStringLiteral")
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -144,7 +145,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
 
     // Package update animation receiver for each service service package update
-    private BroadcastReceiver packageUpdateChangeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver packageUpdateChangeReceiver = new BroadcastReceiver() {
         @SuppressWarnings("HardCodedStringLiteral")
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -206,6 +207,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
         super.onResume();
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @SuppressWarnings("HardCodedStringLiteral")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,9 +289,8 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
 
         // Init in app billing
         initInAppBilling();
-    } // End of onCreate();
+    }
 
-    // ---------------------------------------------------------------------------------------------
 
     @Override
     protected void onStop() {
@@ -401,6 +402,7 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
     // ---------------------------------------------------------------------------------------------
 
     // Update list view
+    @SuppressLint("NotifyDataSetChanged")
     public void updateListView() {
         if (parcelItems.size() > 0) {
             emptyView.setVisibility(View.GONE);
