@@ -8,7 +8,6 @@
 
 package com.nitramite.paketinseuranta;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -45,8 +43,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.multidex.MultiDex;
 import androidx.preference.PreferenceManager;
@@ -57,7 +53,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nitramite.adapters.ParcelsAdapter;
 import com.nitramite.adapters.ParcelsAdapterListener;
 import com.nitramite.adapters.RecyclerItemTouchHelper;
-import com.nitramite.utils.BackupUtils;
 import com.nitramite.utils.CSVExporter;
 import com.nitramite.utils.LocaleUtils;
 import com.nitramite.utils.ThemeUtils;
@@ -69,16 +64,15 @@ import java.util.Objects;
 
 public class Archive extends AppCompatActivity implements ParcelsAdapterListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    //  Logging
     private static final String TAG = Archive.class.getSimpleName();
 
     // Main items
-    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
-    private ArrayList<ParcelItem> parcelItems = new ArrayList<>();
+    private final DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    private final ArrayList<ParcelItem> parcelItems = new ArrayList<>();
 
     // Components
     private InputMethodManager inputMethodManager;
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private final LocaleUtils localeUtils = new LocaleUtils();
     private View emptyView = null;
     private RecyclerView recyclerView;
     private ParcelsAdapter adapter = null;
@@ -105,7 +99,7 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         MultiDex.install(this);
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -228,6 +222,7 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
     // ---------------------------------------------------------------------------------------------
 
     // Update list view
+    @SuppressLint("NotifyDataSetChanged")
     public void updateListView() {
         if (parcelItems.size() > 0) {
             emptyView.setVisibility(View.GONE);
@@ -361,48 +356,45 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         final CheckBox productPageCB = dialog.findViewById(R.id.productPageCB);
 
         // Listeners
-        String finalOutputFolder = outputFolder;
         exportBtn.setOnClickListener(view -> {
-            if (hasPermission(Archive.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                CSVExporter csvExporter = new CSVExporter();
-                try {
-                    final String exportFileName = csvExporter.exportCSV(
-                            this,
-                            databaseHelper,
-                            nameCB.isChecked(),
-                            trackingCodeCB.isChecked(),
-                            senderCB.isChecked(),
-                            deliveryMethodCB.isChecked(),
-                            parcelAddDateCB.isChecked(),
-                            lastParcelEventCB.isChecked(),
-                            readyForPickupDateCB.isChecked(),
-                            productPageCB.isChecked()
-                    );
-                    dialog.dismiss();
-                    if (exportFileName == null) {
-                        genericTextDialog(getString(R.string.main_menu_error), getString(R.string.archive_csv_export_failed_description));
+            CSVExporter csvExporter = new CSVExporter();
+            try {
+                final String exportFileName = csvExporter.exportCSV(
+                        this,
+                        databaseHelper,
+                        nameCB.isChecked(),
+                        trackingCodeCB.isChecked(),
+                        senderCB.isChecked(),
+                        deliveryMethodCB.isChecked(),
+                        parcelAddDateCB.isChecked(),
+                        lastParcelEventCB.isChecked(),
+                        readyForPickupDateCB.isChecked(),
+                        productPageCB.isChecked()
+                );
+                dialog.dismiss();
+                if (exportFileName == null) {
+                    genericTextDialog(getString(R.string.main_menu_error), getString(R.string.archive_csv_export_failed_description));
+                } else {
+                    Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                    File file = csvExporter.GetCSVExportFile(this, exportFileName);
+                    if (file.exists()) {
+                        intentShareFile.setType("*/*");
+                        intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                                this,
+                                this.getApplicationContext().getPackageName() + ".provider",
+                                file
+                        ));
+                        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, exportFileName);
+                        intentShareFile.putExtra(Intent.EXTRA_TEXT, exportFileName);
+                        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(Intent.createChooser(intentShareFile, exportFileName));
                     } else {
-                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                        File file = csvExporter.GetCSVExportFile(this, exportFileName);
-                        if (file.exists()) {
-                            intentShareFile.setType("*/*");
-                            intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                                    this,
-                                    this.getApplicationContext().getPackageName() + ".provider",
-                                    file
-                            ));
-                            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, exportFileName);
-                            intentShareFile.putExtra(Intent.EXTRA_TEXT, exportFileName);
-                            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            startActivity(Intent.createChooser(intentShareFile, exportFileName));
-                        } else {
-                            Toast.makeText(this, "CSV file to export does not exist!", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(this, "CSV file to export does not exist!", Toast.LENGTH_SHORT).show();
                     }
-                } catch (IOException e) {
-                    genericTextDialog(getString(R.string.main_menu_error), e.toString());
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                genericTextDialog(getString(R.string.main_menu_error), e.toString());
+                e.printStackTrace();
             }
         });
         dismissBtn.setOnClickListener(view -> dialog.dismiss());
@@ -439,29 +431,6 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         }
     }
 
-
-    // Helper to request wanted permission
-    private boolean hasPermission(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermission(permission);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
-    public void requestPermission(String permission) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(Archive.this, permission) == PackageManager.PERMISSION_GRANTED) {
-            } else {
-                requestPermissions(new String[]{permission}, 1);
-            }
-        }
-    }
 
     public void toggleSearch() {
         final boolean searchCardVisible = searchQueryCard.getVisibility() == View.VISIBLE;
@@ -526,4 +495,4 @@ public class Archive extends AppCompatActivity implements ParcelsAdapterListener
         return super.onOptionsItemSelected(item);
     }
 
-} // End of class
+}
