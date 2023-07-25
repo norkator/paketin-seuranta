@@ -38,4 +38,4 @@ public class Constants {
     public final static String SP_UPDATE_INTERVAL = "parcels_update_rate";
     public final static String SP_LAST_PUSH_UPDATE = "SP_LAST_PUSH_UPDATE";
 
-} // End of class
+} 

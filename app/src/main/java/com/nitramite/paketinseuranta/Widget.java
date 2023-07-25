@@ -12,21 +12,17 @@ import android.widget.RemoteViews;
 @SuppressWarnings("HardCodedStringLiteral")
 public class Widget extends AppWidgetProvider {
 
-    //  Logging
     private static final String TAG = Widget.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
-        Log.i(TAG, "Widget on receive event");
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName thisAppWidget = new ComponentName(context.getPackageName(), Widget.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
         onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    // onUpdate
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         try {
@@ -38,7 +34,6 @@ public class Widget extends AppWidgetProvider {
                 RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
                 rv.setTextViewText(R.id.statusText, status);
 
-                // On click refresh trigger method
                 Log.i(TAG, "Widget on update event");
                 Intent updateIntent = new Intent(context, Widget.class);
                 updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

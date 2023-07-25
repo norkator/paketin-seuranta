@@ -35,4 +35,4 @@ public class FileUtils {
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
-} // End of class
+} 

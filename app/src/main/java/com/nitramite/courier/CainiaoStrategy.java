@@ -37,7 +37,7 @@ import okhttp3.Response;
 
 public class CainiaoStrategy implements CourierStrategy {
 
-    // Logging
+    
     @NonNls
     private static final String TAG = CainiaoStrategy.class.getSimpleName();
 
@@ -177,4 +177,4 @@ public class CainiaoStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

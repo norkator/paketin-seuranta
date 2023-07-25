@@ -26,11 +26,9 @@ import okhttp3.Response;
 
 public class ArraPakettiStrategy implements CourierStrategy {
 
-    // Logging
     @NonNls
-    private static final String TAG = ArraPakettiStrategy.class.getSimpleName();;
+    private static final String TAG = ArraPakettiStrategy.class.getSimpleName();
 
-    // Api url
     @NonNls
     private static final String url = "https://www.r-kioski.fi/wordpress/wp-admin/admin-ajax.php";
 
@@ -129,5 +127,4 @@ public class ArraPakettiStrategy implements CourierStrategy {
         return parcelObject;
     }
 
-
-} // End of class
+} 

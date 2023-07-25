@@ -35,7 +35,7 @@ import okhttp3.ResponseBody;
 @SuppressWarnings("HardCodedStringLiteral")
 public class DpdStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = DpdStrategy.class.getSimpleName();
     private static final String URL = "https://tracking.dpd.de/rest/plc/en_US/";
 
@@ -177,4 +177,4 @@ public class DpdStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

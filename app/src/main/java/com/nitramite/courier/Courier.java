@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NonNls;
  */
 public class Courier {
 
-    // Logging
+    
     @NonNls
     private static final String TAG = Courier.class.getSimpleName();
 
@@ -33,4 +33,4 @@ public class Courier {
         return this.courierStrategy.execute(parcelCode, locale);
     }
 
-} // End of class
+} 

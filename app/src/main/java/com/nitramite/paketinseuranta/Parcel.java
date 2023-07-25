@@ -103,12 +103,10 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     @NonNls
     private static final String TAG = Parcel.class.getSimpleName();
 
-    // Activity request codes
     private static final int ACTIVITY_RESULT_PARCEL_EDITOR = 3;  // The request code
 
-    // Components
-    private LocaleUtils localeUtils = new LocaleUtils();
-    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    private final LocaleUtils localeUtils = new LocaleUtils();
+    private final DatabaseHelper databaseHelper = new DatabaseHelper(this);
     private TextView trackingNumberText;
     private ImageView code128Output;
     private LinearLayout parcelInfoOutput;
@@ -116,7 +114,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     private String ID;
     private String barcode_data;
     private String lockerCode = "";
-    private ArrayList<String> parcelDataArray = new ArrayList<>();
+    private final ArrayList<String> parcelDataArray = new ArrayList<>();
     private LinearLayout lockerCodeView;
     private TextView lockerCodeTV;
     private LinearLayout parcelEventsView;
@@ -137,13 +135,13 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     // Parcel image variables
     private static final int CAMERA_REQUEST = 1888;
     private File parcelImageTempFile = null;
-    private String imageCaptureTempName = "temp.png";
+    private final String imageCaptureTempName = "temp.png";
 
     // Dialogs
     private Dialog carrierDetectorDialog;
 
     // Animations
-    private AlphaAnimation fadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
+    private final AlphaAnimation fadeInAnimation = new AlphaAnimation(0.0f, 1.0f);
 
     // Vibration
     private Vibrator vibrator;
@@ -155,7 +153,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
     }
 
     // Parcel service finish broad cast receiver
-    private BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver dataChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             swipeRefreshLayout.setRefreshing(false);
@@ -774,7 +772,7 @@ public class Parcel extends AppCompatActivity implements OnMapReadyCallback, Swi
         View view = new View(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 Utils.dpToPixels((isCircle ? 15 : 4), displayMetrics),
-                Utils.dpToPixels((isCircle ? 15 : 15), displayMetrics)
+                Utils.dpToPixels((15), displayMetrics)
         );
         params.setMargins(0, Utils.dpToPixels(5, displayMetrics), 0, 0); // Margin top 5dp
         view.setLayoutParams(params);

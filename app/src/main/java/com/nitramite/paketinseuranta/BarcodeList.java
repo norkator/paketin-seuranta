@@ -24,11 +24,10 @@ import java.util.ArrayList;
 @SuppressWarnings("FieldCanBeLocal")
 public class BarcodeList extends AppCompatActivity {
 
-    // Activity components
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private final LocaleUtils localeUtils = new LocaleUtils();
     private Switch showOnlyReadyForPickupSwitch;
     private ListView barcodeList;
-    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    private final DatabaseHelper databaseHelper = new DatabaseHelper(this);
     private Boolean SP_BAR_CODE_LIST_ONLY_READY_FOR_PICKUP_PARCELS = false;
     private Button spacingPlusBtn, spacingMinusBtn;
     private Integer barcodeListSpacingValue = 5; // 5dp default
@@ -95,7 +94,7 @@ public class BarcodeList extends AppCompatActivity {
 
 
         getParameters(SP_BAR_CODE_LIST_ONLY_READY_FOR_PICKUP_PARCELS);
-    } // End of onCreate()
+    }
 
 
     /* Get data from database and draw list */
@@ -129,13 +128,12 @@ public class BarcodeList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-} // End of class
+}

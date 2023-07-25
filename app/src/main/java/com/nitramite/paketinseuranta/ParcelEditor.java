@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -29,18 +28,16 @@ import org.jetbrains.annotations.NonNls;
 
 public class ParcelEditor extends AppCompatActivity {
 
-    //  Logging
     @NonNls
     private static final String TAG = ParcelEditor.class.getSimpleName();
 
-    // Marshmallow+ permission request
+
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 1;
 
-    // Components
     public ParcelObject parcelObject;
     public FragmentTrackedDeliveryInterface fragmentTrackedDeliveryInterface;
     public ClipboardManager clipboard;
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private final LocaleUtils localeUtils = new LocaleUtils();
     public DatabaseHelper databaseHelper = new DatabaseHelper(this);
     public String parcelId = null;
     public FragmentTrackedDelivery.TrackedDeliveryType trackedDeliveryType = FragmentTrackedDelivery.TrackedDeliveryType.NEW_PACKAGE;
@@ -62,12 +59,10 @@ public class ParcelEditor extends AppCompatActivity {
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         // Get services
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-        // Find components
         ViewPager viewPager = findViewById(R.id.view_pager);
         TabLayout tabs = findViewById(R.id.tabs);
 
@@ -204,4 +199,4 @@ public class ParcelEditor extends AppCompatActivity {
     }
 
 
-} // End of class
+}

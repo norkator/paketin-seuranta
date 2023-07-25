@@ -32,7 +32,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class UPSStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = UPSStrategy.class.getSimpleName();
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -220,4 +220,4 @@ public class UPSStrategy implements CourierStrategy {
         return new UpsTokenPair(X_CSRF_TOKEN, X_XSRF_TOKEN_ST);
     }
 
-} // End of class
+} 

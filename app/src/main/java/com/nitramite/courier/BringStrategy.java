@@ -32,7 +32,7 @@ import okhttp3.Response;
 
 public class BringStrategy implements CourierStrategy {
 
-    // Logging
+    
     @NonNls
     private static final String TAG = BringStrategy.class.getSimpleName();
 

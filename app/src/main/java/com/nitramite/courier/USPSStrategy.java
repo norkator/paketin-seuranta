@@ -21,7 +21,7 @@ import java.util.Locale;
 @SuppressWarnings("HardCodedStringLiteral")
 public class USPSStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = USPSStrategy.class.getSimpleName();;
 
 
@@ -102,4 +102,4 @@ public class USPSStrategy implements CourierStrategy {
         return parcelObject;
     }
 
-} // End of class
+} 

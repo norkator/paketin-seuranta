@@ -5,13 +5,9 @@ package com.nitramite.paketinseuranta;
  */
 public class PhaseNumberString {
 
+    private final String phaseNumber;
+    private final String phaseString;
 
-    // Variables
-    private String phaseNumber;
-    private String phaseString;
-
-
-    // Constructor
     PhaseNumberString(final String phaseNumber, final String phaseString) {
         this.phaseNumber = phaseNumber;
         this.phaseString = phaseString;

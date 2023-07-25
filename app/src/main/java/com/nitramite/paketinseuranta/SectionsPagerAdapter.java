@@ -13,20 +13,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
  * one of the sections/tabs/pages.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
     @StringRes
     private int[] TAB_TITLES = null;
-
-    // Variables
     private final Context mContext;
 
+    private final FragmentTrackedDelivery fragmentTrackedDelivery = new FragmentTrackedDelivery();
+    private final FragmentNumberList fragmentNumberList = new FragmentNumberList();
 
-    // Fragments
-    private FragmentTrackedDelivery fragmentTrackedDelivery = new FragmentTrackedDelivery();
-    private FragmentNumberList fragmentNumberList = new FragmentNumberList();
-
-
-    // Constructor
     SectionsPagerAdapter(Context context, FragmentManager fm, FragmentTrackedDelivery.TrackedDeliveryType trackedDeliveryType) {
         super(fm);
         mContext = context;
@@ -62,4 +55,5 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return TAB_TITLES.length;
     }
+
 }

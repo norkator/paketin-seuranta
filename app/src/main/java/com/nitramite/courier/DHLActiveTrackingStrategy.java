@@ -29,7 +29,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class DHLActiveTrackingStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = DHLActiveTrackingStrategy.class.getSimpleName();
 
 
@@ -124,4 +124,4 @@ public class DHLActiveTrackingStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

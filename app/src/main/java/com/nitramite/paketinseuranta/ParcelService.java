@@ -34,18 +34,15 @@ import com.nitramite.utils.LocaleUtils;
 @SuppressWarnings("HardCodedStringLiteral")
 public class ParcelService extends Service {
 
-    // Main variables
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private static final String TAG = ParcelService.class.getSimpleName();
+
+    private final LocaleUtils localeUtils = new LocaleUtils();
     private Integer serviceMode = 999;
     private Boolean enableNotifications = false;
     private String PARCEL_ID = ""; // Used to update only one package
     private Boolean updateFailedFirst = false;
     private Boolean startAsForegroundService = false;
-    private DatabaseHelper databaseHelper = new DatabaseHelper(this);
-
-
-    // Logging
-    private static final String TAG = ParcelService.class.getSimpleName();
+    private final DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
 
     @Override
@@ -55,8 +52,9 @@ public class ParcelService extends Service {
 
     /**
      * Small notice: If you do any modifications, please make sure you apply them also to the "PushService" file.
-     * @param intent Intent
-     * @param flags Flags
+     *
+     * @param intent  Intent
+     * @param flags   Flags
      * @param startId StartId
      * @return Result
      */
@@ -88,33 +86,32 @@ public class ParcelService extends Service {
         }
 
 
-        // PARCEL UPDATE THREAD
         UpdaterLogic.getUpdaterThread(this, localeUtils, enableNotifications, updateFailedFirst, serviceMode, PARCEL_ID, databaseHelper).start();
-        // Stopping after being done
         stopSelf();
-
-        return Service.START_NOT_STICKY; // ANDROID OS WONT BOTHER STARTING SERVICE AGAIN IF SYSTEM RESOURCES RUN OUT
-    } // END OF SERVICE onSTART
+        return Service.START_NOT_STICKY;
+    }
 
     // New parcel service parcel item for comparing etc
     public static class ParcelServiceParcelItem {
 
         // Variables
-        private String parcelDatabaseID;
-        private String parcelCarrierCode;
-        private String parcelCarrierStatusCode;
-        private String parcelCodeItem;
-        private String parcelNameItem;
-        private String parcelPhaseItemOld;
+        private final String parcelDatabaseID;
+        private final String parcelCarrierCode;
+        private final String parcelCarrierStatusCode;
+        private final String parcelCodeItem;
+        private final String parcelNameItem;
+        private final String parcelPhaseItemOld;
         private String parcelPhaseItemNew;
-        private String parcelEventStringOld;
+        private final String parcelEventStringOld;
         private String parcelEventStringNew;
 
         // Constructor
-        public ParcelServiceParcelItem(String parcelDatabaseID_, String parcelCarrierCode_, String parcelCarrierStatusCode_,
-                                String parcelCodeItem_, String parcelPhaseItemOld_, String parcelPhaseItemNew_,
-                                String parcelEventStringOld_, String parcelEventStringNew_,
-                                String parcelNameItem_) {
+        public ParcelServiceParcelItem(
+                String parcelDatabaseID_, String parcelCarrierCode_, String parcelCarrierStatusCode_,
+                String parcelCodeItem_, String parcelPhaseItemOld_, String parcelPhaseItemNew_,
+                String parcelEventStringOld_, String parcelEventStringNew_,
+                String parcelNameItem_
+        ) {
             parcelDatabaseID = parcelDatabaseID_;
             parcelCarrierCode = parcelCarrierCode_;
             parcelCarrierStatusCode = parcelCarrierStatusCode_;
@@ -176,10 +173,7 @@ public class ParcelService extends Service {
             this.parcelEventStringNew = parcelEventStringNew;
         }
 
-    } // End of class
-
-
-    // ---------------------------------------------------------------------------------------------
+    }
 
 
     /**
@@ -209,7 +203,6 @@ public class ParcelService extends Service {
     }
 
 
-
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
@@ -220,4 +213,4 @@ public class ParcelService extends Service {
     public void onDestroy() {
     }
 
-} // End of class
+}

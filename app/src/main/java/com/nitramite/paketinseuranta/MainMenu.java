@@ -820,4 +820,4 @@ public class MainMenu extends AppCompatActivity implements SwipeRefreshLayout.On
         }
     }
 
-} // End of class
+} 

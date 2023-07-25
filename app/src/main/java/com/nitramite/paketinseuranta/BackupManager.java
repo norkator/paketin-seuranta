@@ -41,11 +41,8 @@ public class BackupManager extends AppCompatActivity {
     @NonNls
     private static final String TAG = BackupManager.class.getSimpleName();
 
-    // Views
     private TextView lastBackupDate;
 
-
-    // Variables
     private SharedPreferences sharedPreferences = null;
     private final LocaleUtils localeUtils = new LocaleUtils();
     private final DialogUtils dialogUtils = new DialogUtils();

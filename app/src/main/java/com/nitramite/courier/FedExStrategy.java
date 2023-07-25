@@ -27,7 +27,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class FedExStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = FedExStrategy.class.getSimpleName();
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -115,4 +115,4 @@ public class FedExStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

@@ -31,7 +31,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class DHLAmazonStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = DHLAmazonStrategy.class.getSimpleName();
 
     @Override
@@ -129,4 +129,4 @@ public class DHLAmazonStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

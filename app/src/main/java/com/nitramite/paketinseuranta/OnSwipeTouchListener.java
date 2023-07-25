@@ -67,4 +67,4 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeBottom() {
     }
 
-} // End of class
+}

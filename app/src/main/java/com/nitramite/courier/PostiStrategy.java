@@ -29,7 +29,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class PostiStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = PostiStrategy.class.getSimpleName();
 
     private static final String TOKEN_URL = "https://auth-service.posti.fi/api/v1/anonymous_token";
@@ -248,4 +248,4 @@ public class PostiStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

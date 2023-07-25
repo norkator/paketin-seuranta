@@ -11,7 +11,6 @@ package com.nitramite.paketinseuranta;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -41,7 +40,6 @@ import java.util.Locale;
 @SuppressWarnings("HardCodedStringLiteral")
 public class MyPreferencesActivity extends AppCompatActivity {
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -54,7 +52,7 @@ public class MyPreferencesActivity extends AppCompatActivity {
 
 
     // Components
-    private LocaleUtils localeUtils = new LocaleUtils();
+    private final LocaleUtils localeUtils = new LocaleUtils();
 
 
     @Override
@@ -140,8 +138,6 @@ public class MyPreferencesActivity extends AppCompatActivity {
             return true;
         });
 
-
-        // EditTextPreference parcels_update_rate = (EditTextPreference) myPreferenceFragment.findPreference("parcels_update_rate");
         SwitchPreference parcelAutomaticUpdateSwitch = myPreferenceFragment.findPreference(Constants.SP_PARCELS_AUTOMATIC_UPDATE);
         parcelAutomaticUpdateSwitch.setOnPreferenceChangeListener((preference, o) -> {
             if (o.toString().equals("false")) {
@@ -176,5 +172,4 @@ public class MyPreferencesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-} // END OF CLASS
+}

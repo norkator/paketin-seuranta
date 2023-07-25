@@ -22,7 +22,7 @@ import java.util.Date;
 @SuppressWarnings("HardCodedStringLiteral")
 public class YanwenStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = YanwenStrategy.class.getSimpleName();
 
     // Api url
@@ -147,4 +147,4 @@ public class YanwenStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

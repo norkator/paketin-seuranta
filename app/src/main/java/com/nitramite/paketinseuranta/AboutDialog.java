@@ -574,4 +574,4 @@ public class AboutDialog extends DialogFragment {
     }
 
 
-} // End of class
+} 

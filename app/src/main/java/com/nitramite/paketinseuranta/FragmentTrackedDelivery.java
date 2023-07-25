@@ -50,10 +50,8 @@ import java.util.Date;
 @SuppressWarnings({"ConstantConditions", "HardCodedStringLiteral"})
 public class FragmentTrackedDelivery extends Fragment implements DatePickerDialog.OnDateSetListener, FragmentTrackedDeliveryInterface {
 
-    // Logging
     private static final String TAG = FragmentTrackedDelivery.class.getSimpleName();
 
-    // Date picker scenario
     enum DatePickerScenario {
         ORDER_DATE,
         MANUAL_DELIVERY_DATE,
@@ -65,11 +63,11 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
     }
 
     // Time parsing
-    private @SuppressLint("SimpleDateFormat")
+    private final @SuppressLint("SimpleDateFormat")
     DateFormat pickerDateFormat = new SimpleDateFormat("yyyy-M-dd");
-    private @SuppressLint("SimpleDateFormat")
+    private final @SuppressLint("SimpleDateFormat")
     DateFormat showingDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private @SuppressLint("SimpleDateFormat")
+    private final @SuppressLint("SimpleDateFormat")
     DateFormat SQLiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     // Activity components
@@ -543,4 +541,4 @@ public class FragmentTrackedDelivery extends Fragment implements DatePickerDialo
         onPositiveBtnClick();
     }
 
-} // End of class
+}

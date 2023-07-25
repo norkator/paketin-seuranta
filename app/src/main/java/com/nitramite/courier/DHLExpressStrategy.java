@@ -27,7 +27,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class DHLExpressStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = DHLExpressStrategy.class.getSimpleName();
 
     // Config (rate limited 250 calls per day with a maximum of 1 call per second)

@@ -37,16 +37,13 @@ import static com.nitramite.paketinseuranta.Constants.DATABASE_NAME;
 @SuppressWarnings("HardCodedStringLiteral")
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Logging
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
-    // For database updating
     private List<String> columnsParcels;
     private List<String> columnsEventsData;
     private List<String> columnsImages;
     private boolean upgrade = false;
 
-    // DATABASE VERSION
     private static final int DATABASE_VERSION = 18;
     // 4  = v1.1.2
     // 5  = v1.1.7
@@ -797,4 +794,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // ---------------------------------------------------------------------------------------------
 
-} // End of class
+}

@@ -26,7 +26,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class GlsStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = GlsStrategy.class.getSimpleName();
 
     @Override
@@ -116,4 +116,4 @@ public class GlsStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

@@ -23,10 +23,8 @@ import java.util.ArrayList;
 
 public class ParcelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    //  Logging
     private static final String TAG = ParcelsAdapter.class.getSimpleName();
 
-    // Variables
     private ParcelsAdapterListener parcelsAdapterListener;
     private final Context context;
     private final ArrayList<ParcelItem> parcelItems;

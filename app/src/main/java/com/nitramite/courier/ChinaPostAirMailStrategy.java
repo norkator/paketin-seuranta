@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class ChinaPostAirMailStrategy implements CourierStrategy {
 
-    // Logging
+    
     @NonNls
     private static final String TAG = ChinaPostAirMailStrategy.class.getSimpleName();
 
@@ -104,4 +104,4 @@ public class ChinaPostAirMailStrategy implements CourierStrategy {
         return parcelObject;
     }
 
-} // End of class
+} 

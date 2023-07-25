@@ -27,7 +27,7 @@ import javax.net.ssl.SSLException;
 @SuppressWarnings("HardCodedStringLiteral")
 public class OmnivaStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = OmnivaStrategy.class.getSimpleName();
 
     @Override
@@ -83,4 +83,4 @@ public class OmnivaStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

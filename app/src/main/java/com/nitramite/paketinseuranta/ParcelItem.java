@@ -12,8 +12,6 @@ import com.nitramite.utils.CarrierUtils;
 
 public class ParcelItem {
 
-
-    // Variables
     private String parcelId = null;
     private String parcelCode = null;
     private String parcelPhase = null;
@@ -35,10 +33,12 @@ public class ParcelItem {
 
 
     // Constructor
-    ParcelItem(String parcelId, String parcelCode, String parcelPhase, String parcelType, String parcelTitle,
-               String parcelUpdateStatus, String parcelLatestEventDescription, String parcelCarrier,
-               String parcelSender, String parcelDeliveryMethod, String parcelAdditionalNote, String parcelCreateDate,
-               String parcelLastPickupDate, String lastEventDate, String parcelPaid) {
+    ParcelItem(
+            String parcelId, String parcelCode, String parcelPhase, String parcelType, String parcelTitle,
+            String parcelUpdateStatus, String parcelLatestEventDescription, String parcelCarrier,
+            String parcelSender, String parcelDeliveryMethod, String parcelAdditionalNote, String parcelCreateDate,
+            String parcelLastPickupDate, String lastEventDate, String parcelPaid
+    ) {
         this.parcelId = parcelId;
         this.parcelCode = parcelCode;
         this.parcelPhase = parcelPhase;
@@ -143,4 +143,4 @@ public class ParcelItem {
         return parcelPaid.equals("1");
     }
 
-} // End of class
+}

@@ -19,4 +19,5 @@ public class PaketinSeurantaApp extends MultiDexApplication {
         super.onCreate();
         FirebaseApp.initializeApp(this);
     }
+
 }

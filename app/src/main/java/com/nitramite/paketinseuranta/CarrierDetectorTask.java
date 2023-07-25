@@ -17,7 +17,6 @@ import com.nitramite.courier.Courier;
 import com.nitramite.courier.CourierStrategy;
 import com.nitramite.courier.DHLActiveTrackingStrategy;
 import com.nitramite.courier.DHLAmazonStrategy;
-import com.nitramite.courier.DHLExpressStrategy;
 import com.nitramite.courier.FedExStrategy;
 import com.nitramite.courier.FourPXStrategy;
 import com.nitramite.courier.MatkahuoltoStrategy;
@@ -38,11 +37,10 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
 
     // Variables
     private static final String TAG = CarrierDetectorTask.class.getSimpleName();
-    private CarrierDetectorTaskInterface listener;
-    private String parcelCode;
-    private Locale locale;
+    private final CarrierDetectorTaskInterface listener;
+    private final String parcelCode;
+    private final Locale locale;
 
-    // Constructor
     CarrierDetectorTask(CarrierDetectorTaskInterface listener, final String parcelCode, Locale locale_) {
         this.listener = listener;
         this.parcelCode = parcelCode;
@@ -127,5 +125,4 @@ public class CarrierDetectorTask extends AsyncTask<String, String, String> {
         listener.onCarrierDetectorEnded();
     }
 
-
-} // End of asyncTask
+}

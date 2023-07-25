@@ -8,4 +8,4 @@ public interface CarrierDetectorTaskInterface {
 
     void onProgressbarProgressUpdate(Integer progress);
 
-} // End of class
+}

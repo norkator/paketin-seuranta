@@ -27,7 +27,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class PostNordStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = PostNordStrategy.class.getSimpleName();
 
     @Override
@@ -224,4 +224,4 @@ public class PostNordStrategy implements CourierStrategy {
     }
 
 
-} // End of class
+} 

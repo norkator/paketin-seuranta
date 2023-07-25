@@ -4,12 +4,12 @@ package com.nitramite.paketinseuranta;
 public class EventObject {
 
     // Variables
-    private String description;             // Event description
-    private String timeStamp;               // Event timestamp
-    private String timeStampSQLiteFormat;   // SQLite suitable timestamp conversion ('2007-01-01 10:00:00')
-    private String locationCode;            // Event location code
-    private String locationName;            // Event locationName
-    private String time;                    // Time only if required on parsing purposes
+    private final String description;             // Event description
+    private final String timeStamp;               // Event timestamp
+    private final String timeStampSQLiteFormat;   // SQLite suitable timestamp conversion ('2007-01-01 10:00:00')
+    private final String locationCode;            // Event location code
+    private final String locationName;            // Event locationName
+    private String time;                          // Time only if required on parsing purposes
 
     public EventObject(final String description, final String timeStamp, final String timeStampSQLiteFormat, final String locationCode, final String locationName) {
         this.description = description;
@@ -55,4 +55,4 @@ public class EventObject {
 
     // ---------------------------------------------------------------------------------------------
 
-} // End of class
+}

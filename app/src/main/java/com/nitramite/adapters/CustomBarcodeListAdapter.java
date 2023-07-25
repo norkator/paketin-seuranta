@@ -80,4 +80,4 @@ public class CustomBarcodeListAdapter extends ArrayAdapter<String> {
     }
 
 
-} // END OF CLASS
+} 

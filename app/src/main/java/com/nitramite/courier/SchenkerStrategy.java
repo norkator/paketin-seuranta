@@ -27,7 +27,7 @@ import okhttp3.Response;
 @SuppressWarnings({"HardCodedStringLiteral", "FieldCanBeLocal"})
 public class SchenkerStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = SchenkerStrategy.class.getSimpleName();
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");

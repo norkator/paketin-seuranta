@@ -28,7 +28,7 @@ import okhttp3.Response;
 @SuppressWarnings("HardCodedStringLiteral")
 public class MatkahuoltoStrategy implements CourierStrategy {
 
-    // Logging
+    
     private static final String TAG = MatkahuoltoStrategy.class.getSimpleName();
 
 
@@ -107,4 +107,4 @@ public class MatkahuoltoStrategy implements CourierStrategy {
         return parcelObject;
     }
 
-} // End of class
+} 
