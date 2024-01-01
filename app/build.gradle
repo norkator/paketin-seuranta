@@ -65,7 +65,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0@aar'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'com.google.android:flexbox:2.0.1'
     implementation 'com.squareup.okhttp3:okhttp:4.11.0'
     // For the notifications
